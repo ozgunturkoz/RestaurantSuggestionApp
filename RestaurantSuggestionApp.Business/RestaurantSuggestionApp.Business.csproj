@@ -16,8 +16,4 @@
     <ProjectReference Include="..\RestaurantSuggestionApp.DataAccess\RestaurantSuggestionApp.DataAccess.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>

@@ -23,12 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RestaurantSuggestionApp.Business\RestaurantSuggestionApp.Business.csproj" />
-    <ProjectReference Include="..\RestaurantSuggestionApp.Core\RestaurantSuggestionApp.Core.csproj" />
-    <ProjectReference Include="..\RestaurantSuggestionApp.DataAccess\RestaurantSuggestionApp.DataAccess.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
