@@ -19,4 +19,8 @@
     <ProjectReference Include="..\RestaurantSuggestionApp.Core\RestaurantSuggestionApp.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

@@ -1,18 +1,27 @@
-﻿using RestaurantSuggestionApp.DataAccess;
+﻿using Microsoft.EntityFrameworkCore;
 using RestaurantSuggestionApp.Business.Services;
-using Microsoft.EntityFrameworkCore;
+using RestaurantSuggestionApp.DataAccess;
+using static RestaurantSuggestionApp.Business.Services.RestaurantServices;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
 
+builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+        sqlServerOptionsAction: sqlOptions =>
+        {
+            
+            sqlOptions.EnableRetryOnFailure();
+        }));
 
 
-builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+
 
 
 builder.Services.AddEndpointsApiExplorer();
