@@ -10,8 +10,12 @@ namespace RestaurantSuggestionApp.Business.Services
         Restaurant GetById(int id);
         Restaurant Add(Restaurant newRestaurant);
         Restaurant Update(int id, Restaurant updatedRestaurant);
+
+        List<Restaurant> GetNearby(decimal latitude, decimal longitude, double radiusInKm);
         void Delete(int id);
     }
+
+
 
     public class RestaurantServices
     {
@@ -67,6 +71,59 @@ namespace RestaurantSuggestionApp.Business.Services
                     _context.SaveChanges();
                 }
             }
+
+            public List<Restaurant> GetNearby(decimal latitude, decimal longitude, double radiusInKm)
+            {
+                double userLat = (double)latitude;
+                double userLng = (double)longitude;
+
+                
+                double kmPerLatitudeDegree = 111.0;
+                double deltaLat = radiusInKm / kmPerLatitudeDegree;
+
+                double userLatRadians = userLat * Math.PI / 180.0;
+                double kmPerLongitudeDegree = 111.0 * Math.Cos(userLatRadians);
+                double deltaLng = radiusInKm / kmPerLongitudeDegree;
+
+                
+                decimal minLat = (decimal)(userLat - deltaLat);
+                decimal maxLat = (decimal)(userLat + deltaLat);
+                decimal minLng = (decimal)(userLng - deltaLng);
+                decimal maxLng = (decimal)(userLng + deltaLng);
+
+                
+                var candidateRestaurants = _context.Restaurants
+                    .Where(r => r.Latitude >= minLat && r.Latitude <= maxLat &&
+                                r.Longitude >= minLng && r.Longitude <= maxLng)
+                    .ToList(); 
+
+                
+                double rEarth = 6371.0; 
+                return candidateRestaurants.Where(rest =>
+                {
+                    double restLat = (double)rest.Latitude;
+                    double restLng = (double)rest.Longitude;
+
+                    double dLat = ToRadians(restLat - userLat);
+                    double dLon = ToRadians(restLng - userLng);
+
+                    double a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                               Math.Cos(ToRadians(userLat)) * Math.Cos(ToRadians(restLat)) *
+                               Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+
+                    double c = 2 * Math.Asin(Math.Min(1, Math.Sqrt(a)));
+                    double distance = rEarth * c;
+
+                    return distance <= radiusInKm;
+                }).ToList();
+            }
+
+            private static double ToRadians(double val)
+            {
+                return (Math.PI / 180.0) * val;
+            }
+
+
         }
     }
 }

@@ -1,11 +1,12 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace RestaurantSuggestionApp.Core.Dtos
+namespace RestaurantSuggestionApp.Core.Request.Restaurant
 {
-    public class RestaurantDto
+    public class CreateRestaurantRequest
     {
+
         public string Name { get; set; }
         public string Category { get; set; }
         public decimal Latitude { get; set; }

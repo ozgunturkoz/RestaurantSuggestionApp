@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RestaurantSuggestionApp.Core.Entities;
 
 namespace RestaurantSuggestionApp.DataAccess
@@ -43,14 +43,15 @@ namespace RestaurantSuggestionApp.DataAccess
                 decimal latOffset = (decimal)(random.NextDouble() - 0.5) * 0.02m;
                 decimal lngOffset = (decimal)(random.NextDouble() - 0.5) * 0.02m;
 
-                restaurants.Add(new Restaurant
+                restaurants.Add(new Restaurant(
+                    $"{region.Name} {category} Restaurant {restaurantId}",
+                    category,
+                    (decimal)region.Lat + latOffset,
+                    (decimal)region.Lng + lngOffset,
+                    random.Next(150, 850)
+                )
                 {
-                    Id           = restaurantId,
-                    Name         = $"{region.Name} {category} Restaurant {restaurantId}",
-                    Category     = category,
-                    Latitude     = (decimal)region.Lat + latOffset,
-                    Longitude    = (decimal)region.Lng + lngOffset,
-                    AveragePrice = random.Next(150, 850) 
+                    Id = restaurantId
                 });
                 restaurantId++;
             }

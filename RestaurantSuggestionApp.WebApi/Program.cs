@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RestaurantSuggestionApp.Business.Services;
 using RestaurantSuggestionApp.DataAccess;
 using static RestaurantSuggestionApp.Business.Services.RestaurantServices;
@@ -10,6 +10,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+
+builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -37,6 +52,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors();
 app.UseAuthorization();
 app.MapControllers(); 
 

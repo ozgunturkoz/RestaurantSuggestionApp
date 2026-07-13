@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using RestaurantSuggestionApp.Business.Services;
-using RestaurantSuggestionApp.Core.Dtos;
+using RestaurantSuggestionApp.Core.Request.Restaurant;
 using RestaurantSuggestionApp.Core.Entities;
 
 namespace RestaurantSuggestionApp.WebApi.Controllers
@@ -35,34 +35,21 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] RestaurantDto restaurantDto)
+        public IActionResult Create([FromBody] CreateRestaurantRequest createrestaurantrequest)
         {
-            var newRestaurant = new Restaurant
-            {
-                Name = restaurantDto.Name,
-                Category = restaurantDto.Category,
-                Latitude = restaurantDto.Latitude,
-                Longitude = restaurantDto.Longitude,
-                AveragePrice = restaurantDto.AveragePrice
-            };
-
+            var newRestaurant = new Restaurant(createrestaurantrequest.Name, createrestaurantrequest.Category, createrestaurantrequest.Latitude, createrestaurantrequest.Longitude, createrestaurantrequest.AveragePrice);
+            
             var result = _restaurantService.Add(newRestaurant);
             return Ok(result);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, [FromBody] RestaurantDto restaurantDto)
+        public IActionResult Update(int id, [FromBody] UpdateRestaurantRequest updaterestaurantrequest)
         {
-            var newRestaurant = new Restaurant
-            {
-                Name = restaurantDto.Name,
-                Category = restaurantDto.Category,
-                Latitude = restaurantDto.Latitude,
-                Longitude = restaurantDto.Longitude,
-                AveragePrice = restaurantDto.AveragePrice
-            };
+            var updateRestaurant = new Restaurant(updaterestaurantrequest.Name, updaterestaurantrequest.Category, updaterestaurantrequest.Latitude, updaterestaurantrequest.Longitude, updaterestaurantrequest.AveragePrice);
+            
 
-            var result = _restaurantService.Update(id, newRestaurant);
+            var result = _restaurantService.Update(id, updateRestaurant);
             if (result == null)
                 return NotFound("Güncellenecek restoran bulunamadı.");
 
@@ -75,5 +62,14 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             _restaurantService.Delete(id);
             return Ok("İşlem başarılı.");
         }
+
+        [HttpGet("nearby")]
+        public IActionResult GetNearby([FromQuery] decimal latitude, [FromQuery] decimal longitude, [FromQuery] double radiusInKm = 5)
+        {
+            var result = _restaurantService.GetNearby(latitude, longitude, radiusInKm);
+            return Ok(result);
+        }
+
+        
     }
 }
