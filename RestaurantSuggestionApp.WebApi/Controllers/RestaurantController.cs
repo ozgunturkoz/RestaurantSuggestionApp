@@ -1,17 +1,19 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RestaurantSuggestionApp.Business.Helpers;
 using RestaurantSuggestionApp.Business.Services;
-using RestaurantSuggestionApp.Core.Dtos;
+using RestaurantSuggestionApp.Core.DTOs.Requests;
 using RestaurantSuggestionApp.Core.Entities;
 
 namespace RestaurantSuggestionApp.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class RestaurantController : ControllerBase
     {
         private readonly IRestaurantService _restaurantService;
 
-        
         public RestaurantController(IRestaurantService restaurantService)
         {
             _restaurantService = restaurantService;
@@ -21,6 +23,10 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
         public IActionResult GetAll()
         {
             var result = _restaurantService.GetAll();
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
             return Ok(result);
         }
 
@@ -28,8 +34,8 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
         public IActionResult GetById(int id)
         {
             var result = _restaurantService.GetById(id);
-            if (result == null)
-                return NotFound("Aradığınız restoran bulunamadı.");
+            if (!result.IsSuccess)
+                return NotFound(result);
 
             return Ok(result);
         }
@@ -40,6 +46,10 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             var newRestaurant = MapToRestaurant(restaurantDto);
 
             var result = _restaurantService.Add(newRestaurant);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
             return Ok(result);
         }
 
@@ -49,8 +59,8 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             var newRestaurant = MapToRestaurant(restaurantDto);
 
             var result = _restaurantService.Update(id, newRestaurant);
-            if (result == null)
-                return NotFound("Güncellenecek restoran bulunamadı.");
+            if (!result.IsSuccess)
+                return NotFound(result);
 
             return Ok(result);
         }
@@ -58,8 +68,24 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            _restaurantService.Delete(id);
-            return Ok("İşlem başarılı.");
+            var result = _restaurantService.Delete(id);
+            if (!result.IsSuccess)
+                return BadRequest(result);
+
+            return Ok(result);
+        }
+
+        [HttpGet("nearby")]
+        public async Task<IActionResult> GetNearby([FromQuery] decimal latitude, [FromQuery] decimal longitude, [FromQuery] double radiusInKm = 5)
+        {
+            int? userId = User.GetUserId();
+
+            var result = await _restaurantService.GetNearbyAsync(latitude, longitude, radiusInKm, userId);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
 
         private Restaurant MapToRestaurant(RestaurantDto dto)
