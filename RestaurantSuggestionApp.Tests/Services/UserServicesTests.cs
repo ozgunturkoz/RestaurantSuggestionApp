@@ -225,7 +225,7 @@ namespace RestaurantSuggestionApp.Tests.Services
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            var response = _userService.Delete(1);
+            var response = _userService.Delete(999);
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.False);
             Assert.That(response.Data, Is.False);
