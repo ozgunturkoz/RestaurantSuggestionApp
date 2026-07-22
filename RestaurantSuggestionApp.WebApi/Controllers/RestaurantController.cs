@@ -37,14 +37,7 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] RestaurantDto restaurantDto)
         {
-            var newRestaurant = new Restaurant
-            {
-                Name = restaurantDto.Name,
-                Category = restaurantDto.Category,
-                Latitude = restaurantDto.Latitude,
-                Longitude = restaurantDto.Longitude,
-                AveragePrice = restaurantDto.AveragePrice
-            };
+            var newRestaurant = MapToRestaurant(restaurantDto);
 
             var result = _restaurantService.Add(newRestaurant);
             return Ok(result);
@@ -53,14 +46,7 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] RestaurantDto restaurantDto)
         {
-            var newRestaurant = new Restaurant
-            {
-                Name = restaurantDto.Name,
-                Category = restaurantDto.Category,
-                Latitude = restaurantDto.Latitude,
-                Longitude = restaurantDto.Longitude,
-                AveragePrice = restaurantDto.AveragePrice
-            };
+            var newRestaurant = MapToRestaurant(restaurantDto);
 
             var result = _restaurantService.Update(id, newRestaurant);
             if (result == null)
@@ -74,6 +60,18 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
         {
             _restaurantService.Delete(id);
             return Ok("İşlem başarılı.");
+        }
+
+        private Restaurant MapToRestaurant(RestaurantDto dto)
+        {
+            return new Restaurant
+            {
+                Name = dto.Name,
+                Category = dto.Category,
+                Latitude = dto.Latitude,
+                Longitude = dto.Longitude,
+                AveragePrice = dto.AveragePrice
+            };
         }
     }
 }

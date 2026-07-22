@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="RestaurantSuggestionApp.Business/RestaurantSuggestionApp.Business.csproj" Id="b8d3f1ba-b004-478b-8935-abeb861813bb" />
   <Project Path="RestaurantSuggestionApp.Core/RestaurantSuggestionApp.Core.csproj" Id="55c62996-ab8c-4058-a2f1-f7fbae4bdb3b" />
-  <Project Path="RestaurantSuggestionApp.DataAccess/RestaurantSuggestionApp.DataAccess.csproj" DisplayName="RestaurantSuggestionApp.DataAccess" Id="39b33620-fffb-4a82-b931-9d37fe94685c" />
+  <Project Path="RestaurantSuggestionApp.DataAccess/RestaurantSuggestionApp.DataAccess.csproj" Id="39b33620-fffb-4a82-b931-9d37fe94685c" />
+  <Project Path="RestaurantSuggestionApp.Tests/RestaurantSuggestionApp.Tests.csproj" />
   <Project Path="RestaurantSuggestionApp.WebApi/RestaurantSuggestionApp.WebApi.csproj" />
 </Solution>
