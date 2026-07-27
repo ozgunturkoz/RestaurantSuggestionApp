@@ -1,0 +1,22 @@
+{
+  "name": "restaurant-app-frontend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node -e \"require('fs').rmSync('.nuxt',{recursive:true,force:true});require('fs').rmSync('.output',{recursive:true,force:true});require('fs').rmSync('node_modules/.cache',{recursive:true,force:true})\" && nuxt build",
+    "dev": "nuxt dev",
+    "dev:clean": "node -e \"require('fs').rmSync('.nuxt',{recursive:true,force:true});require('fs').rmSync('node_modules/.cache',{recursive:true,force:true})\" && nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "start": "node .output/server/index.mjs",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.11.3",
+    "leaflet": "^1.9.4",
+    "nuxt": "^3.12.0",
+    "pinia": "^3.0.4",
+    "vue": "latest",
+    "vue-router": "latest"
+  }
+}

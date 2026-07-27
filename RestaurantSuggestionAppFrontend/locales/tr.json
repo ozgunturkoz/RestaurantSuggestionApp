@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "discover": "Keşfet",
+    "hello": "MERHABA",
+    "logout": "Çıkış Yap"
+  },
+  "sidebar": {
+    "radiusPrefix": "Yarıçap",
+    "title": "Yakınındaki restoranlar",
+    "subtitle": "Konumuna göre listelenen restoranlar",
+    "radiusLabel": "Mesafe Sınırı (Yarıçap)",
+    "loading": "Yükleniyor...",
+    "distance": "Mesafe"
+  },
+  "badge": {
+    "recommendation": "%{score} Multinet profilinize ve konumunuza uygun"
+  },
+  "map": {
+    "loading": "Harita Yükleniyor...",
+    "userMarker": "Buradasınız",
+    "category": "Kategori",
+    "price": "Fiyat",
+    "walk": "Yürüyüş",
+    "match": "Uyum",
+    "locationScore": "Konum",
+    "budgetScore": "Bütçe"
+  },
+  "login": {
+    "sub": "Multinet entegre öneri sistemi",
+    "taglineTitle": "Bakiyene ve damak tadına göre, yakınındaki doğru öğün.",
+    "taglineSub": "Harcama alışkanlığın ve konumunla eşleşen restoranlar — her gün öğle molasında.",
+    "welcome": "Tekrar hoş geldin",
+    "lead": "Öğle molası önerilerin seni bekliyor.",
+    "email": "E-posta",
+    "emailPlaceholder": "deniz@sirket.com",
+    "password": "Şifre",
+    "submit": "Giriş yap",
+    "noAccount": "Hesabın yok mu?",
+    "registerLink": "Kayıt ol",
+    "errorMsg": "E-posta adresi veya şifre hatalı!"
+  },
+  "register": {
+    "title": "Hesabını oluştur",
+    "lead": "Akıllı restoran önerilerini hemen keşfet.",
+    "name": "Ad Soyad",
+    "namePlaceholder": "Deniz Yılmaz",
+    "email": "E-posta",
+    "emailPlaceholder": "deniz@sirket.com",
+    "password": "Şifre",
+    "submit": "Kayıt ol",
+    "hasAccount": "Zaten hesabın var mı?",
+    "loginLink": "Giriş yap",
+    "errorMsg": "Kayıt işlemi başarısız. Lütfen bilgilerinizi kontrol edin."
+  }
+}

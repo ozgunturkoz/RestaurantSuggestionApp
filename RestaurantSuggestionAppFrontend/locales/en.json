@@ -1,0 +1,55 @@
+{
+  "nav": {
+    "discover": "Discover",
+    "hello": "HELLO",
+    "logout": "Log Out"
+  },
+  "sidebar": {
+    "radiusPrefix": "Radius",
+    "title": "Nearby Restaurants",
+    "subtitle": "Restaurants listed based on your location",
+    "radiusLabel": "Distance Limit (Radius)",
+    "loading": "Loading...",
+    "distance": "Distance"
+  },
+  "badge": {
+    "recommendation": "%{score} suitable for your Multinet profile and location"
+  },
+  "map": {
+    "loading": "Map Loading...",
+    "userMarker": "You are here",
+    "category": "Category",
+    "price": "Price",
+    "walk": "Walking",
+    "match": "Match",
+    "locationScore": "Location",
+    "budgetScore": "Budget"
+  },
+  "login": {
+    "sub": "Multinet integrated suggestion system",
+    "taglineTitle": "The right meal near you based on your balance and taste.",
+    "taglineSub": "Restaurants matched with your spending habits and location — every lunch break.",
+    "welcome": "Welcome back",
+    "lead": "Your lunch break recommendations are waiting for you.",
+    "email": "Email",
+    "emailPlaceholder": "deniz@company.com",
+    "password": "Password",
+    "submit": "Log in",
+    "noAccount": "Don't have an account?",
+    "registerLink": "Register",
+    "errorMsg": "Invalid email address or password!"
+  },
+  "register": {
+    "title": "Create your account",
+    "lead": "Discover smart restaurant suggestions right away.",
+    "name": "Full Name",
+    "namePlaceholder": "Deniz Yilmaz",
+    "email": "Email",
+    "emailPlaceholder": "deniz@company.com",
+    "password": "Password",
+    "submit": "Register",
+    "hasAccount": "Already have an account?",
+    "loginLink": "Log in",
+    "errorMsg": "Registration failed. Please check your information."
+  }
+}
