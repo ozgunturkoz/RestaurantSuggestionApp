@@ -1,12 +1,12 @@
-﻿namespace RestaurantSuggestionApp.Core.Entities
+namespace RestaurantSuggestionApp.Core.Entities
 {
     public class User
     {
-        public int Id { get; }
+        public int Id { get; set; }
 
-        public string Name { get; private set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
-        public string Email { get; private set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
 
         public string PasswordHash { get; set; } = string.Empty;
 
