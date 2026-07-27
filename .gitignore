@@ -1,3 +1,4 @@
 # Postman local workspace scaffolding
 /postman/
 /.postman/
+.vs/
