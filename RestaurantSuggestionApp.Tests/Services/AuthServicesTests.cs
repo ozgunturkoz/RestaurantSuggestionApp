@@ -7,6 +7,7 @@ using NUnit.Framework;
 using RestaurantSuggestionApp.Business.Services;
 using RestaurantSuggestionApp.Core.Entities;
 using RestaurantSuggestionApp.DataAccess;
+using RestaurantSuggestionApp.Tests.Helpers;
 
 namespace RestaurantSuggestionApp.Tests.Services
 {
@@ -74,15 +75,7 @@ namespace RestaurantSuggestionApp.Tests.Services
         public void Register_EmailAlreadyExists_ReturnsFail()
         {
             // Arrange - Hazırlık (E-posta veritabanında zaten kayıtlı)
-            var existingUser = new User
-            {
-                Id = 1,
-                Name = "Eski Kullanıcı",
-                Email = "ahmet@mail.com",
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword("eskiSifre")
-            };
-            _context.Users.Add(existingUser);
-            _context.SaveChanges();
+            var existingUser = TestDataHelper.SeedUser(_context, "Eski Kullanıcı", "ahmet@mail.com", "eskiSifre");
 
             // Act - Eylem (Aynı e-posta ile yeni kayıt denemesi)
             var response = _authService.Register("Ahmet Yılmaz", "ahmet@mail.com", "sifre123");
@@ -115,16 +108,7 @@ namespace RestaurantSuggestionApp.Tests.Services
         public void Login_Successful_ReturnsJwtToken()
         {
             // Arrange - Hazırlık (Şifresi hashlenmiş kullanıcı sisteme eklenir)
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword("sifre123");
-            var user = new User
-            {
-                Id = 1,
-                Name = "Ahmet Yılmaz",
-                Email = "ahmet@mail.com",
-                PasswordHash = hashedPassword
-            };
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            var user = TestDataHelper.SeedUser(_context, "Ahmet Yılmaz", "ahmet@mail.com", "sifre123");
 
             // Act - Eylem (Doğru bilgilerle giriş yapılıyor)
             var response = _authService.Login("ahmet@mail.com", "sifre123");
@@ -139,16 +123,7 @@ namespace RestaurantSuggestionApp.Tests.Services
         public void Login_WrongPassword_ReturnsFail()
         {
             // Arrange - Hazırlık
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword("sifre123");
-            var user = new User
-            {
-                Id = 1,
-                Name = "Ahmet Yılmaz",
-                Email = "ahmet@mail.com",
-                PasswordHash = hashedPassword
-            };
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            var user = TestDataHelper.SeedUser(_context, "Ahmet Yılmaz", "ahmet@mail.com", "sifre123");
 
             // Act - Eylem (Yanlış şifre giriliyor)
             var response = _authService.Login("ahmet@mail.com", "yanlisSifre");

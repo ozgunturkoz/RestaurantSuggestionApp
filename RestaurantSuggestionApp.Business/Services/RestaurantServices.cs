@@ -1,16 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using RestaurantSuggestionApp.Core.Entities;
 using RestaurantSuggestionApp.DataAccess;
 using RestaurantSuggestionApp.Business.Helpers;
 using RestaurantSuggestionApp.Core.Dtos.Responses;
 using RestaurantSuggestionApp.Core.DTOs.Responses;
+using RestaurantSuggestionApp.Business.ExternalServices;
 
 namespace RestaurantSuggestionApp.Business.Services
 {
@@ -28,14 +25,12 @@ namespace RestaurantSuggestionApp.Business.Services
     public class RestaurantService : IRestaurantService
     {
         private readonly AppDbContext _context;
-        private readonly HttpClient _httpClient;
-        private readonly IConfiguration _configuration;
+        private readonly IOsrmService _osrmService;
 
-        public RestaurantService(AppDbContext context, IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public RestaurantService(AppDbContext context, IOsrmService osrmService)
         {
             _context = context;
-            _httpClient = httpClientFactory.CreateClient();
-            _configuration = configuration;
+            _osrmService = osrmService;
         }
 
         public BaseResponse<List<Restaurant>> GetAll()
@@ -139,7 +134,7 @@ namespace RestaurantSuggestionApp.Business.Services
                     return BaseResponse<List<RestaurantDistance>>.Success(new List<RestaurantDistance>());
                 }
 
-                var resultList = await GetDistancesFromOsrmAsync(nearbyCandidates, userLat, userLng);
+                var resultList = await _osrmService.GetDistancesFromOsrmAsync(nearbyCandidates, userLat, userLng);
 
                 if (!resultList.Any())
                 {
@@ -192,65 +187,6 @@ namespace RestaurantSuggestionApp.Business.Services
                 double distanceInKm = GeoHelper.CalculateHaversineDistance(userLat, userLng, (double)rest.Latitude, (double)rest.Longitude) / 1000.0;
                 return distanceInKm <= radiusInKm;
             }).ToList();
-        }
-
-        private async Task<List<RestaurantDistance>> GetDistancesFromOsrmAsync(List<Restaurant> nearbyCandidates, double userLat, double userLng)
-        {
-            var resultList = new List<RestaurantDistance>();
-            try
-            {
-                var osrmBaseUrl = _configuration["OSRM:BaseUrl"] ?? "http://router.project-osrm.org";
-
-                var coords = new List<string> {
-                    $"{userLng.ToString(CultureInfo.InvariantCulture)},{userLat.ToString(CultureInfo.InvariantCulture)}"
-                };
-
-                foreach (var rest in nearbyCandidates)
-                {
-                    coords.Add($"{rest.Longitude.ToString(CultureInfo.InvariantCulture)},{rest.Latitude.ToString(CultureInfo.InvariantCulture)}");
-                }
-
-                var coordsString = string.Join(";", coords);
-                var url = $"{osrmBaseUrl}/table/v1/foot/{coordsString}?sources=0&annotations=distance,duration";
-
-                var response = await _httpClient.GetAsync(url);
-                if (response.IsSuccessStatusCode)
-                {
-                    var osrmData = await response.Content.ReadFromJsonAsync<OsrmTableResponse>();
-                    if (osrmData != null && osrmData.Code == "Ok" && osrmData.Distances != null && osrmData.Distances.Length > 0)
-                    {
-                        for (int i = 0; i < nearbyCandidates.Count; i++)
-                        {
-                            var rest = nearbyCandidates[i];
-                            double? walkingDistance = null;
-                            double? walkingDuration = null;
-
-                            if (osrmData.Distances[0].Length > i + 1)
-                                walkingDistance = osrmData.Distances[0][i + 1];
-
-                            if (osrmData.Durations[0].Length > i + 1)
-                                walkingDuration = osrmData.Durations[0][i + 1];
-
-                            resultList.Add(new RestaurantDistance
-                            {
-                                Id = rest.Id,
-                                Name = rest.Name,
-                                Category = rest.Category,
-                                Latitude = rest.Latitude,
-                                Longitude = rest.Longitude,
-                                AveragePrice = rest.AveragePrice,
-                                WalkingDistanceInMeters = walkingDistance,
-                                WalkingDurationInSeconds = walkingDuration
-                            });
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                // OSRM API çökerse Fallback devreye girecek
-            }
-            return resultList;
         }
 
         private List<RestaurantDistance> CalculateFallbackDistances(List<Restaurant> nearbyCandidates, double userLat, double userLng)
@@ -321,12 +257,5 @@ namespace RestaurantSuggestionApp.Business.Services
                 item.RecommendationScore = Math.Round(recommendationScore, 1);
             }
         }
-    }
-
-    public class OsrmTableResponse
-    {
-        public string Code { get; set; } = string.Empty;
-        public double[][] Distances { get; set; } = Array.Empty<double[]>();
-        public double[][] Durations { get; set; } = Array.Empty<double[]>();
     }
 }

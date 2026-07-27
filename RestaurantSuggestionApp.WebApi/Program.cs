@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using RestaurantSuggestionApp.Business.Services;
+using RestaurantSuggestionApp.Business.ExternalServices;
 using RestaurantSuggestionApp.DataAccess;
 
 // EKLENEN KÜTÜPHANELER
@@ -36,6 +37,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddHttpClient<IOsrmService, OsrmService>();
 
 builder.Services.AddCors(options =>
 {

@@ -6,6 +6,7 @@ using NUnit.Framework;
 using RestaurantSuggestionApp.Business.Services;
 using RestaurantSuggestionApp.Core.Entities;
 using RestaurantSuggestionApp.DataAccess;
+using RestaurantSuggestionApp.Tests.Helpers;
 
 namespace RestaurantSuggestionApp.Tests.Services
 {
@@ -39,10 +40,8 @@ namespace RestaurantSuggestionApp.Tests.Services
         public void GetAll_WithUsers_ReturnsSuccessAndList()
         {
             // Arrange - Veritabanına test için iki adet sahte kullanıcı ekliyoruz
-            var user1 = new User { Id = 1, Name = "User One", Email = "one@mail.com", PasswordHash = "hash1" };
-            var user2 = new User { Id = 2, Name = "User Two", Email = "two@mail.com", PasswordHash = "hash2" };
-            _context.Users.AddRange(user1, user2);
-            _context.SaveChanges();
+            var user1 = TestDataHelper.SeedUser(_context, "User One", "one@mail.com", "hash1");
+            var user2 = TestDataHelper.SeedUser(_context, "User Two", "two@mail.com", "hash2");
 
             // Act - Metodu çağırıyoruz
             var response = _userService.GetAll();
@@ -77,19 +76,17 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void GetById_ExistingUser_ReturnsSuccessWithUser()
         {
-            // Arrange - 1 ID'li kullanıcı ekleniyor
-            var user = new User { Id = 1, Name = "Test User", Email = "test@mail.com", PasswordHash = "hash" };
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            // Arrange - Kullanıcı ekleniyor
+            var user = TestDataHelper.SeedUser(_context, "Test User", "test@mail.com", "hash");
 
-            // Act - 1 ID'li kullanıcı aranıyor
-            var response = _userService.GetById(1);
+            // Act - Kullanıcı aranıyor
+            var response = _userService.GetById(user.Id);
 
             // Assert - Kullanıcının doğru bilgilerle geldiğini doğruluyoruz
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.True);
             Assert.That(response.Data, Is.Not.Null);
-            Assert.That(response.Data.Id, Is.EqualTo(1));
+            Assert.That(response.Data.Id, Is.EqualTo(user.Id));
             Assert.That(response.Data.Name, Is.EqualTo("Test User"));
         }
 
@@ -139,15 +136,13 @@ namespace RestaurantSuggestionApp.Tests.Services
         public void Update_ExistingUser_ReturnsSuccessAndUpdatesDb()
         {
             // Arrange - Güncellenecek eski kullanıcı veritabanına ekleniyor
-            var user = new User { Id = 1, Name = "Old Name", Email = "old@mail.com", PasswordHash = "oldhash" };
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            var user = TestDataHelper.SeedUser(_context, "Old Name", "old@mail.com", "oldhash");
 
             // Yeni bilgiler hazırlanıyor
             var updatedData = new User { Name = "New Name", Email = "new@mail.com", PasswordHash = "newhash" };
 
             // Act - Güncelleme metodu çağrılıyor
-            var response = _userService.Update(1, updatedData);
+            var response = _userService.Update(user.Id, updatedData);
 
             // Assert - Yeni bilgilerin kaydedildiğini doğruluyoruz
             Assert.That(response, Is.Not.Null);
@@ -158,7 +153,7 @@ namespace RestaurantSuggestionApp.Tests.Services
             Assert.That(response.Data.PasswordHash, Is.EqualTo("newhash"));
 
             // Veritabanında da kalıcı olarak değiştiğini kontrol ediyoruz
-            var updatedUserInDb = _context.Users.FirstOrDefault(u => u.Id == 1);
+            var updatedUserInDb = _context.Users.FirstOrDefault(u => u.Id == user.Id);
             Assert.That(updatedUserInDb, Is.Not.Null);
             Assert.That(updatedUserInDb.Name, Is.EqualTo("New Name"));
         }
@@ -189,16 +184,7 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void Delete_ExistingUser_ReturnsSuccessAndRemovesFromDb()
         {
-            var user = new User
-            {
-                Id = 1,
-                Name = "Test User",
-                Email = "testuser@email.com",
-                PasswordHash = "password",
-            };
-
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            var user = TestDataHelper.SeedUser(_context, "Test User", "testuser@email.com", "password");
 
             var response = _userService.Delete(user.Id);
 
@@ -213,17 +199,7 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void Delete_NonExistingUser_ReturnsFailWithErrorMessage()
         {
-
-            var user = new User
-            {
-                Id = 1,
-                Name = "Test User",
-                Email = "testuser@email.com",
-                PasswordHash = "password",
-            };
-
-            _context.Users.Add(user);
-            _context.SaveChanges();
+            var user = TestDataHelper.SeedUser(_context, "Test User", "testuser@email.com", "password");
 
             var response = _userService.Delete(999);
             Assert.That(response, Is.Not.Null);

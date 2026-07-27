@@ -75,8 +75,9 @@ namespace RestaurantSuggestionApp.Business.Services
             {
                 var existing = GetUserOrThrow(id, "Güncellenecek kullanıcı bulunamadı.");
 
-                existing.Name = updatedUser.Name;
-                existing.Email = updatedUser.Email;
+                existing.Update(updatedUser);
+
+
                 if (!string.IsNullOrEmpty(updatedUser.PasswordHash))
                 {
                     existing.PasswordHash = updatedUser.PasswordHash;
