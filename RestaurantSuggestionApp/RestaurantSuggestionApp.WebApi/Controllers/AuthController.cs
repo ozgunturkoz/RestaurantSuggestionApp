@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using RestaurantSuggestionApp.Business.Services;
 using RestaurantSuggestionApp.Core.DTOs.Requests;
 
@@ -6,6 +7,7 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableRateLimiting("AuthRateLimit")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;

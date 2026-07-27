@@ -5,14 +5,33 @@ using RestaurantSuggestionApp.DataAccess;
 
 // EKLENEN KÜTÜPHANELER
 using System.Text;
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddHttpClient(); // EKLENEN SATIR
+builder.Services.AddHttpClient();
+builder.Services.AddMemoryCache(); // Hafızada geçici veri tutmak için eklendi
+
+// IP Bazlı Rate Limiter Tanımlaması
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    options.AddPolicy("AuthRateLimit", httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown_ip",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                AutoReplenishment = true,
+                PermitLimit = 5,                 // 1 dakikada maks 5 istek
+                Window = TimeSpan.FromMinutes(1) // 1 dakikalık zaman penceresi
+            }));
+});
 
 // JWT AUTHENTICATION SERVISLERININ EKLENMESI
 builder.Services.AddAuthentication(options =>
@@ -92,6 +111,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors();
+
+// Rate Limiter Middleware
+app.UseRateLimiter();
 
 // HTTP İstek Hattında Auth Sıralaması Çok Önemlidir:
 app.UseAuthentication(); // 1. Önce kimlik doğrula (Kullanıcı kim?)
