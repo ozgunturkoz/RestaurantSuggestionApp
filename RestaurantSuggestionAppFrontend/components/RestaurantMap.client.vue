@@ -8,6 +8,15 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useRestaurantStore } from '~/Stores/restaurantStore'
 
+const props = defineProps({
+  selectedRestaurantId: {
+    type: Number,
+    default: null
+  }
+})
+
+const emit = defineEmits(['select-restaurant'])
+
 const { t, locale } = useI18n()
 const store = useRestaurantStore()
 const mapContainer = ref(null)
@@ -15,25 +24,34 @@ const mapContainer = ref(null)
 const isLocationLoaded = ref(false)
 const userLocation = ref(null)
 let resizeObserver = null
+let mapInstance = null
+const markerMap = new Map()
 
 // Renkli Pin Üretici
-const createCustomIcon = (color) => {
+const createCustomIcon = (color, isSelected = false) => {
+  const size = isSelected ? 22 : 16;
+  const borderWidth = isSelected ? '3px' : '2px';
+  const zIndex = isSelected ? 1000 : 1;
+  const shadow = isSelected ? '0 0 12px #E0A458, 0 2px 6px rgba(0,0,0,0.5)' : '0 2px 4px rgba(0,0,0,0.3)';
+
   return L.divIcon({
     html: `
       <div style="
         background-color: ${color};
-        width: 16px;
-        height: 16px;
+        width: ${size}px;
+        height: ${size}px;
         border-radius: 50% 50% 50% 0;
         transform: rotate(-45deg);
-        border: 2px solid white;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        border: ${borderWidth} solid white;
+        box-shadow: ${shadow};
+        z-index: ${zIndex};
+        transition: all 0.2s ease;
       "></div>
     `,
     className: 'custom-marker',
-    iconSize: [16, 16],
-    iconAnchor: [8, 16],
-    popupAnchor: [0, -16]
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size],
+    popupAnchor: [0, -size]
   });
 };
 
@@ -44,10 +62,13 @@ onMounted(async () => {
     return;
   }
   const map = L.map(mapContainer.value).setView([40.993462, 29.018418], 12)
+  mapInstance = map;
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  // CartoDB Dark Matter Tema
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 19,
-    attribution: '© OpenStreetMap'
+    subdomains: 'abcd',
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
   }).addTo(map)
 
   resizeObserver = new ResizeObserver(() => {
@@ -63,9 +84,10 @@ onMounted(async () => {
       map.removeLayer(boundaryCircle);
     }
     boundaryCircle = L.circle([lat, lng], {
-      color: '#6c757d',
-      fillColor: '#6c757d',
-      fillOpacity: 0.08,
+      color: '#E0A458',
+      fillColor: '#E0A458',
+      fillOpacity: 0.05,
+      weight: 1,
       radius: radiusInKm * 1000
     }).addTo(map);
   };
@@ -83,10 +105,12 @@ onMounted(async () => {
 
   const renderMarkers = () => {
     markerGroup.clearLayers();
+    markerMap.clear();
     
     store.restaurants.forEach(rest => {
       if (rest.latitude && rest.longitude) {
-        const pinColor = '#E0A458';
+        const isSelected = props.selectedRestaurantId === rest.id;
+        const pinColor = isSelected ? '#8FBF7E' : '#E0A458';
 
         const walkInfo = rest.walkingDistanceInMeters !== null
           ? `<br>🚶 ${t('map.walk')}: ${formatDistance(rest.walkingDistanceInMeters)} (${formatDuration(rest.walkingDurationInSeconds)})`
@@ -129,7 +153,7 @@ onMounted(async () => {
           `;
         }
 
-        L.marker([rest.latitude, rest.longitude], { icon: createCustomIcon(pinColor) })
+        const marker = L.marker([rest.latitude, rest.longitude], { icon: createCustomIcon(pinColor, isSelected) })
           .addTo(markerGroup)
           .bindPopup(`
             <b style="font-family: 'Manrope', sans-serif; font-size: 13px; color: #33291F;">${rest.name}</b><br>
@@ -138,8 +162,24 @@ onMounted(async () => {
             ${walkInfo}
             ${scoreHtml}
           `);
+
+        marker.on('click', () => {
+          emit('select-restaurant', rest.id);
+        });
+
+        markerMap.set(rest.id, { marker, rest });
       }
     });
+  };
+
+  const focusOnRestaurant = (id) => {
+    if (!id || !markerMap.has(id)) return;
+    const { marker, rest } = markerMap.get(id);
+
+    if (mapInstance && rest.latitude && rest.longitude) {
+      mapInstance.flyTo([rest.latitude, rest.longitude], 15, { duration: 0.8 });
+      marker.openPopup();
+    }
   };
 
   const initializeWithLocation = (lat, lng, label) => {
@@ -161,6 +201,9 @@ onMounted(async () => {
     store.fetchNearbyRestaurants(lat, lng, store.radius).then(() => {
       isLocationLoaded.value = true;
       renderMarkers();
+      if (props.selectedRestaurantId) {
+        focusOnRestaurant(props.selectedRestaurantId);
+      }
     });
   };
 
@@ -176,7 +219,7 @@ onMounted(async () => {
         console.warn("Gerçek konum alınamadı, Kadıköy varsayılan konumuna geçiliyor:", error);
         initializeWithLocation(DEFAULT_LAT, DEFAULT_LNG, t('map.userMarker'));
       },
-      { timeout: 8000, maximumAge: 30000, enableHighAccuracy: true } // Masaüstü cihazlar için yeterli konum tespiti süresi veriyoruz
+      { timeout: 8000, maximumAge: 30000, enableHighAccuracy: true }
     );
   } else {
     initializeWithLocation(DEFAULT_LAT, DEFAULT_LNG, t('map.userMarker'));
@@ -193,6 +236,13 @@ onMounted(async () => {
 
   watch(() => locale.value, () => {
     renderMarkers();
+  });
+
+  watch(() => props.selectedRestaurantId, (newId) => {
+    renderMarkers();
+    if (newId) {
+      focusOnRestaurant(newId);
+    }
   });
 
   store.$subscribe((mutation, state) => {

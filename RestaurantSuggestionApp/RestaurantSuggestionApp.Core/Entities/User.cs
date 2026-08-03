@@ -10,9 +10,9 @@ namespace RestaurantSuggestionApp.Core.Entities
 
         public string PasswordHash { get; set; } = string.Empty;
 
-        
         public ICollection<UserExpenditure>? Expenditures { get; set; }
         public ICollection<Comment>? Comments { get; set; }
+        public ICollection<UserFavorite>? Favorites { get; set; }
 
         public void Update(User user)
         {

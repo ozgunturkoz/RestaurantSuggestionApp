@@ -108,6 +108,57 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
+        [HttpGet("favorites")]
+        public IActionResult GetFavorites()
+        {
+            var userId = User.GetUserId();
+            if (!userId.HasValue)
+            {
+                return Unauthorized(BaseResponse<List<UserFavorite>>.Fail("Geçersiz veya süresi dolmuş token."));
+            }
+
+            var result = _userService.GetFavorites(userId.Value);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        [HttpPost("favorites")]
+        public IActionResult AddFavorite([FromBody] AddFavoriteDto dto)
+        {
+            var userId = User.GetUserId();
+            if (!userId.HasValue)
+            {
+                return Unauthorized(BaseResponse<UserFavorite>.Fail("Geçersiz veya süresi dolmuş token."));
+            }
+
+            var result = _userService.AddFavorite(userId.Value, dto.RestaurantId, dto.CustomNote);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        [HttpDelete("favorites/{restaurantId}")]
+        public IActionResult RemoveFavorite(int restaurantId)
+        {
+            var userId = User.GetUserId();
+            if (!userId.HasValue)
+            {
+                return Unauthorized(BaseResponse<bool>.Fail("Geçersiz veya süresi dolmuş token."));
+            }
+
+            var result = _userService.RemoveFavorite(userId.Value, restaurantId);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
         private User MapToUser(UserDto dto)
         {
             return new User

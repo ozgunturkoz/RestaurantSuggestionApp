@@ -103,6 +103,35 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        context.Database.ExecuteSqlRaw(@"
+            IF NOT EXISTS (
+                SELECT 1 FROM sys.tables 
+                WHERE name = N'UserFavorites'
+            )
+            BEGIN
+                CREATE TABLE UserFavorites (
+                    Id INT IDENTITY(1,1) PRIMARY KEY,
+                    UserId INT NOT NULL,
+                    RestaurantId INT NOT NULL,
+                    CreatedDate DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+                    CustomNote NVARCHAR(MAX) NULL,
+                    CONSTRAINT FK_UserFavorites_Users FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE,
+                    CONSTRAINT FK_UserFavorites_Restaurants FOREIGN KEY (RestaurantId) REFERENCES Restaurants(Id) ON DELETE CASCADE
+                );
+            END;
+        ");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Veritabanı sütun/tablo güncelleme uyarısı: {ex.Message}");
+    }
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

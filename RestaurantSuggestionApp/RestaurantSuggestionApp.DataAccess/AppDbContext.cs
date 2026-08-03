@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RestaurantSuggestionApp.Core.Entities;
 
 namespace RestaurantSuggestionApp.DataAccess
@@ -14,6 +14,7 @@ namespace RestaurantSuggestionApp.DataAccess
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<UserExpenditure> UserExpenditures { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<UserFavorite> UserFavorites { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,7 +37,6 @@ namespace RestaurantSuggestionApp.DataAccess
                 .Property(u => u.Amount)
                 .HasPrecision(18, 2);
 
-            
             modelBuilder.SeedData();
             base.OnModelCreating(modelBuilder);
         }
