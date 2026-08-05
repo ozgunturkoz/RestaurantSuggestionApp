@@ -27,7 +27,6 @@ namespace RestaurantSuggestionApp.Tests.ExternalServices
             _httpClient = new HttpClient(_mockHttpMessageHandler.Object);
             _mockConfiguration = new Mock<IConfiguration>();
 
-            // Setup default configuration for OSRM URL
             _mockConfiguration.Setup(c => c["OSRM:BaseUrl"]).Returns("http://router.project-osrm.org");
         }
 
@@ -40,7 +39,6 @@ namespace RestaurantSuggestionApp.Tests.ExternalServices
         [Test]
         public async Task GetDistancesFromOsrmAsync_SuccessResponse_ReturnsDistancesAndDurations()
         {
-            // Arrange
             var candidates = new List<Restaurant>
             {
                 new Restaurant(1, "Rest 1", "Kebap", 41.1M, 29.1M, 100M)
@@ -71,10 +69,8 @@ namespace RestaurantSuggestionApp.Tests.ExternalServices
 
             var osrmService = new OsrmService(_httpClient, _mockConfiguration.Object);
 
-            // Act
             var result = await osrmService.GetDistancesFromOsrmAsync(candidates, 41.0, 29.0);
 
-            // Assert
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Count, Is.EqualTo(1));
             Assert.That(result[0].Id, Is.EqualTo(1));
@@ -85,7 +81,6 @@ namespace RestaurantSuggestionApp.Tests.ExternalServices
         [Test]
         public async Task GetDistancesFromOsrmAsync_ApiFails_ReturnsEmptyList()
         {
-            // Arrange
             var candidates = new List<Restaurant>
             {
                 new Restaurant(1, "Rest 1", "Kebap", 41.1M, 29.1M, 100M)
@@ -105,10 +100,8 @@ namespace RestaurantSuggestionApp.Tests.ExternalServices
 
             var osrmService = new OsrmService(_httpClient, _mockConfiguration.Object);
 
-            // Act
             var result = await osrmService.GetDistancesFromOsrmAsync(candidates, 41.0, 29.0);
 
-            // Assert
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Count, Is.EqualTo(0));
         }

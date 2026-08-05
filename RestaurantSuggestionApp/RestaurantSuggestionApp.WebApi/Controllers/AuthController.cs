@@ -19,9 +19,22 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
 
         
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
-            var result = _authService.Login(loginDto.Email, loginDto.Password);
+            var result = await _authService.Login(loginDto.Email, loginDto.Password);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+
+            return Ok(result);
+        }
+
+        [HttpPost("verify-login")]
+        public async Task<IActionResult> VerifyLogin([FromBody] VerifyLoginDto verifyLoginDto)
+        {
+            var result = await _authService.VerifyLogin(verifyLoginDto.Email, verifyLoginDto.Code);
 
             if (!result.IsSuccess)
             {
@@ -33,9 +46,9 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
 
        
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterDto registerDto)
+        public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
-            var result = _authService.Register(registerDto.Name, registerDto.Email, registerDto.Password);
+            var result = await _authService.Register(registerDto.Name, registerDto.Email, registerDto.Password);
 
             if (!result.IsSuccess)
             {

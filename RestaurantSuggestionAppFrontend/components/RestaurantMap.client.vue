@@ -27,7 +27,6 @@ let resizeObserver = null
 let mapInstance = null
 const markerMap = new Map()
 
-// Renkli Pin Üretici
 const createCustomIcon = (color, isSelected = false) => {
   const size = isSelected ? 22 : 16;
   const borderWidth = isSelected ? '3px' : '2px';
@@ -66,7 +65,6 @@ onMounted(async () => {
   const map = L.map(mapContainer.value).setView([savedLat, savedLng], 13)
   mapInstance = map;
 
-  // CartoDB Dark Matter Tema
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 19,
     subdomains: 'abcd',

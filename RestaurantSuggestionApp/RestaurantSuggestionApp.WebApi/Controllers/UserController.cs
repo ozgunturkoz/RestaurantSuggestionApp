@@ -20,7 +20,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             _userService = userService;
         }
 
-        // Giriş yapmış kullanıcının kendi profil bilgilerini getirir
         [HttpGet("me")]
         public IActionResult GetMe()
         {

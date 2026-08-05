@@ -9,7 +9,6 @@
 
         <div class="header-right">
           <div class="balance">
-            <!-- TR / EN DİL DEĞİŞTİRME BUTONU -->
             <div class="lang-switch">
               <button :class="{ active: locale === 'tr' }" @click="setLocale('tr')">TR</button>
               <span>|</span>
@@ -22,7 +21,6 @@
         </div>
       </div>
 
-      <!-- Mobilde Liste / Harita Sekme Seçici -->
       <div class="mobile-tabs">
         <button :class="{ active: mobileTab === 'list' }" @click="mobileTab = 'list'">
           📋 Restoran Listesi ({{ store.restaurants.length }})
@@ -34,15 +32,17 @@
     </header>
 
     <div class="content">
-      <!-- Sol Panel: Restoran Listesi -->
       <aside class="side-box" :class="{ 'mobile-hidden': mobileTab === 'map' }">
         <div class="kick">{{ t('sidebar.radiusPrefix') }} · {{ store.radius }} KM</div>
         <h1>{{ t('sidebar.title') }}</h1>
         <p class="note">{{ t('sidebar.subtitle') }}</p>
 
         <div class="radius-box">
-          <label for="radius-select">{{ t('sidebar.radiusLabel') }}</label>
-          <select id="radius-select" v-model="store.radius" @change="onRadiusChange">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <label for="radius-select" style="margin:0;">{{ t('sidebar.radiusLabel') }}</label>
+            <LoadingSpinner v-if="store.isLoading" size="sm" />
+          </div>
+          <select id="radius-select" v-model="store.radius" :disabled="store.isLoading" @change="onRadiusChange">
             <option :value="1">1 KM</option>
             <option :value="2">2 KM</option>
             <option :value="5">5 KM</option>
@@ -50,15 +50,7 @@
           </select>
         </div>
 
-        <div v-if="store.isLoading" class="skeleton-list">
-          <div v-for="n in 4" :key="n" class="skeleton-item">
-            <div class="skeleton-thumb"></div>
-            <div class="skeleton-body">
-              <div class="skeleton-line title"></div>
-              <div class="skeleton-line meta"></div>
-            </div>
-          </div>
-        </div>
+        <RestaurantSkeleton v-if="store.isLoading" :count="4" />
 
         <div v-else-if="store.restaurants.length === 0" class="empty-state">
           <div class="empty-icon">📍</div>
@@ -108,12 +100,12 @@
         </div>
       </aside>
 
-      <!-- Sağ Panel: Harita -->
       <div class="mapwrap" :class="{ 'mobile-hidden': mobileTab === 'list' }">
         <ClientOnly>
           <template #fallback>
-            <div style="display:flex;justify-content:center;align-items:center;height:100%;color:#A79483;">
-              <p>{{ t('map.loading') }}</p>
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;gap:12px;height:100%;color:#A79483;background:#17120F;">
+              <LoadingSpinner size="lg" />
+              <p style="font-size:14px;font-weight:600;margin:0;">{{ t('map.loading') }}</p>
             </div>
           </template>
 
@@ -314,7 +306,6 @@ button {
 .mapwrap { flex: 1; min-width: 0; position: relative; border: 1px solid #40342A; border-radius: 22px; overflow: hidden; }
 .mapwrap :deep(> div) { height: 100%; }
 
-/* Mobile Responsive Breakpoint */
 @media (max-width: 820px) {
   .mobile-tabs { display: flex; }
   .content { padding: 12px; flex-direction: column; gap: 0; }
@@ -333,7 +324,6 @@ button {
   .hbar { padding: 8px 12px; }
 }
 
-/* Skeleton Loading Animation */
 .skeleton-list { display: flex; flex-direction: column; gap: 12px; }
 .skeleton-item { display: flex; height: 74px; background: #201A16; border: 1px solid #33291F; border-radius: 15px; overflow: hidden; }
 .skeleton-thumb { width: 74px; background: #2B231D; animation: pulse 1.5s infinite ease-in-out; }

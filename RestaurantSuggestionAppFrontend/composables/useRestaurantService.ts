@@ -1,4 +1,3 @@
-// composables/useRestaurantService.ts
 export const useRestaurantService = () => {
   const api = useApi()
 

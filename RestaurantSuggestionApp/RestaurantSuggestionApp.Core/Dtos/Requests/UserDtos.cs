@@ -20,4 +20,17 @@ namespace RestaurantSuggestionApp.Core.DTOs.Requests
         public string Email { get; set; } = string.Empty;
         public string? Password { get; set; }
     }
+
+    public class VerifyLoginDto
+    {
+        public string Email { get; set; } = string.Empty;
+        public string Code { get; set; } = string.Empty;
+    }
+
+    public class LoginResponseDto
+    {
+        public bool RequiresVerification { get; set; }
+        public string Email { get; set; } = string.Empty;
+        public string? Token { get; set; }
+    }
 }

@@ -55,9 +55,6 @@ namespace RestaurantSuggestionApp.DataAccess
             }
             modelBuilder.Entity<Restaurant>().HasData(restaurants);
 
-            // -------------------------------------------------------------
-            // 3. UserExpenditures Seed Data
-            // -------------------------------------------------------------
             var expenditures = new List<UserExpenditure>();
             int expenditureId = 1;
             var seedBaseDate  = new DateTime(2026, 1, 1);

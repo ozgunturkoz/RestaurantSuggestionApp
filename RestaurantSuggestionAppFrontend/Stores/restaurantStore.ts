@@ -20,7 +20,6 @@ export const useRestaurantStore = defineStore('restaurant', {
   },
 
   actions: {
-    // Sadece yakındaki restoranları API'den çeken ana metodumuz
     async fetchNearbyRestaurants(latitude: number, longitude: number, radiusInKm: number = 5) {
       const restaurantService = useRestaurantService()
       this.isLoading = true
@@ -35,11 +34,9 @@ export const useRestaurantStore = defineStore('restaurant', {
       try {
         const response = await restaurantService.getNearbyRestaurants(latitude, longitude, radiusInKm) as any
         
-        // Backend BaseResponse<List<RestaurantDistance>> objesi döndürdüğü için response.data kontrol ediliyor
         const list = response?.data || response
 
         if (list && Array.isArray(list)) {
-          // Backend zaten OSRM mesafesine göre sıralı gönderdiği için doğrudan atıyoruz
           this.restaurants = list
         } else {
           this.restaurants = []
@@ -52,7 +49,6 @@ export const useRestaurantStore = defineStore('restaurant', {
       }
     },
 
-    // Eski restoran verilerini temizleme
     resetState() {
       this.restaurants = []
       this.isLoading = false

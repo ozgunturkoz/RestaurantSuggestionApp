@@ -123,7 +123,6 @@ const { toasts, removeToast } = useToast()
   color: #ffffff;
 }
 
-/* Animations */
 .toast-fade-enter-active,
 .toast-fade-leave-active {
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);

@@ -11,18 +11,12 @@ namespace RestaurantSuggestionApp.Business.Helpers
             return 5;
         }
 
-        /// <summary>
-        /// Kullanıcının ortalama öğün harcaması ile restoranın ortalama fiyatı arasındaki 
-        /// yakınlaşma yüzdesini (0-100) hesaplar.
-        /// </summary>
         public static double CalculateProximityScore(decimal userAverage, decimal restaurantPrice)
         {
             if (userAverage <= 0 || restaurantPrice <= 0) return 50.0;
 
-            // Sapma Oranı = |Fiyat - Ortalama| / Ortalama
             double percentageDifference = (double)(Math.Abs(restaurantPrice - userAverage) / userAverage);
 
-            // Skoru %100 üzerinden hesaplayıp 0-100 aralığına sıkıştırıyoruz
             double score = 100.0 * (1.0 - percentageDifference);
 
             if (score < 0) score = 0;

@@ -1,4 +1,3 @@
-// composables/useAuthService.ts
 export const useAuthService = () => {
   const api = useApi()
 
@@ -6,7 +5,9 @@ export const useAuthService = () => {
     login(credentials: { email: string; password: string }) {
       return api.post('/api/Auth/login', credentials)
     },
-    // Kayıt olma metodu eklendi
+    verifyLogin(data: { email: string; code: string }) {
+      return api.post('/api/Auth/verify-login', data)
+    },
     register(userData: { name: string; email: string; password: string }) {
       return api.post('/api/Auth/register', userData)
     }

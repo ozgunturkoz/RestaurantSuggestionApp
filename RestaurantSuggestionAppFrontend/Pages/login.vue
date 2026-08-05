@@ -1,6 +1,5 @@
 <template>
   <div class="wrap">
-    <!-- TR / EN DİL BUTONU -->
     <div class="lang-switch-auth">
       <button :class="{ active: locale === 'tr' }" @click="setLocale('tr')">TR</button>
       <span>|</span>
@@ -24,7 +23,7 @@
     </div>
 
     <div class="pane">
-      <form class="card" @submit.prevent="handleLogin">
+      <form v-if="step === 1" class="card" @submit.prevent="handleLogin">
         <h1>{{ t('login.welcome') }}</h1>
         <p class="lead">{{ t('login.lead') }}</p>
 
@@ -36,9 +35,42 @@
 
         <p v-if="errorMsg" class="error">{{ errorMsg }}</p>
 
-        <button class="primary" type="submit">{{ t('login.submit') }}</button>
+        <button class="primary" type="submit" :disabled="loading" style="display:flex;align-items:center;justify-content:center;gap:8px;">
+          <LoadingSpinner v-if="loading" size="sm" inline />
+          <span>{{ loading ? 'Kod Gönderiliyor...' : t('login.submit') }}</span>
+        </button>
 
         <p class="foot">{{ t('login.noAccount') }} <NuxtLink to="/register" class="link">{{ t('login.registerLink') }}</NuxtLink></p>
+      </form>
+
+      <form v-else-if="step === 2" class="card" @submit.prevent="handleVerify">
+        <h1>Doğrulama Kodu</h1>
+        <p class="lead"><b>{{ email }}</b> adresinize gönderilen 6 haneli doğrulama kodunu giriniz.</p>
+
+        <label>6 Haneli Doğrulama Kodu</label>
+        <input 
+          v-model="verificationCode" 
+          type="text" 
+          maxlength="6" 
+          placeholder="123456" 
+          style="letter-spacing: 6px; font-size: 20px; text-align: center; font-weight: bold;" 
+          required 
+        />
+
+        <p v-if="errorMsg" class="error">{{ errorMsg }}</p>
+
+        <button class="primary" type="submit" :disabled="loading" style="display:flex;align-items:center;justify-content:center;gap:8px;">
+          <LoadingSpinner v-if="loading" size="sm" inline />
+          <span>{{ loading ? 'Doğrulanıyor...' : 'Doğrula ve Giriş Yap' }}</span>
+        </button>
+
+        <button 
+          type="button" 
+          style="background: none; border: none; color: #A79483; margin-top: 14px; cursor: pointer; font-weight: 600;" 
+          @click="step = 1; errorMsg = ''"
+        >
+          ← Giriş Ekranına Dön
+        </button>
       </form>
     </div>
   </div>
@@ -51,21 +83,48 @@ import { useRouter } from '#app'
 import '~/assets/auth.css'
 
 const { locale, setLocale, t } = useI18n()
+const step = ref(1)
 const email = ref('')
 const password = ref('')
+const verificationCode = ref('')
 const errorMsg = ref('')
+const loading = ref(false)
 
 const authStore = useAuthStore()
 const router = useRouter()
 
 const handleLogin = async () => {
-  errorMsg.value = '' 
-  const success = await authStore.login(email.value, password.value)
+  errorMsg.value = ''
+  loading.value = true
   
-  if (success) {
-    router.push('/') 
-  } else {
-    errorMsg.value = t('login.errorMsg')
+  try {
+    const res = await authStore.login(email.value, password.value)
+    
+    if (res.requiresVerification) {
+      step.value = 2
+    } else if (res.success) {
+      router.push('/')
+    } else {
+      errorMsg.value = res.error || t('login.errorMsg')
+    }
+  } finally {
+    loading.value = false
+  }
+}
+
+const handleVerify = async () => {
+  errorMsg.value = ''
+  loading.value = true
+  
+  try {
+    const res = await authStore.verifyLogin(email.value, verificationCode.value)
+    if (res.success) {
+      router.push('/')
+    } else {
+      errorMsg.value = res.error || 'Girdiğiniz kod hatalı veya süresi dolmuş!'
+    }
+  } finally {
+    loading.value = false
   }
 }
 </script>

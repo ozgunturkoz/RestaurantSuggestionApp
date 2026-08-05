@@ -80,7 +80,6 @@ namespace RestaurantSuggestionApp.Business.ExternalServices
             }
             catch (Exception)
             {
-                // Fallback will be handled by calling service
             }
             return resultList;
         }

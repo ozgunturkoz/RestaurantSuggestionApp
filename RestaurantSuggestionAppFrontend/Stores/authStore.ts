@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 
-// JWT token'ın payload kısmını çözümlemek için yardımcı fonksiyon
 function parseJwt(token: string) {
   try {
     const base64Url = token.split('.')[1]
@@ -48,55 +47,87 @@ export const useAuthStore = defineStore('auth', {
     }
   },
   actions: {
-    // GİRİŞ İŞLEMİ
     async login(email: string, password: string) {
       const authService = useAuthService()
-      const tokenCookie = useCookie('auth_token', { maxAge: 60 * 60 })
 
       try {
         const response = await authService.login({ email, password }) as any
-        const token = response?.data || response?.token || (typeof response === 'string' ? response : null)
+        const data = response?.data
         
-        if (token) {
+        if (response?.isSuccess && data?.requiresVerification) {
+          return { requiresVerification: true, email: data.email }
+        }
+        
+        const token = data || response?.token || (typeof response === 'string' ? response : null)
+        if (token && typeof token === 'string' && token.length > 20) {
+          const tokenCookie = useCookie('auth_token', { maxAge: 60 * 60 })
           tokenCookie.value = token
           const decoded = parseJwt(token)
           this.isLoggedIn = true
           this.user = extractUserFromDecoded(decoded)
           useRestaurantStore().resetState()
-          return true
+          return { requiresVerification: false, success: true }
         }
-        return false
-      } catch (error) {
+
+        return { requiresVerification: false, success: false, error: response?.message || 'Giriş başarısız' }
+      } catch (error: any) {
         console.error('Giriş başarısız:', error)
-        return false
+        return { requiresVerification: false, success: false, error: error?.data?.message || 'Giriş işlemi başarısız.' }
       }
     },
 
-    // KAYIT İŞLEMİ
-    async register(name: string, email: string, password: string) {
+    async verifyLogin(email: string, code: string) {
       const authService = useAuthService()
       const tokenCookie = useCookie('auth_token', { maxAge: 60 * 60 })
 
       try {
-        const response = await authService.register({ name, email, password }) as any
-        const token = response?.data || response?.token || (typeof response === 'string' ? response : null)
-        
-        if (token) {
+        const response = await authService.verifyLogin({ email, code }) as any
+        const token = response?.data || response?.token
+
+        if (token && typeof token === 'string') {
           tokenCookie.value = token
           const decoded = parseJwt(token)
           this.isLoggedIn = true
           this.user = extractUserFromDecoded(decoded)
           useRestaurantStore().resetState()
-          return true
+          return { success: true }
         }
-        return false
-      } catch (error) {
-        console.error('Kayıt başarısız:', error)
-        return false
+        return { success: false, error: response?.message || 'Doğrulama başarısız.' }
+      } catch (error: any) {
+        console.error('Doğrulama başarısız:', error)
+        return { success: false, error: error?.data?.message || 'Doğrulama işlemi başarısız.' }
       }
     },
 
-    // ÇIKIŞ İŞLEMİ
+    async register(name: string, email: string, password: string) {
+      const authService = useAuthService()
+
+      try {
+        const response = await authService.register({ name, email, password }) as any
+        const data = response?.data
+        
+        if (response?.isSuccess && data?.requiresVerification) {
+          return { requiresVerification: true, email: data.email }
+        }
+
+        const token = data || response?.token || (typeof response === 'string' ? response : null)
+        if (token && typeof token === 'string' && token.length > 20) {
+          const tokenCookie = useCookie('auth_token', { maxAge: 60 * 60 })
+          tokenCookie.value = token
+          const decoded = parseJwt(token)
+          this.isLoggedIn = true
+          this.user = extractUserFromDecoded(decoded)
+          useRestaurantStore().resetState()
+          return { requiresVerification: false, success: true }
+        }
+
+        return { requiresVerification: false, success: false, error: response?.message || 'Kayıt işlemi başarısız.' }
+      } catch (error: any) {
+        console.error('Kayıt başarısız:', error)
+        return { requiresVerification: false, success: false, error: error?.data?.message || 'Kayıt işlemi başarısız.' }
+      }
+    },
+
     logout() {
       const tokenCookie = useCookie('auth_token', { path: '/' })
       tokenCookie.value = undefined

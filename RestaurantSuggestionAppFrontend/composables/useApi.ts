@@ -1,4 +1,3 @@
-// composables/useApi.ts
 import { useToast } from '~/composables/useToast'
 
 export const useApi = () => {
@@ -7,7 +6,6 @@ export const useApi = () => {
   const toast = useToast()
 
   const customFetch = async (endpoint: string, options: any = {}) => {
-    // Tarayıcıdaki 'auth_token' isimli çerezi okuyoruz
     const token = useCookie('auth_token')
 
     try {
@@ -20,7 +18,6 @@ export const useApi = () => {
         }
       })
 
-      // Backend BaseResponse IsSuccess false dönerse sağ üstte göster
       if (response && response.isSuccess === false) {
         const errorMsg = response.message || response.errorMessage || 'Bir hata oluştu.'
         toast.showError(errorMsg)

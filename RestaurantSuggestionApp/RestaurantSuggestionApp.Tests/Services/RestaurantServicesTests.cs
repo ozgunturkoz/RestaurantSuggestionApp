@@ -24,7 +24,6 @@ namespace RestaurantSuggestionApp.Tests.Services
         [SetUp]
         public void Setup()
         {
-            // Her test öncesi sıfır bellek içi DB kurulur.
             var options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
@@ -50,14 +49,11 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void GetAll_WithRestaurants_ReturnsSuccessAndList()
         {
-            // Arrange - Test restoranları ekleniyor
             var rest1 = TestDataHelper.SeedRestaurant(_context, "Rest 1", "Kebap", 41.0M, 29.0M, 100.0M);
             var rest2 = TestDataHelper.SeedRestaurant(_context, "Rest 2", "Burger", 41.1M, 29.1M, 150.0M);
 
-            // Act
             var response = _restaurantService.GetAll();
 
-            // Assert
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.True);
             Assert.That(response.Data, Is.Not.Null);
@@ -67,10 +63,8 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void GetAll_NoRestaurants_ReturnsSuccessAndEmptyList()
         {
-            // Act
             var response = _restaurantService.GetAll();
 
-            // Assert
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.True);
             Assert.That(response.Data.Count, Is.EqualTo(0));
@@ -83,13 +77,10 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void GetById_Existing_ReturnsSuccessWithRestaurant()
         {
-            // Arrange
             var rest = TestDataHelper.SeedRestaurant(_context, "Rest 1", "Kebap", 41.0M, 29.0M, 100.0M);
 
-            // Act
             var response = _restaurantService.GetById(rest.Id);
 
-            // Assert
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.True);
             Assert.That(response.Data.Name, Is.EqualTo("Rest 1"));
@@ -98,10 +89,8 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void GetById_NonExisting_ReturnsFailWithErrorMessage()
         {
-            // Act
             var response = _restaurantService.GetById(999);
 
-            // Assert
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.False);
             Assert.That(response.ErrorMessage, Is.EqualTo("Aradığınız restoran bulunamadı."));
@@ -114,13 +103,10 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void Add_ValidRestaurant_ReturnsSuccessAndSavesToDb()
         {
-            // Arrange
             var newRest = new Restaurant(0, "New Rest", "Cafe", 41.0M, 29.0M, 80.0M);
 
-            // Act
             var response = _restaurantService.Add(newRest);
 
-            // Assert
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.True);
 
@@ -135,15 +121,12 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void Update_Existing_ReturnsSuccessAndUpdatesDb()
         {
-            // Arrange
             var rest = TestDataHelper.SeedRestaurant(_context, "Old Name", "Kebap", 41.0M, 29.0M, 100.0M);
 
             var updatedRest = new Restaurant(0, "New Name", "Kebap", 41.0M, 29.0M, 120.0M);
 
-            // Act
             var response = _restaurantService.Update(rest.Id, updatedRest);
 
-            // Assert
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.True);
             Assert.That(response.Data.Name, Is.EqualTo("New Name"));
@@ -155,13 +138,10 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void Update_NonExisting_ReturnsFailWithErrorMessage()
         {
-            // Arrange
             var updatedRest = new Restaurant(0, "New Name", "Kebap", 41.0M, 29.0M, 120.0M);
 
-            // Act
             var response = _restaurantService.Update(999, updatedRest);
 
-            // Assert
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.False);
             Assert.That(response.ErrorMessage, Is.EqualTo("Güncellenecek restoran bulunamadı."));
@@ -171,9 +151,6 @@ namespace RestaurantSuggestionApp.Tests.Services
 
         #region Delete Tests (Silme Testleri)
 
-        // =============================================================
-        //  BU BÖLÜM TAMAMEN SİZİN İSTEDİĞİNİZ SİLME TEST KODLARIDIR
-        // =============================================================
 
         [Test]
         public void Delete_ExistingRestaurant_ReturnsSuccessAndRemovesFromDb()
@@ -200,9 +177,6 @@ namespace RestaurantSuggestionApp.Tests.Services
             Assert.That(response.ErrorMessage, Is.EqualTo("Silinecek restoran bulunamadı."));
         }
 
-        // =============================================================
-        //  SİLME TEST KODLARININ SONU
-        // =============================================================
 
         #endregion
 
@@ -211,8 +185,6 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public async Task GetNearbyAsync_RestaurantsInRange_ReturnsScoredAndOrderedList()
         {
-            // Arrange
-            // Koordinatı: 41.0082, 28.9784 (Yaklaşık 50 metre uzağına restoran ekliyoruz)
             var rest = TestDataHelper.SeedRestaurant(_context, "Yakın Restoran", "Ev Yemekleri", 41.0085M, 28.9789M, 120.0M);
 
             _mockOsrmService.Setup(s => s.GetDistancesFromOsrmAsync(
@@ -234,28 +206,23 @@ namespace RestaurantSuggestionApp.Tests.Services
                 }
             });
 
-            // Act - 41.0082 enlemi ve 28.9784 boylamından 2 km yarıçapındaki restoranları arıyoruz.
             var response = await _restaurantService.GetNearbyAsync(41.0082M, 28.9784M, 2.0, null);
 
-            // Assert
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.True);
             Assert.That(response.Data, Is.Not.Null);
             Assert.That(response.Data.Count, Is.EqualTo(1));
             Assert.That(response.Data[0].Name, Is.EqualTo("Yakın Restoran"));
-            Assert.That(response.Data[0].RecommendationScore, Is.GreaterThan(0)); // Algoritmanın çalışıp puan ürettiğini doğruluyoruz.
+            Assert.That(response.Data[0].RecommendationScore, Is.GreaterThan(0)); 
         }
 
         [Test]
         public async Task GetNearbyAsync_NoRestaurantsInRange_ReturnsSuccessAndEmptyList()
         {
-            // Arrange - Çok uzakta bir restoran ekliyoruz (örn. Ankara koordinatları)
             TestDataHelper.SeedRestaurant(_context, "Uzak Restoran", "Kebap", 39.9208M, 32.8541M, 150.0M);
 
-            // Act - İstanbul (41.0082, 28.9784) adresinden 5 km yarıçapında restoran arıyoruz
             var response = await _restaurantService.GetNearbyAsync(41.0082M, 28.9784M, 5.0, null);
 
-            // Assert
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.True);
             Assert.That(response.Data, Is.Not.Null);

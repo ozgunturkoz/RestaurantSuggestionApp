@@ -3,7 +3,6 @@ using RestaurantSuggestionApp.Business.Services;
 using RestaurantSuggestionApp.Business.ExternalServices;
 using RestaurantSuggestionApp.DataAccess;
 
-// EKLENEN KÜTÜPHANELER
 using System.Text;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,7 +12,6 @@ using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Kestrel HTTPS IP Bağlantı Ayarı (Telefon IP'lerinin 7085 portuna HTTPS ile erişmesini sağlar)
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.Listen(System.Net.IPAddress.Any, 7085, listenOptions =>
@@ -25,9 +23,8 @@ builder.WebHost.ConfigureKestrel(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
-builder.Services.AddMemoryCache(); // Hafızada geçici veri tutmak için eklendi
+builder.Services.AddMemoryCache(); 
 
-// IP Bazlı Rate Limiter Tanımlaması
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
@@ -38,12 +35,11 @@ builder.Services.AddRateLimiter(options =>
             factory: _ => new FixedWindowRateLimiterOptions
             {
                 AutoReplenishment = true,
-                PermitLimit = 5,                 // 1 dakikada maks 5 istek
-                Window = TimeSpan.FromMinutes(1) // 1 dakikalık zaman penceresi
+                PermitLimit = 5,                 
+                Window = TimeSpan.FromMinutes(1) 
             }));
 });
 
-// JWT AUTHENTICATION SERVISLERININ EKLENMESI
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -55,8 +51,8 @@ builder.Services.AddAuthentication(options =>
     {
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidateLifetime = true, // Token süresi dolmuşsa isteği reddet
-        ValidateIssuerSigningKey = true, // İmza doğrulaması yap
+        ValidateLifetime = true, 
+        ValidateIssuerSigningKey = true, 
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
@@ -66,6 +62,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddHttpClient<IOsrmService, OsrmService>();
 
 builder.Services.AddCors(options =>
@@ -90,7 +87,6 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestaurantSuggestionApp API", Version = "v1" });
     
-    // Swagger UI üzerinde "Bearer Token" butonu (Authorize) ekliyoruz
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -134,6 +130,22 @@ using (var scope = app.Services.CreateScope())
                     CONSTRAINT FK_UserFavorites_Restaurants FOREIGN KEY (RestaurantId) REFERENCES Restaurants(Id) ON DELETE CASCADE
                 );
             END;
+
+            IF NOT EXISTS (
+                SELECT 1 FROM sys.columns 
+                WHERE object_id = OBJECT_ID(N'Users') AND name = N'VerificationCode'
+            )
+            BEGIN
+                ALTER TABLE Users ADD VerificationCode NVARCHAR(MAX) NULL;
+            END;
+
+            IF NOT EXISTS (
+                SELECT 1 FROM sys.columns 
+                WHERE object_id = OBJECT_ID(N'Users') AND name = N'VerificationCodeExpiresAt'
+            )
+            BEGIN
+                ALTER TABLE Users ADD VerificationCodeExpiresAt DATETIME2 NULL;
+            END;
         ");
     }
     catch (Exception ex)
@@ -142,7 +154,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Swagger her ortamda açık tutuluyor
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -152,12 +163,10 @@ app.UseSwaggerUI(c =>
 app.UseHttpsRedirection();
 app.UseCors();
 
-// Rate Limiter Middleware
 app.UseRateLimiter();
 
-// HTTP İstek Hattında Auth Sıralaması Çok Önemlidir:
-app.UseAuthentication(); // 1. Önce kimlik doğrula (Kullanıcı kim?)
-app.UseAuthorization();  // 2. Sonra yetki kontrolü yap (Bu kaynağa erişebilir mi?)
+app.UseAuthentication(); 
+app.UseAuthorization();  
 
 app.MapControllers();
 

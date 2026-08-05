@@ -10,6 +10,9 @@ namespace RestaurantSuggestionApp.Core.Entities
 
         public string PasswordHash { get; private set; } = string.Empty;
 
+        public string? VerificationCode { get; private set; }
+        public DateTime? VerificationCodeExpiresAt { get; private set; }
+
         public ICollection<UserExpenditure>? Expenditures { get; set; }
         public ICollection<Comment>? Comments { get; set; }
         public ICollection<UserFavorite>? Favorites { get; set; }
@@ -21,6 +24,18 @@ namespace RestaurantSuggestionApp.Core.Entities
             Id = id;
             UpdateProfile(name, email);
             SetPasswordHash(passwordHash);
+        }
+
+        public void SetVerificationCode(string code, int expireMinutes = 5)
+        {
+            VerificationCode = code;
+            VerificationCodeExpiresAt = DateTime.UtcNow.AddMinutes(expireMinutes);
+        }
+
+        public void ClearVerificationCode()
+        {
+            VerificationCode = null;
+            VerificationCodeExpiresAt = null;
         }
 
         public void UpdateProfile(string name, string email)

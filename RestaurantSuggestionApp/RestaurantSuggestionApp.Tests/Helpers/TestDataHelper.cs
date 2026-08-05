@@ -5,9 +5,6 @@ namespace RestaurantSuggestionApp.Tests.Helpers
 {
     public static class TestDataHelper
     {
-        /// <summary>
-        /// Testler için hızlıca şifresi hashlenmiş ortak bir kullanıcı kaydı oluşturup DB'ye kaydeder.
-        /// </summary>
         public static User SeedUser(AppDbContext context, string name = "Test User", string email = "test@mail.com", string password = "sifre123")
         {
             var user = new User(0, name, email, BCrypt.Net.BCrypt.HashPassword(password));
@@ -17,9 +14,6 @@ namespace RestaurantSuggestionApp.Tests.Helpers
             return user;
         }
 
-        /// <summary>
-        /// Testler için hızlıca ortak bir restoran kaydı oluşturup DB'ye kaydeder.
-        /// </summary>
         public static Restaurant SeedRestaurant(AppDbContext context, string name = "Test Restaurant", string category = "Kebap", decimal lat = 41.0082M, decimal lng = 28.9784M, decimal avgPrice = 100.0M)
         {
             var restaurant = new Restaurant(0, name, category, lat, lng, avgPrice);

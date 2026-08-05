@@ -192,7 +192,7 @@ namespace RestaurantSuggestionApp.Business.Services
             foreach (var rest in nearbyCandidates)
             {
                 double distanceInMeters = GeoHelper.CalculateHaversineDistance(userLat, userLng, (double)rest.Latitude, (double)rest.Longitude);
-                double durationInSeconds = distanceInMeters / 1.38; // ~5 km/s
+                double durationInSeconds = distanceInMeters / 1.38;
 
                 fallbackList.Add(new RestaurantDistance
                 {
@@ -211,7 +211,7 @@ namespace RestaurantSuggestionApp.Business.Services
 
         private void ScoreRestaurants(List<RestaurantDistance> resultList, int? userId, double userLat, double userLng)
         {
-            decimal userAverageExpenditure = 350.0m; // Varsayılan ortalama öğün tutarı
+            decimal userAverageExpenditure = 350.0m;
             if (userId.HasValue)
             {
                 var lastExpenditures = _context.UserExpenditures
@@ -242,7 +242,6 @@ namespace RestaurantSuggestionApp.Business.Services
                     locationScore = 100.0 * (1.0 - (distanceForScoring - 500.0) / 4500.0);
                 }
 
-                // Basamaklı index yerine oransal öğün yakınlığı yüzdesi (0-100)
                 double budgetScore = BudgetHelper.CalculateProximityScore(userAverageExpenditure, item.AveragePrice);
 
                 double recommendationScore = (locationScore * 0.60) + (budgetScore * 0.40);

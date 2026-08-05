@@ -19,7 +19,6 @@ namespace RestaurantSuggestionApp.Tests.Services
         [SetUp]
         public void Setup()
         {
-            // Her test için sıfır bellek içi veritabanı kurulumu yapılıyor.
             var options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
@@ -39,14 +38,11 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void GetAll_WithUsers_ReturnsSuccessAndList()
         {
-            // Arrange - Veritabanına test için iki adet sahte kullanıcı ekliyoruz
             var user1 = TestDataHelper.SeedUser(_context, "User One", "one@mail.com", "hash1");
             var user2 = TestDataHelper.SeedUser(_context, "User Two", "two@mail.com", "hash2");
 
-            // Act - Metodu çağırıyoruz
             var response = _userService.GetAll();
 
-            // Assert - 2 kullanıcının da başarıyla listede döndüğünü doğruluyoruz
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.True);
             Assert.That(response.Data, Is.Not.Null);
@@ -57,12 +53,9 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void GetAll_NoUsers_ReturnsSuccessAndEmptyList()
         {
-            // Arrange - Veritabanı boş bırakılıyor
 
-            // Act - Metodu çağırıyoruz
             var response = _userService.GetAll();
 
-            // Assert - Hata fırlatmadan boş bir liste (0 elemanlı) dönmesi gerektiğini doğruluyoruz
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.True);
             Assert.That(response.Data, Is.Not.Null);
@@ -76,13 +69,10 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void GetById_ExistingUser_ReturnsSuccessWithUser()
         {
-            // Arrange - Kullanıcı ekleniyor
             var user = TestDataHelper.SeedUser(_context, "Test User", "test@mail.com", "hash");
 
-            // Act - Kullanıcı aranıyor
             var response = _userService.GetById(user.Id);
 
-            // Assert - Kullanıcının doğru bilgilerle geldiğini doğruluyoruz
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.True);
             Assert.That(response.Data, Is.Not.Null);
@@ -93,12 +83,9 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void GetById_NonExistingUser_ReturnsFailWithErrorMessage()
         {
-            // Arrange - Veritabanı boş
 
-            // Act - Olmayan (999 ID'li) kullanıcı aranıyor
             var response = _userService.GetById(999);
 
-            // Assert - Hata verdiğini ve doğru hata mesajı döndüğünü doğruluyoruz
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.False);
             Assert.That(response.ErrorMessage, Is.EqualTo("Aradığınız kullanıcı bulunamadı."));
@@ -111,13 +98,10 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void Add_ValidUser_ReturnsSuccessAndSavesToDb()
         {
-            // Arrange - Eklenecek yeni kullanıcı bilgileri hazırlanıyor
             var newUser = new User(0, "New User", "new@mail.com", "newhash");
 
-            // Act - Ekleme metodu çağrılıyor
             var response = _userService.Add(newUser);
 
-            // Assert - Eklemenin başarılı olduğunu ve veritabanına kaydedildiğini doğruluyoruz
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.True);
             Assert.That(response.Data, Is.Not.Null);
@@ -135,16 +119,12 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void Update_ExistingUser_ReturnsSuccessAndUpdatesDb()
         {
-            // Arrange - Güncellenecek eski kullanıcı veritabanına ekleniyor
             var user = TestDataHelper.SeedUser(_context, "Old Name", "old@mail.com", "oldhash");
 
-            // Yeni bilgiler hazırlanıyor
             var updatedData = new User(0, "New Name", "new@mail.com", "newhash");
 
-            // Act - Güncelleme metodu çağrılıyor
             var response = _userService.Update(user.Id, updatedData);
 
-            // Assert - Yeni bilgilerin kaydedildiğini doğruluyoruz
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.True);
             Assert.That(response.Data, Is.Not.Null);
@@ -152,7 +132,6 @@ namespace RestaurantSuggestionApp.Tests.Services
             Assert.That(response.Data.Email, Is.EqualTo("new@mail.com"));
             Assert.That(response.Data.PasswordHash, Is.EqualTo("newhash"));
 
-            // Veritabanında da kalıcı olarak değiştiğini kontrol ediyoruz
             var updatedUserInDb = _context.Users.FirstOrDefault(u => u.Id == user.Id);
             Assert.That(updatedUserInDb, Is.Not.Null);
             Assert.That(updatedUserInDb.Name, Is.EqualTo("New Name"));
@@ -161,13 +140,10 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void Update_NonExistingUser_ReturnsFailWithErrorMessage()
         {
-            // Arrange - Güncellemek üzere sahte bilgiler
             var updatedData = new User(0, "New Name", "new@mail.com", "newhash");
 
-            // Act - Olmayan kullanıcı güncellenmeye çalışılıyor
             var response = _userService.Update(999, updatedData);
 
-            // Assert
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.False);
             Assert.That(response.ErrorMessage, Is.EqualTo("Güncellenecek kullanıcı bulunamadı."));
@@ -177,9 +153,6 @@ namespace RestaurantSuggestionApp.Tests.Services
 
         #region Delete Tests (Silme Testleri)
 
-        // =============================================================
-        //  BU BÖLÜM TAMAMEN SİZİN YAZMIŞ OLDUĞUNUZ TEST KODLARIDIR
-        // =============================================================
 
         [Test]
         public void Delete_ExistingUser_ReturnsSuccessAndRemovesFromDb()
@@ -208,9 +181,6 @@ namespace RestaurantSuggestionApp.Tests.Services
             Assert.That(response.ErrorMessage, Is.EqualTo("Silinecek kullanıcı bulunamadı."));
         }
 
-        // =============================================================
-        //  SİZİN KODLARINIZIN SONU
-        // =============================================================
 
         #endregion
     }

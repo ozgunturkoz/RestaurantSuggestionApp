@@ -15,7 +15,7 @@ namespace RestaurantSuggestionApp.Business.Helpers
                        Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
 
             double c = 2 * Math.Asin(Math.Min(1, Math.Sqrt(a)));
-            return rEarth * c * 1000.0; // Metre cinsinden döner
+            return rEarth * c * 1000.0;
         }
 
         public static double ToRadians(double val)
