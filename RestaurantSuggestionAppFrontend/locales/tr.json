@@ -10,7 +10,8 @@
     "subtitle": "Konumuna göre listelenen restoranlar",
     "radiusLabel": "Mesafe Sınırı (Yarıçap)",
     "loading": "Yükleniyor...",
-    "distance": "Mesafe"
+    "distance": "Mesafe",
+    "noRestaurants": "Seçilen yarıçapta etrafınızda restoran bulunamadı."
   },
   "badge": {
     "recommendation": "%{score} Multinet profilinize ve konumunuza uygun"

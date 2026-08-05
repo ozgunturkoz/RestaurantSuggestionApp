@@ -82,11 +82,8 @@ namespace RestaurantSuggestionApp.Business.Services
             {
                 var existing = GetRestaurantOrThrow(id, "Güncellenecek restoran bulunamadı.");
 
-                existing.Name = updatedRestaurant.Name;
-                existing.Category = updatedRestaurant.Category;
-                existing.AveragePrice = updatedRestaurant.AveragePrice;
-                existing.Latitude = updatedRestaurant.Latitude;
-                existing.Longitude = updatedRestaurant.Longitude;
+                existing.UpdateDetails(updatedRestaurant.Name, updatedRestaurant.Category, updatedRestaurant.AveragePrice);
+                existing.UpdateLocation(updatedRestaurant.Latitude, updatedRestaurant.Longitude);
                 _context.SaveChanges();
 
                 return BaseResponse<Restaurant>.Success(existing);
@@ -214,7 +211,7 @@ namespace RestaurantSuggestionApp.Business.Services
 
         private void ScoreRestaurants(List<RestaurantDistance> resultList, int? userId, double userLat, double userLng)
         {
-            int userBudgetIndex = 3; // Varsayılan orta düzey
+            decimal userAverageExpenditure = 350.0m; // Varsayılan ortalama öğün tutarı
             if (userId.HasValue)
             {
                 var lastExpenditures = _context.UserExpenditures
@@ -226,8 +223,7 @@ namespace RestaurantSuggestionApp.Business.Services
 
                 if (lastExpenditures.Any())
                 {
-                    decimal averageExpenditure = lastExpenditures.Average();
-                    userBudgetIndex = BudgetHelper.GetBudgetIndex(averageExpenditure);
+                    userAverageExpenditure = lastExpenditures.Average();
                 }
             }
 
@@ -246,9 +242,8 @@ namespace RestaurantSuggestionApp.Business.Services
                     locationScore = 100.0 * (1.0 - (distanceForScoring - 500.0) / 4500.0);
                 }
 
-                int restaurantPriceIndex = BudgetHelper.GetBudgetIndex(item.AveragePrice);
-                double budgetScore = 100 - (25 * Math.Abs(userBudgetIndex - restaurantPriceIndex));
-                if (budgetScore < 0) budgetScore = 0;
+                // Basamaklı index yerine oransal öğün yakınlığı yüzdesi (0-100)
+                double budgetScore = BudgetHelper.CalculateProximityScore(userAverageExpenditure, item.AveragePrice);
 
                 double recommendationScore = (locationScore * 0.60) + (budgetScore * 0.40);
 

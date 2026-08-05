@@ -4,27 +4,57 @@ namespace RestaurantSuggestionApp.Core.Entities
     {
         public int Id { get; set; }
 
-        public string Name { get; set; } = string.Empty;
+        public string Name { get; private set; } = string.Empty;
 
-        public string Email { get; set; } = string.Empty;
+        public string Email { get; private set; } = string.Empty;
 
-        public string PasswordHash { get; set; } = string.Empty;
+        public string PasswordHash { get; private set; } = string.Empty;
 
         public ICollection<UserExpenditure>? Expenditures { get; set; }
         public ICollection<Comment>? Comments { get; set; }
         public ICollection<UserFavorite>? Favorites { get; set; }
 
-        public void Update(User user)
+        public User() { }
+
+        public User(int id, string name, string email, string passwordHash)
         {
-            if (user.Name.Length<3)
-            {
-                throw new Exception("Kullanıcının ismi 3 harften kısa olamaz");
-            }
-            this.Name = user.Name;
-            this.Email = user.Email;
-
-
+            Id = id;
+            UpdateProfile(name, email);
+            SetPasswordHash(passwordHash);
         }
 
+        public void UpdateProfile(string name, string email)
+        {
+            if (string.IsNullOrWhiteSpace(name) || name.Length < 3)
+            {
+                throw new ArgumentException("Kullanıcı ismi en az 3 karakter olmalıdır.");
+            }
+
+            if (string.IsNullOrWhiteSpace(email) || !email.Contains("@"))
+            {
+                throw new ArgumentException("Geçerli bir e-posta adresi giriniz.");
+            }
+
+            Name = name.Trim();
+            Email = email.Trim().ToLower();
+        }
+
+        public void SetPasswordHash(string passwordHash)
+        {
+            if (string.IsNullOrWhiteSpace(passwordHash))
+            {
+                throw new ArgumentException("Şifre boş olamaz.");
+            }
+            PasswordHash = passwordHash;
+        }
+
+        public void Update(User user)
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            UpdateProfile(user.Name, user.Email);
+        }
     }
 }
+

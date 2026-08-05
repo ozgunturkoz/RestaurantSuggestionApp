@@ -112,7 +112,7 @@ namespace RestaurantSuggestionApp.Tests.Services
         public void Add_ValidUser_ReturnsSuccessAndSavesToDb()
         {
             // Arrange - Eklenecek yeni kullanıcı bilgileri hazırlanıyor
-            var newUser = new User { Name = "New User", Email = "new@mail.com", PasswordHash = "newhash" };
+            var newUser = new User(0, "New User", "new@mail.com", "newhash");
 
             // Act - Ekleme metodu çağrılıyor
             var response = _userService.Add(newUser);
@@ -139,7 +139,7 @@ namespace RestaurantSuggestionApp.Tests.Services
             var user = TestDataHelper.SeedUser(_context, "Old Name", "old@mail.com", "oldhash");
 
             // Yeni bilgiler hazırlanıyor
-            var updatedData = new User { Name = "New Name", Email = "new@mail.com", PasswordHash = "newhash" };
+            var updatedData = new User(0, "New Name", "new@mail.com", "newhash");
 
             // Act - Güncelleme metodu çağrılıyor
             var response = _userService.Update(user.Id, updatedData);
@@ -162,7 +162,7 @@ namespace RestaurantSuggestionApp.Tests.Services
         public void Update_NonExistingUser_ReturnsFailWithErrorMessage()
         {
             // Arrange - Güncellemek üzere sahte bilgiler
-            var updatedData = new User { Name = "New Name", Email = "new@mail.com" };
+            var updatedData = new User(0, "New Name", "new@mail.com", "newhash");
 
             // Act - Olmayan kullanıcı güncellenmeye çalışılıyor
             var response = _userService.Update(999, updatedData);

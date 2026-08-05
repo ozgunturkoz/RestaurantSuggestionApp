@@ -1,21 +1,46 @@
 // composables/useApi.ts
+import { useToast } from '~/composables/useToast'
+
 export const useApi = () => {
   const config = useRuntimeConfig()
   const apiBase = config.public.apiBase
+  const toast = useToast()
 
   const customFetch = async (endpoint: string, options: any = {}) => {
     // Tarayıcıdaki 'auth_token' isimli çerezi okuyoruz
     const token = useCookie('auth_token')
 
-    return await $fetch(`${apiBase}${endpoint}`, {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        // Eğer token varsa header'a Authorization Bearer olarak ekliyoruz
-        ...(token.value ? { 'Authorization': `Bearer ${token.value}` } : {}),
-        ...options.headers,
+    try {
+      const response: any = await $fetch(`${apiBase}${endpoint}`, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token.value ? { 'Authorization': `Bearer ${token.value}` } : {}),
+          ...options.headers,
+        }
+      })
+
+      // Backend BaseResponse IsSuccess false dönerse sağ üstte göster
+      if (response && response.isSuccess === false) {
+        const errorMsg = response.message || response.errorMessage || 'Bir hata oluştu.'
+        toast.showError(errorMsg)
       }
-    })
+
+      return response
+    } catch (err: any) {
+      const status = err?.response?.status || err?.status || err?.statusCode || err?.data?.statusCode
+      
+      if (status === 401) {
+        const authStore = useAuthStore()
+        toast.showError('Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın.', 'Oturum Süresi Doldu')
+        authStore.logout()
+        throw err
+      }
+
+      const errorMsg = err?.data?.message || err?.data?.errorMessage || err?.message || 'Sunucu ile iletişim kurulurken bir hata oluştu.'
+      toast.showError(errorMsg, 'Bağlantı/Sunucu Hatası')
+      throw err
+    }
   }
 
   return {

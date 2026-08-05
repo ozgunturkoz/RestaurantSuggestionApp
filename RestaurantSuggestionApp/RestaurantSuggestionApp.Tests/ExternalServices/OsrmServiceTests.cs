@@ -43,7 +43,7 @@ namespace RestaurantSuggestionApp.Tests.ExternalServices
             // Arrange
             var candidates = new List<Restaurant>
             {
-                new Restaurant { Id = 1, Name = "Rest 1", Longitude = 29.1M, Latitude = 41.1M }
+                new Restaurant(1, "Rest 1", "Kebap", 41.1M, 29.1M, 100M)
             };
 
             var jsonResponse = @"{
@@ -88,7 +88,7 @@ namespace RestaurantSuggestionApp.Tests.ExternalServices
             // Arrange
             var candidates = new List<Restaurant>
             {
-                new Restaurant { Id = 1, Name = "Rest 1", Longitude = 29.1M, Latitude = 41.1M }
+                new Restaurant(1, "Rest 1", "Kebap", 41.1M, 29.1M, 100M)
             };
 
             _mockHttpMessageHandler

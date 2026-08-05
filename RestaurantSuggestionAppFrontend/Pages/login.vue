@@ -46,7 +46,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useAuthStore } from '~/Stores/authStore'
+import { useAuthStore } from '~/stores/authStore'
 import { useRouter } from '#app'
 import '~/assets/auth.css'
 

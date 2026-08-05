@@ -50,7 +50,20 @@
           </select>
         </div>
 
-        <p v-if="store.isLoading" class="note">{{ t('sidebar.loading') }}</p>
+        <div v-if="store.isLoading" class="skeleton-list">
+          <div v-for="n in 4" :key="n" class="skeleton-item">
+            <div class="skeleton-thumb"></div>
+            <div class="skeleton-body">
+              <div class="skeleton-line title"></div>
+              <div class="skeleton-line meta"></div>
+            </div>
+          </div>
+        </div>
+
+        <div v-else-if="store.restaurants.length === 0" class="empty-state">
+          <div class="empty-icon">📍</div>
+          <p>{{ t('sidebar.noRestaurants') }}</p>
+        </div>
 
         <div v-else class="list">
           <div
@@ -116,8 +129,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRestaurantStore } from '~/Stores/restaurantStore'
-import { useAuthStore } from '~/Stores/authStore'
+import { useRestaurantStore } from '~/stores/restaurantStore'
+import { useAuthStore } from '~/stores/authStore'
 import { useRouter } from '#app'
 
 const { locale, setLocale, t } = useI18n()
@@ -129,6 +142,14 @@ const api = useApi()
 const selectedRestaurantId = ref(null)
 const mobileTab = ref('list')
 const favoriteIds = ref(new Set())
+
+watch(mobileTab, (newTab) => {
+  if (newTab === 'map') {
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'))
+    }, 100)
+  }
+})
 
 const fetchFavorites = async () => {
   try {
@@ -168,8 +189,10 @@ const onSelectRestaurantFromMap = (id) => {
 }
 
 const onRadiusChange = () => {
-  const lat = store.userLocation?.lat || 40.9901
-  const lng = store.userLocation?.lng || 29.0256
+  const savedLat = typeof window !== 'undefined' ? parseFloat(localStorage.getItem('saved_user_lat') || '41.0082') : 41.0082
+  const savedLng = typeof window !== 'undefined' ? parseFloat(localStorage.getItem('saved_user_lng') || '28.9784') : 28.9784
+  const lat = store.userLocation?.lat || savedLat
+  const lng = store.userLocation?.lng || savedLng
   store.fetchNearbyRestaurants(lat, lng, store.radius)
 }
 
@@ -187,7 +210,6 @@ const formatDuration = (seconds) => {
 
 const handleLogout = () => {
   authStore.logout()
-  router.push('/login')
 }
 
 const getScoreStyle = (score) => {
@@ -253,9 +275,41 @@ nav span.on { color: #E0A458; }
 .imeta { font-size: 12px; color: #A79483; }
 .score-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 8px; margin-top: 8px; width: fit-content; }
 
-.fav-btn { background: none; border: none; color: #5A4526; font-size: 16px; cursor: pointer; transition: color .2s, transform .15s; padding: 0 4px; }
-.fav-btn.isFav { color: #E0A458; text-shadow: 0 0 6px rgba(224,164,88,0.5); }
-.fav-btn:hover { transform: scale(1.2); color: #E0A458; }
+button {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  outline: none;
+}
+
+.fav-btn { 
+  -webkit-appearance: none !important; 
+  appearance: none !important; 
+  background: transparent !important; 
+  border: none !important; 
+  box-shadow: none !important; 
+  outline: none !important; 
+  color: #5A4526; 
+  font-size: 18px; 
+  cursor: pointer; 
+  transition: color .2s, transform .15s; 
+  padding: 2px 4px; 
+  line-height: 1;
+}
+.fav-btn.isFav { color: #E0A458 !important; text-shadow: 0 0 8px rgba(224,164,88,0.6); }
+.fav-btn:hover { transform: scale(1.25); color: #E0A458; }
+
+.walk-badge {
+  font-size: 11px;
+  color: #E0A458;
+  font-weight: 700;
+  background: rgba(224,164,88,0.12);
+  padding: 3px 7px;
+  border-radius: 6px;
+  border: 1px solid rgba(224,164,88,0.25);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
 
 .mapwrap { flex: 1; min-width: 0; position: relative; border: 1px solid #40342A; border-radius: 22px; overflow: hidden; }
 .mapwrap :deep(> div) { height: 100%; }
@@ -267,6 +321,52 @@ nav span.on { color: #E0A458; }
   .side-box { flex: 1; width: 100%; border-radius: 14px; }
   .mapwrap { flex: 1; width: 100%; min-height: 380px; border-radius: 14px; }
   .mobile-hidden { display: none !important; }
-  .hbar { padding: 10px 14px; }
+  .hbar { padding: 10px 14px; flex-direction: column; align-items: stretch; gap: 10px; }
+  .header-right { justify-content: space-between; }
+}
+
+@media (max-width: 480px) {
+  .balance { width: 100%; justify-content: space-between; }
+  .item { min-height: 84px; }
+  .iname { font-size: 15px; }
+  .mobile-tabs button { font-size: 11px; padding: 10px 6px; }
+  .hbar { padding: 8px 12px; }
+}
+
+/* Skeleton Loading Animation */
+.skeleton-list { display: flex; flex-direction: column; gap: 12px; }
+.skeleton-item { display: flex; height: 74px; background: #201A16; border: 1px solid #33291F; border-radius: 15px; overflow: hidden; }
+.skeleton-thumb { width: 74px; background: #2B231D; animation: pulse 1.5s infinite ease-in-out; }
+.skeleton-body { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 8px; justify-content: center; }
+.skeleton-line { background: #2B231D; border-radius: 6px; animation: pulse 1.5s infinite ease-in-out; }
+.skeleton-line.title { height: 16px; width: 60%; }
+.skeleton-line.meta { height: 12px; width: 85%; }
+
+@keyframes pulse {
+  0% { opacity: .4; }
+  50% { opacity: .8; }
+  100% { opacity: .4; }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background: #201A16;
+  border: 1px dashed #40342A;
+  border-radius: 16px;
+  text-align: center;
+  color: #A79483;
+}
+.empty-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+.empty-state p {
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0;
 }
 </style>

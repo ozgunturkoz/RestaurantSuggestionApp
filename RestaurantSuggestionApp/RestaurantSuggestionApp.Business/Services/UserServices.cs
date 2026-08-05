@@ -80,11 +80,11 @@ namespace RestaurantSuggestionApp.Business.Services
             {
                 var existing = GetUserOrThrow(id, "Güncellenecek kullanıcı bulunamadı.");
 
-                existing.Update(updatedUser);
+                existing.UpdateProfile(updatedUser.Name, updatedUser.Email);
 
                 if (!string.IsNullOrEmpty(updatedUser.PasswordHash))
                 {
-                    existing.PasswordHash = updatedUser.PasswordHash;
+                    existing.SetPasswordHash(updatedUser.PasswordHash);
                 }
                 _context.SaveChanges();
 
@@ -147,7 +147,7 @@ namespace RestaurantSuggestionApp.Business.Services
 
                 if (existing != null)
                 {
-                    existing.CustomNote = customNote ?? existing.CustomNote;
+                    existing.UpdateNote(customNote ?? existing.CustomNote);
                     _context.SaveChanges();
                     return BaseResponse<UserFavorite>.Success(existing);
                 }
@@ -158,13 +158,7 @@ namespace RestaurantSuggestionApp.Business.Services
                     return BaseResponse<UserFavorite>.Fail("Favoriye eklenecek restoran bulunamadı.");
                 }
 
-                var favorite = new UserFavorite
-                {
-                    UserId = userId,
-                    RestaurantId = restaurantId,
-                    CreatedDate = DateTime.UtcNow,
-                    CustomNote = customNote
-                };
+                var favorite = new UserFavorite(0, userId, restaurantId, customNote);
 
                 _context.UserFavorites.Add(favorite);
                 _context.SaveChanges();

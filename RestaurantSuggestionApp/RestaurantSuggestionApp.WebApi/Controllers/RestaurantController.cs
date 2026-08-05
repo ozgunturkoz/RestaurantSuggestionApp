@@ -90,14 +90,7 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
 
         private Restaurant MapToRestaurant(RestaurantDto dto)
         {
-            return new Restaurant
-            {
-                Name = dto.Name,
-                Category = dto.Category,
-                Latitude = dto.Latitude,
-                Longitude = dto.Longitude,
-                AveragePrice = dto.AveragePrice
-            };
+            return new Restaurant(0, dto.Name, dto.Category, dto.Latitude, dto.Longitude, dto.AveragePrice);
         }
     }
 }

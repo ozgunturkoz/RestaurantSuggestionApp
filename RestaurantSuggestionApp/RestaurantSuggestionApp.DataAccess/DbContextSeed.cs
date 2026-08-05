@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using RestaurantSuggestionApp.Core.Entities;
 
 namespace RestaurantSuggestionApp.DataAccess
@@ -10,9 +10,9 @@ namespace RestaurantSuggestionApp.DataAccess
             
             var users = new List<User>
             {
-                new User { Id = 1, Name = "Ozgur",  Email = "ozgur@email.com",  PasswordHash = "hashed_password_1" },
-                new User { Id = 2, Name = "Ahmet",  Email = "ahmet@email.com",  PasswordHash = "hashed_password_2" },
-                new User { Id = 3, Name = "Zeynep", Email = "zeynep@email.com", PasswordHash = "hashed_password_3" }
+                new User(1, "Ozgur",  "ozgur@email.com",  "hashed_password_1"),
+                new User(2, "Ahmet",  "ahmet@email.com",  "hashed_password_2"),
+                new User(3, "Zeynep", "zeynep@email.com", "hashed_password_3")
             };
             modelBuilder.Entity<User>().HasData(users);
 
@@ -43,39 +43,38 @@ namespace RestaurantSuggestionApp.DataAccess
                 decimal latOffset = (decimal)(random.NextDouble() - 0.5) * 0.02m;
                 decimal lngOffset = (decimal)(random.NextDouble() - 0.5) * 0.02m;
 
-                restaurants.Add(new Restaurant
-                {
-                    Id           = restaurantId,
-                    Name         = $"{region.Name} {category} Restaurant {restaurantId}",
-                    Category     = category,
-                    Latitude     = (decimal)region.Lat + latOffset,
-                    Longitude    = (decimal)region.Lng + lngOffset,
-                    AveragePrice = random.Next(150, 850) 
-                });
+                restaurants.Add(new Restaurant(
+                    restaurantId,
+                    $"{region.Name} {category} Restaurant {restaurantId}",
+                    category,
+                    (decimal)region.Lat + latOffset,
+                    (decimal)region.Lng + lngOffset,
+                    random.Next(150, 850)
+                ));
                 restaurantId++;
             }
             modelBuilder.Entity<Restaurant>().HasData(restaurants);
 
-            
+            // -------------------------------------------------------------
+            // 3. UserExpenditures Seed Data
+            // -------------------------------------------------------------
             var expenditures = new List<UserExpenditure>();
             int expenditureId = 1;
             var seedBaseDate  = new DateTime(2026, 1, 1);
 
-            
             foreach (var user in users)
             {
                 for (int j = 0; j < 5; j++)
                 {
                     var targetRestaurant = restaurants[random.Next(restaurants.Count)];
-                    expenditures.Add(new UserExpenditure
-                    {
-                        Id           = expenditureId,
-                        UserId       = user.Id,
-                        RestaurantId = targetRestaurant.Id,
-                        
-                        Amount       = targetRestaurant.AveragePrice * (decimal)(0.8 + random.NextDouble() * 0.4),
-                        SpentAt      = seedBaseDate.AddDays(-random.Next(1, 30)) 
-                    });
+                    decimal amount = Math.Round(targetRestaurant.AveragePrice * (decimal)(0.8 + random.NextDouble() * 0.4), 2);
+                    expenditures.Add(new UserExpenditure(
+                        expenditureId,
+                        user.Id,
+                        targetRestaurant.Id,
+                        amount,
+                        seedBaseDate.AddDays(-random.Next(1, 30))
+                    ));
                     expenditureId++;
                 }
             }

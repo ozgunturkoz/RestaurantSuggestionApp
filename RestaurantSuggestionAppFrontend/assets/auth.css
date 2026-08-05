@@ -1,5 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap');
 
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #201A16 !important;
+  color: #F3E9DE;
+  font-family: 'Manrope', sans-serif;
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
+}
+
 * { box-sizing: border-box; }
 
 .wrap {

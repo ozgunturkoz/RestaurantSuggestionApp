@@ -75,12 +75,7 @@ namespace RestaurantSuggestionApp.Business.Services
                 var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
 
                 // 3. Adım: Yeni kullanıcı nesnesini oluşturma
-                var newUser = new User
-                {
-                    Name = name,
-                    Email = email,
-                    PasswordHash = hashedPassword
-                };
+                var newUser = new User(0, name, email, hashedPassword);
 
                 // 4. Adım: Veritabanına kaydetme
                 _context.Users.Add(newUser);

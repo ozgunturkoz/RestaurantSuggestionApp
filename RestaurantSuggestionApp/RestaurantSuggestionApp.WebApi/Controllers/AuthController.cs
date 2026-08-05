@@ -17,7 +17,7 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             _authService = authService;
         }
 
-        // 1. GİRİŞ YAPMA (LOGIN)
+        
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginDto loginDto)
         {
@@ -31,7 +31,7 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // 2. KAYIT OLMA (REGISTER)
+       
         [HttpPost("register")]
         public IActionResult Register([FromBody] RegisterDto registerDto)
         {

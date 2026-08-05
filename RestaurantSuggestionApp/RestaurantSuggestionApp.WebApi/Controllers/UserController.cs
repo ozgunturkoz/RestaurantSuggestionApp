@@ -161,12 +161,7 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
 
         private User MapToUser(UserDto dto)
         {
-            return new User
-            {
-                Name = dto.Name,
-                Email = dto.Email,
-                PasswordHash = dto.Password ?? ""
-            };
+            return new User(0, dto.Name, dto.Email, dto.Password ?? "");
         }
     }
 }

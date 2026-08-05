@@ -13,6 +13,16 @@ using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Kestrel HTTPS IP Bağlantı Ayarı (Telefon IP'lerinin 7085 portuna HTTPS ile erişmesini sağlar)
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Listen(System.Net.IPAddress.Any, 7085, listenOptions =>
+    {
+        listenOptions.UseHttps();
+    });
+    options.Listen(System.Net.IPAddress.Any, 5062);
+});
+
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
 builder.Services.AddMemoryCache(); // Hafızada geçici veri tutmak için eklendi
@@ -132,11 +142,12 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-if (app.Environment.IsDevelopment())
+// Swagger her ortamda açık tutuluyor
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "RestaurantSuggestionApp API v1");
+});
 
 app.UseHttpsRedirection();
 app.UseCors();

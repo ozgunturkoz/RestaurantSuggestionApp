@@ -115,7 +115,7 @@ namespace RestaurantSuggestionApp.Tests.Services
         public void Add_ValidRestaurant_ReturnsSuccessAndSavesToDb()
         {
             // Arrange
-            var newRest = new Restaurant { Name = "New Rest", Category = "Cafe", Latitude = 41.0M, Longitude = 29.0M, AveragePrice = 80.0M };
+            var newRest = new Restaurant(0, "New Rest", "Cafe", 41.0M, 29.0M, 80.0M);
 
             // Act
             var response = _restaurantService.Add(newRest);
@@ -138,7 +138,7 @@ namespace RestaurantSuggestionApp.Tests.Services
             // Arrange
             var rest = TestDataHelper.SeedRestaurant(_context, "Old Name", "Kebap", 41.0M, 29.0M, 100.0M);
 
-            var updatedRest = new Restaurant { Name = "New Name", Category = "Kebap", Latitude = 41.0M, Longitude = 29.0M, AveragePrice = 120.0M };
+            var updatedRest = new Restaurant(0, "New Name", "Kebap", 41.0M, 29.0M, 120.0M);
 
             // Act
             var response = _restaurantService.Update(rest.Id, updatedRest);
@@ -156,7 +156,7 @@ namespace RestaurantSuggestionApp.Tests.Services
         public void Update_NonExisting_ReturnsFailWithErrorMessage()
         {
             // Arrange
-            var updatedRest = new Restaurant { Name = "New Name" };
+            var updatedRest = new Restaurant(0, "New Name", "Kebap", 41.0M, 29.0M, 120.0M);
 
             // Act
             var response = _restaurantService.Update(999, updatedRest);
@@ -244,6 +244,22 @@ namespace RestaurantSuggestionApp.Tests.Services
             Assert.That(response.Data.Count, Is.EqualTo(1));
             Assert.That(response.Data[0].Name, Is.EqualTo("Yakın Restoran"));
             Assert.That(response.Data[0].RecommendationScore, Is.GreaterThan(0)); // Algoritmanın çalışıp puan ürettiğini doğruluyoruz.
+        }
+
+        [Test]
+        public async Task GetNearbyAsync_NoRestaurantsInRange_ReturnsSuccessAndEmptyList()
+        {
+            // Arrange - Çok uzakta bir restoran ekliyoruz (örn. Ankara koordinatları)
+            TestDataHelper.SeedRestaurant(_context, "Uzak Restoran", "Kebap", 39.9208M, 32.8541M, 150.0M);
+
+            // Act - İstanbul (41.0082, 28.9784) adresinden 5 km yarıçapında restoran arıyoruz
+            var response = await _restaurantService.GetNearbyAsync(41.0082M, 28.9784M, 5.0, null);
+
+            // Assert
+            Assert.That(response, Is.Not.Null);
+            Assert.That(response.IsSuccess, Is.True);
+            Assert.That(response.Data, Is.Not.Null);
+            Assert.That(response.Data.Count, Is.EqualTo(0));
         }
 
         #endregion

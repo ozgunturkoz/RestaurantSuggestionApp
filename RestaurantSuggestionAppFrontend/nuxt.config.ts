@@ -1,4 +1,21 @@
 export default defineNuxtConfig({
+
+  devServer: {
+    host: '0.0.0.0',
+    port: 3000,
+    https: true
+  },
+
+  nitro: {
+    devProxy: {
+      '/api': {
+        target: 'https://localhost:7085/api',
+        secure: false,
+        changeOrigin: true
+      }
+    }
+  },
+
   compatibilityDate: '2024-04-03',
   devtools: { enabled: true },
   modules: [
@@ -20,7 +37,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      apiBase: 'https://localhost:7085'
+      apiBase: ''
     }
   }
 })

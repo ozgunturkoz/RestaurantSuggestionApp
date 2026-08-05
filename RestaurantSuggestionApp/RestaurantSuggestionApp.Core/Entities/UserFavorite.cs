@@ -18,6 +18,22 @@ namespace RestaurantSuggestionApp.Core.Entities
 
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 
-        public string? CustomNote { get; set; }
+        public string? CustomNote { get; private set; }
+
+        public UserFavorite() { }
+
+        public UserFavorite(int id, int userId, int restaurantId, string? customNote = null)
+        {
+            Id = id;
+            UserId = userId;
+            RestaurantId = restaurantId;
+            UpdateNote(customNote);
+        }
+
+        public void UpdateNote(string? customNote)
+        {
+            CustomNote = customNote?.Trim();
+        }
     }
 }
+

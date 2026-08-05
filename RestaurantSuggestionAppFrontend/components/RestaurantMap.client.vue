@@ -6,7 +6,7 @@
 import { ref, onMounted, watch, nextTick, onBeforeUnmount } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { useRestaurantStore } from '~/Stores/restaurantStore'
+import { useRestaurantStore } from '~/stores/restaurantStore'
 
 const props = defineProps({
   selectedRestaurantId: {
@@ -61,7 +61,9 @@ onMounted(async () => {
     console.warn("Harita kapsayıcısı (DOM) henüz hazır değil.");
     return;
   }
-  const map = L.map(mapContainer.value).setView([40.993462, 29.018418], 12)
+  const savedLat = parseFloat(localStorage.getItem('saved_user_lat') || '40.9901')
+  const savedLng = parseFloat(localStorage.getItem('saved_user_lng') || '29.0256')
+  const map = L.map(mapContainer.value).setView([savedLat, savedLng], 13)
   mapInstance = map;
 
   // CartoDB Dark Matter Tema
@@ -182,33 +184,54 @@ onMounted(async () => {
     }
   };
 
-  const initializeWithLocation = (lat, lng, label) => {
-    userLocation.value = { lat, lng };
-    map.setView([lat, lng], 13);
+  let userMarkerLayer = null;
 
-    L.circle([lat, lng], {
+  const updateUserLocation = (lat, lng, isUserAction = false) => {
+    userLocation.value = { lat, lng };
+
+    try {
+      localStorage.setItem('saved_user_lat', lat.toString());
+      localStorage.setItem('saved_user_lng', lng.toString());
+    } catch (e) {}
+    
+    if (userMarkerLayer) {
+      map.removeLayer(userMarkerLayer);
+    }
+
+    userMarkerLayer = L.circle([lat, lng], {
       color: '#007bff',
       fillColor: '#007bff',
       fillOpacity: 0.8,
-      radius: 15
+      radius: 20
     })
     .addTo(map)
-    .bindPopup(`<b>${t('map.userMarker')}</b>`)
-    .openPopup();
+    .bindPopup(`<b>${t('map.userMarker')}</b>`);
 
     drawBoundaryCircle(lat, lng, store.radius);
 
     store.fetchNearbyRestaurants(lat, lng, store.radius).then(() => {
       isLocationLoaded.value = true;
       renderMarkers();
-      if (props.selectedRestaurantId) {
-        focusOnRestaurant(props.selectedRestaurantId);
-      }
     });
+
+    if (isUserAction) {
+      try {
+        useToast().showSuccess('Konum haritadaki seçime göre güncellendi!')
+      } catch (e) {}
+    }
   };
 
-  const DEFAULT_LAT = 40.9901;
-  const DEFAULT_LNG = 29.0256;
+  map.on('click', (e) => {
+    updateUserLocation(e.latlng.lat, e.latlng.lng, true);
+  });
+
+  const initializeWithLocation = (lat, lng, label) => {
+    map.setView([lat, lng], 13);
+    updateUserLocation(lat, lng, false);
+  };
+
+  const getSavedOrDefaultLat = () => parseFloat(localStorage.getItem('saved_user_lat') || '41.0082');
+  const getSavedOrDefaultLng = () => parseFloat(localStorage.getItem('saved_user_lng') || '28.9784');
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
@@ -216,13 +239,13 @@ onMounted(async () => {
         initializeWithLocation(position.coords.latitude, position.coords.longitude, t('map.userMarker'));
       },
       (error) => {
-        console.warn("Gerçek konum alınamadı, Kadıköy varsayılan konumuna geçiliyor:", error);
-        initializeWithLocation(DEFAULT_LAT, DEFAULT_LNG, t('map.userMarker'));
+        console.warn("Gerçek konum alınamadı, kayıtlı/varsayılan konuma geçiliyor:", error);
+        initializeWithLocation(getSavedOrDefaultLat(), getSavedOrDefaultLng(), t('map.userMarker'));
       },
       { timeout: 8000, maximumAge: 30000, enableHighAccuracy: true }
     );
   } else {
-    initializeWithLocation(DEFAULT_LAT, DEFAULT_LNG, t('map.userMarker'));
+    initializeWithLocation(getSavedOrDefaultLat(), getSavedOrDefaultLng(), t('map.userMarker'));
   }
 
   watch(() => store.radius, (newRadius) => {
@@ -245,14 +268,23 @@ onMounted(async () => {
     }
   });
 
-  store.$subscribe((mutation, state) => {
+  watch(() => store.restaurants, () => {
     renderMarkers();
-  })
+  });
+
+  const handleResize = () => {
+    if (mapInstance) {
+      mapInstance.invalidateSize({ animate: false })
+    }
+  }
+
+  window.addEventListener('resize', handleResize)
 })
 
 onBeforeUnmount(() => {
   if (resizeObserver) {
     resizeObserver.disconnect();
   }
+  window.removeEventListener('resize', handleResize);
 })
 </script>

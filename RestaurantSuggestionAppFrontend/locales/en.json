@@ -10,7 +10,8 @@
     "subtitle": "Restaurants listed based on your location",
     "radiusLabel": "Distance Limit (Radius)",
     "loading": "Loading...",
-    "distance": "Distance"
+    "distance": "Distance",
+    "noRestaurants": "No restaurants found within the selected radius."
   },
   "badge": {
     "recommendation": "%{score} suitable for your Multinet profile and location"

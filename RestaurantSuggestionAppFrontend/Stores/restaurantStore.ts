@@ -1,12 +1,23 @@
 import { defineStore } from 'pinia'
 
 export const useRestaurantStore = defineStore('restaurant', {
-  state: () => ({
-    restaurants: [] as any[], // Yakındaki ve OSRM mesafeli restoranlar listesi
-    radius: 5,                // Varsayılan yarıçap: 5 KM
-    isLoading: false,
-    userLocation: null as { lat: number, lng: number } | null // Kullanıcı konumunu saklamak için
-  }),
+  state: () => {
+    let savedLocation: { lat: number, lng: number } | null = null
+    if (typeof window !== 'undefined') {
+      const lat = localStorage.getItem('saved_user_lat')
+      const lng = localStorage.getItem('saved_user_lng')
+      if (lat && lng) {
+        savedLocation = { lat: parseFloat(lat), lng: parseFloat(lng) }
+      }
+    }
+
+    return {
+      restaurants: [] as any[],
+      radius: 5,
+      isLoading: false,
+      userLocation: savedLocation
+    }
+  },
 
   actions: {
     // Sadece yakındaki restoranları API'den çeken ana metodumuz
@@ -15,6 +26,12 @@ export const useRestaurantStore = defineStore('restaurant', {
       this.isLoading = true
       this.radius = radiusInKm
       this.userLocation = { lat: latitude, lng: longitude }
+
+      try {
+        localStorage.setItem('saved_user_lat', latitude.toString())
+        localStorage.setItem('saved_user_lng', longitude.toString())
+      } catch (e) {}
+
       try {
         const response = await restaurantService.getNearbyRestaurants(latitude, longitude, radiusInKm) as any
         
@@ -33,6 +50,12 @@ export const useRestaurantStore = defineStore('restaurant', {
       } finally {
         this.isLoading = false
       }
+    },
+
+    // Eski restoran verilerini temizleme
+    resetState() {
+      this.restaurants = []
+      this.isLoading = false
     }
   }
 })

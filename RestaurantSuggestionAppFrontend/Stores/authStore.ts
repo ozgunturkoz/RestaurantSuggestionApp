@@ -29,12 +29,16 @@ function extractUserFromDecoded(decoded: any) {
 export const useAuthStore = defineStore('auth', {
   state: () => {
     const token = useCookie('auth_token')
+    const rawToken = token.value
 
-    if (token.value) {
-      const decoded = parseJwt(token.value)
-      return {
-        isLoggedIn: true,
-        user: extractUserFromDecoded(decoded)
+    if (rawToken && rawToken !== 'null' && rawToken !== 'undefined' && rawToken.length > 10) {
+      const decoded = parseJwt(rawToken)
+      const user = extractUserFromDecoded(decoded)
+      if (user) {
+        return {
+          isLoggedIn: true,
+          user
+        }
       }
     }
 
@@ -58,6 +62,7 @@ export const useAuthStore = defineStore('auth', {
           const decoded = parseJwt(token)
           this.isLoggedIn = true
           this.user = extractUserFromDecoded(decoded)
+          useRestaurantStore().resetState()
           return true
         }
         return false
@@ -81,6 +86,7 @@ export const useAuthStore = defineStore('auth', {
           const decoded = parseJwt(token)
           this.isLoggedIn = true
           this.user = extractUserFromDecoded(decoded)
+          useRestaurantStore().resetState()
           return true
         }
         return false
@@ -92,10 +98,17 @@ export const useAuthStore = defineStore('auth', {
 
     // ÇIKIŞ İŞLEMİ
     logout() {
-      const tokenCookie = useCookie('auth_token')
-      tokenCookie.value = null // Çerezi siliyoruz
+      const tokenCookie = useCookie('auth_token', { path: '/' })
+      tokenCookie.value = undefined
       this.isLoggedIn = false
       this.user = null
+      useRestaurantStore().resetState()
+      
+      if (typeof window !== 'undefined') {
+        window.location.href = '/login'
+      } else {
+        return navigateTo('/login', { replace: true })
+      }
     }
   }
 })
