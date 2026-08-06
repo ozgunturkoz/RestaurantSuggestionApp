@@ -26,6 +26,35 @@
     "locationScore": "Konum",
     "budgetScore": "Bütçe"
   },
+  "filter": {
+    "search": "Restoran Ara",
+    "searchPlaceholder": "Restoran adı yazın...",
+    "category": "Kategori",
+    "allCategories": "Tümü",
+    "price": "Fiyat Aralığı",
+    "allPrices": "Tümü",
+    "noResults": "Filtrelere uygun restoran bulunamadı.",
+    "clearFilters": "Filtreleri Temizle",
+    "resultCount": "{count} restoran listeleniyor"
+  },
+  "detail": {
+    "category": "Kategori",
+    "price": "Ortalama Fiyat",
+    "distance": "Yürüme Mesafesi",
+    "duration": "Yürüme Süresi",
+    "score": "Öneri Skoru",
+    "locationScore": "Konum Skoru",
+    "budgetScore": "Bütçe Skoru",
+    "favoriteNote": "Favori Notunuz",
+    "favoriteNotePlaceholder": "Bu mekan hakkında bir not ekleyin...",
+    "saveNote": "Notu Kaydet",
+    "addFavorite": "Favorilere Ekle",
+    "removeFavorite": "Favorilerden Çıkar",
+    "close": "Kapat",
+    "noteSaved": "Not kaydedildi!",
+    "addedToFavorites": "Favorilere eklendi!",
+    "removedFromFavorites": "Favorilerden çıkarıldı."
+  },
   "login": {
     "sub": "Multinet entegre öneri sistemi",
     "taglineTitle": "Bakiyene ve damak tadına göre, yakınındaki doğru öğün.",

@@ -23,7 +23,7 @@
 
       <div class="mobile-tabs">
         <button :class="{ active: mobileTab === 'list' }" @click="mobileTab = 'list'">
-          📋 Restoran Listesi ({{ store.restaurants.length }})
+          📋 Restoran Listesi ({{ filteredRestaurants.length }})
         </button>
         <button :class="{ active: mobileTab === 'map' }" @click="mobileTab = 'map'">
           🗺️ Harita Görünümü
@@ -37,6 +37,7 @@
         <h1>{{ t('sidebar.title') }}</h1>
         <p class="note">{{ t('sidebar.subtitle') }}</p>
 
+        <!-- Yarıçap -->
         <div class="radius-box">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
             <label for="radius-select" style="margin:0;">{{ t('sidebar.radiusLabel') }}</label>
@@ -50,6 +51,73 @@
           </select>
         </div>
 
+        <!-- 🔍 Arama -->
+        <div class="filter-box search-box">
+          <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input
+              v-model="searchQuery"
+              type="text"
+              :placeholder="t('filter.searchPlaceholder')"
+              class="search-input"
+            />
+            <button v-if="searchQuery" class="search-clear" @click="searchQuery = ''">✕</button>
+          </div>
+        </div>
+
+        <!-- 🏷️ Kategori Filtresi -->
+        <div v-if="availableCategories.length > 1" class="filter-box">
+          <label class="filter-label">{{ t('filter.category') }}</label>
+          <div class="chip-scroll">
+            <button
+              class="chip"
+              :class="{ active: selectedCategories.size === 0 }"
+              @click="selectedCategories.clear(); triggerReactivity()"
+            >
+              {{ t('filter.allCategories') }}
+            </button>
+            <button
+              v-for="cat in availableCategories"
+              :key="cat"
+              class="chip"
+              :class="{ active: selectedCategories.has(cat) }"
+              @click="toggleCategory(cat)"
+            >
+              {{ cat }}
+            </button>
+          </div>
+        </div>
+
+        <!-- 💰 Fiyat Aralığı Filtresi -->
+        <div class="filter-box">
+          <label class="filter-label">{{ t('filter.price') }}</label>
+          <div class="chip-scroll">
+            <button
+              class="chip"
+              :class="{ active: selectedPriceRange === null }"
+              @click="selectedPriceRange = null"
+            >
+              {{ t('filter.allPrices') }}
+            </button>
+            <button
+              v-for="range in priceRanges"
+              :key="range.label"
+              class="chip"
+              :class="{ active: selectedPriceRange === range }"
+              @click="selectedPriceRange = range"
+            >
+              {{ range.label }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Aktif filtre sayacı -->
+        <div v-if="activeFilterCount > 0" class="filter-status">
+          <span>{{ t('filter.resultCount', { count: filteredRestaurants.length }) }}</span>
+          <button class="clear-filters-btn" @click="clearAllFilters">{{ t('filter.clearFilters') }}</button>
+        </div>
+
+        <!-- Skeleton / Empty / Liste -->
         <RestaurantSkeleton v-if="store.isLoading" :count="4" />
 
         <div v-else-if="store.restaurants.length === 0" class="empty-state">
@@ -57,23 +125,29 @@
           <p>{{ t('sidebar.noRestaurants') }}</p>
         </div>
 
+        <div v-else-if="filteredRestaurants.length === 0" class="empty-state">
+          <div class="empty-icon">🔎</div>
+          <p>{{ t('filter.noResults') }}</p>
+          <button class="clear-filters-link" @click="clearAllFilters">{{ t('filter.clearFilters') }}</button>
+        </div>
+
         <div v-else class="list">
           <div
-            v-for="r in store.restaurants"
+            v-for="r in filteredRestaurants"
             :id="'rest-card-' + r.id"
             :key="r.id"
             class="item"
             :class="{ selected: selectedRestaurantId === r.id }"
-            @click="selectRestaurant(r.id)"
+            @click="openDetail(r)"
           >
             <div class="thumb"></div>
             <div class="ibody">
               <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:3px;">
                 <span class="iname">{{ r.name }}</span>
                 <div style="display:flex;align-items:center;gap:6px;">
-                  <button 
-                    class="fav-btn" 
-                    :class="{ isFav: favoriteIds.has(r.id) }" 
+                  <button
+                    class="fav-btn"
+                    :class="{ isFav: favoriteIds.has(r.id) }"
                     :title="favoriteIds.has(r.id) ? 'Favorilerden Çıkar' : 'Favorilere Ekle'"
                     @click.stop="toggleFavorite(r.id)"
                   >
@@ -88,9 +162,9 @@
               <div v-if="r.walkingDistanceInMeters !== null" class="dist-meta">
                 {{ t('sidebar.distance') }}: {{ formatDistance(r.walkingDistanceInMeters) }}
               </div>
-              <div 
-                v-if="r.recommendationScore !== null" 
-                class="score-badge" 
+              <div
+                v-if="r.recommendationScore !== null"
+                class="score-badge"
                 :style="getScoreStyle(r.recommendationScore)"
               >
                 🎯 {{ t('badge.recommendation', { score: Math.round(r.recommendationScore) }) }}
@@ -100,6 +174,7 @@
         </div>
       </aside>
 
+      <!-- Harita -->
       <div class="mapwrap" :class="{ 'mobile-hidden': mobileTab === 'list' }">
         <ClientOnly>
           <template #fallback>
@@ -109,18 +184,28 @@
             </div>
           </template>
 
-          <RestaurantMap 
-            :selected-restaurant-id="selectedRestaurantId" 
-            @select-restaurant="onSelectRestaurantFromMap" 
+          <RestaurantMap
+            :selected-restaurant-id="selectedRestaurantId"
+            @select-restaurant="onSelectRestaurantFromMap"
           />
         </ClientOnly>
       </div>
     </div>
+
+    <!-- Detay Modal -->
+    <RestaurantDetailModal
+      :restaurant="detailRestaurant"
+      :is-favorite="detailRestaurant ? favoriteIds.has(detailRestaurant.id) : false"
+      :favorite-note="detailRestaurant ? (favoriteNotes.get(detailRestaurant.id) || '') : ''"
+      @close="detailRestaurant = null"
+      @toggle-favorite="handleModalFavoriteToggle"
+      @save-note="handleSaveNote"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRestaurantStore } from '~/stores/restaurantStore'
 import { useAuthStore } from '~/stores/authStore'
 import { useRouter } from '#app'
@@ -134,6 +219,82 @@ const api = useApi()
 const selectedRestaurantId = ref(null)
 const mobileTab = ref('list')
 const favoriteIds = ref(new Set())
+const favoriteNotes = ref(new Map())
+const detailRestaurant = ref(null)
+
+// Filter states
+const searchQuery = ref('')
+const selectedCategories = ref(new Set())
+const selectedPriceRange = ref(null)
+const reactivityTrigger = ref(0)
+
+const priceRanges = [
+  { label: '₺0 – 100', min: 0, max: 100 },
+  { label: '₺100 – 250', min: 100, max: 250 },
+  { label: '₺250 – 500', min: 250, max: 500 },
+  { label: '₺500+', min: 500, max: Infinity }
+]
+
+// Computed: benzersiz kategoriler
+const availableCategories = computed(() => {
+  const cats = new Set()
+  store.restaurants.forEach(r => { if (r.category) cats.add(r.category) })
+  return Array.from(cats).sort()
+})
+
+// Computed: filtrelenmiş liste
+const filteredRestaurants = computed(() => {
+  // reactivityTrigger dependency for Set changes
+  void reactivityTrigger.value
+  let list = store.restaurants
+
+  // Arama filtresi
+  if (searchQuery.value.trim()) {
+    const q = searchQuery.value.trim().toLowerCase()
+    list = list.filter(r => r.name.toLowerCase().includes(q))
+  }
+
+  // Kategori filtresi
+  if (selectedCategories.value.size > 0) {
+    list = list.filter(r => selectedCategories.value.has(r.category))
+  }
+
+  // Fiyat aralığı filtresi
+  if (selectedPriceRange.value) {
+    const { min, max } = selectedPriceRange.value
+    list = list.filter(r => r.averagePrice >= min && r.averagePrice < max)
+  }
+
+  return list
+})
+
+// Aktif filtre sayısı
+const activeFilterCount = computed(() => {
+  void reactivityTrigger.value
+  let count = 0
+  if (searchQuery.value.trim()) count++
+  if (selectedCategories.value.size > 0) count++
+  if (selectedPriceRange.value) count++
+  return count
+})
+
+const triggerReactivity = () => { reactivityTrigger.value++ }
+
+const toggleCategory = (cat) => {
+  if (selectedCategories.value.has(cat)) {
+    selectedCategories.value.delete(cat)
+  } else {
+    selectedCategories.value.add(cat)
+  }
+  triggerReactivity()
+}
+
+const clearAllFilters = () => {
+  searchQuery.value = ''
+  selectedCategories.value.clear()
+  selectedPriceRange.value = null
+  triggerReactivity()
+}
 
 watch(mobileTab, (newTab) => {
   if (newTab === 'map') {
@@ -143,11 +304,17 @@ watch(mobileTab, (newTab) => {
   }
 })
 
+// Favoriler
 const fetchFavorites = async () => {
   try {
     const res = await api.get('/api/User/favorites')
     if (res?.isSuccess && Array.isArray(res?.data)) {
       favoriteIds.value = new Set(res.data.map(f => f.restaurantId))
+      const notesMap = new Map()
+      res.data.forEach(f => {
+        if (f.customNote) notesMap.set(f.restaurantId, f.customNote)
+      })
+      favoriteNotes.value = notesMap
     }
   } catch (err) {
     console.warn('Favoriler yüklenirken hata oluştu:', err)
@@ -159,6 +326,7 @@ const toggleFavorite = async (restaurantId) => {
     if (favoriteIds.value.has(restaurantId)) {
       await api.delete(`/api/User/favorites/${restaurantId}`)
       favoriteIds.value.delete(restaurantId)
+      favoriteNotes.value.delete(restaurantId)
     } else {
       await api.post('/api/User/favorites', { restaurantId })
       favoriteIds.value.add(restaurantId)
@@ -168,8 +336,27 @@ const toggleFavorite = async (restaurantId) => {
   }
 }
 
-const selectRestaurant = (id) => {
-  selectedRestaurantId.value = id
+const handleModalFavoriteToggle = async (restaurantId) => {
+  await toggleFavorite(restaurantId)
+}
+
+const handleSaveNote = async ({ restaurantId, note }) => {
+  try {
+    await api.post('/api/User/favorites', { restaurantId, customNote: note })
+    favoriteNotes.value.set(restaurantId, note)
+    if (!favoriteIds.value.has(restaurantId)) {
+      favoriteIds.value.add(restaurantId)
+    }
+    try { useToast().showSuccess(t('detail.noteSaved')) } catch (e) {}
+  } catch (err) {
+    console.error('Not kaydetme hatası:', err)
+  }
+}
+
+// Detay modal
+const openDetail = (restaurant) => {
+  selectedRestaurantId.value = restaurant.id
+  detailRestaurant.value = restaurant
 }
 
 const onSelectRestaurantFromMap = (id) => {
@@ -252,10 +439,98 @@ nav span.on { color: #E0A458; }
 .kick { font-size: 11px; color: #E0A458; font-weight: 700; letter-spacing: .03em; }
 .note { font-size: 12px; color: #8A745E; margin: 0 0 12px; }
 
-.radius-box { margin-bottom: 14px; background: #201A16; border: 1px solid #40342A; padding: 10px; border-radius: 12px; }
+.radius-box { margin-bottom: 10px; background: #201A16; border: 1px solid #40342A; padding: 10px; border-radius: 12px; }
 .radius-box label { font-weight: 600; color: #C9B9A8; font-size: 12px; display: block; margin-bottom: 4px; }
 .radius-box select { width: 100%; padding: 6px; border-radius: 8px; border: 1px solid #40342A; background-color: #201A16; font-size: 13px; color: #F3E9DE; cursor: pointer; outline: none; }
 
+/* ─── Filtre Kutuları ─── */
+.filter-box { margin-bottom: 10px; background: #201A16; border: 1px solid #40342A; padding: 10px; border-radius: 12px; }
+.filter-label { font-weight: 600; color: #C9B9A8; font-size: 11px; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* Arama */
+.search-box { padding: 6px 10px; }
+.search-input-wrap { display: flex; align-items: center; gap: 8px; }
+.search-icon { font-size: 14px; flex-shrink: 0; opacity: 0.6; }
+.search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #F3E9DE;
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  padding: 4px 0;
+}
+.search-input::placeholder { color: #5A4526; }
+.search-clear {
+  background: none;
+  border: none;
+  color: #5A4526;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 4px;
+  line-height: 1;
+  transition: color .15s;
+}
+.search-clear:hover { color: #E0A458; }
+
+/* Chip Scroll */
+.chip-scroll { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; -ms-overflow-style: none; scrollbar-width: none; }
+.chip-scroll::-webkit-scrollbar { display: none; }
+
+.chip {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  border: 1px solid #40342A;
+  background: #2B231D;
+  color: #A79483;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Manrope', sans-serif;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.chip:hover { border-color: #E0A458; color: #E0A458; }
+.chip.active { background: rgba(224, 164, 88, 0.15); border-color: #E0A458; color: #E0A458; }
+
+/* Filtre durumu */
+.filter-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 6px 0;
+}
+.filter-status span { font-size: 11px; color: #8A745E; font-weight: 600; }
+.clear-filters-btn {
+  background: none;
+  border: none;
+  color: #E0A458;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'Manrope', sans-serif;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+.clear-filters-link {
+  margin-top: 10px;
+  background: none;
+  border: 1px solid #40342A;
+  color: #E0A458;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Manrope', sans-serif;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 8px;
+  transition: background .15s;
+}
+.clear-filters-link:hover { background: rgba(224, 164, 88, 0.1); }
+
+/* ─── Liste ─── */
 .list { display: flex; flex-direction: column; gap: 12px; }
 .item { background: #3A2E24; border: 1px solid #5A4526; border-radius: 15px; overflow: hidden; display: flex; align-items: stretch; min-height: 74px; cursor: pointer; box-shadow: 0 6px 16px -8px rgba(0,0,0,.6); transition: transform .15s, border-color .15s, box-shadow .15s; }
 .item.selected { border-color: #8FBF7E; background: #42352A; box-shadow: 0 0 14px rgba(143,191,126,0.3); }
@@ -273,18 +548,18 @@ button {
   outline: none;
 }
 
-.fav-btn { 
-  -webkit-appearance: none !important; 
-  appearance: none !important; 
-  background: transparent !important; 
-  border: none !important; 
-  box-shadow: none !important; 
-  outline: none !important; 
-  color: #5A4526; 
-  font-size: 18px; 
-  cursor: pointer; 
-  transition: color .2s, transform .15s; 
-  padding: 2px 4px; 
+.fav-btn {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  color: #5A4526;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color .2s, transform .15s;
+  padding: 2px 4px;
   line-height: 1;
 }
 .fav-btn.isFav { color: #E0A458 !important; text-shadow: 0 0 8px rgba(224,164,88,0.6); }

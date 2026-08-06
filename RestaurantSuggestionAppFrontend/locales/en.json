@@ -26,6 +26,35 @@
     "locationScore": "Location",
     "budgetScore": "Budget"
   },
+  "filter": {
+    "search": "Search Restaurant",
+    "searchPlaceholder": "Type restaurant name...",
+    "category": "Category",
+    "allCategories": "All",
+    "price": "Price Range",
+    "allPrices": "All",
+    "noResults": "No restaurants found matching the filters.",
+    "clearFilters": "Clear Filters",
+    "resultCount": "{count} restaurants listed"
+  },
+  "detail": {
+    "category": "Category",
+    "price": "Average Price",
+    "distance": "Walking Distance",
+    "duration": "Walking Duration",
+    "score": "Recommendation Score",
+    "locationScore": "Location Score",
+    "budgetScore": "Budget Score",
+    "favoriteNote": "Your Favorite Note",
+    "favoriteNotePlaceholder": "Add a note about this place...",
+    "saveNote": "Save Note",
+    "addFavorite": "Add to Favorites",
+    "removeFavorite": "Remove from Favorites",
+    "close": "Close",
+    "noteSaved": "Note saved!",
+    "addedToFavorites": "Added to favorites!",
+    "removedFromFavorites": "Removed from favorites."
+  },
   "login": {
     "sub": "Multinet integrated suggestion system",
     "taglineTitle": "The right meal near you based on your balance and taste.",
