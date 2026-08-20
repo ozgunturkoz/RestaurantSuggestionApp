@@ -3,9 +3,20 @@ import { defineStore } from 'pinia'
 function parseJwt(token: string) {
   try {
     const base64Url = token.split('.')[1]
+    if (!base64Url) return null
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+    
+    let binaryStr: string
+    if (typeof atob === 'function') {
+      binaryStr = atob(base64)
+    } else if (typeof Buffer !== 'undefined') {
+      binaryStr = Buffer.from(base64, 'base64').toString('binary')
+    } else {
+      return null
+    }
+
     const jsonPayload = decodeURIComponent(
-      atob(base64)
+      binaryStr
         .split('')
         .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
         .join('')
@@ -28,6 +39,13 @@ function extractUserFromDecoded(decoded: any) {
 
 export const useAuthStore = defineStore('auth', {
   state: () => {
+    if (process.server) {
+      return {
+        isLoggedIn: false,
+        user: null as any
+      }
+    }
+
     const token = useCookie('auth_token', { path: '/' })
     const rawToken = token.value
 

@@ -1,4 +1,6 @@
 export default defineNuxtRouteMiddleware((to, from) => {
+  if (process.server) return
+
   const authStore = useAuthStore()
 
   // 1. Giriş yapılmadıysa login sayfasına yönlendir (login ve register sayfaları hariç)
