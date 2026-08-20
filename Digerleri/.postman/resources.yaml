@@ -1,0 +1,8 @@
+# Use this workspace to collaborate
+workspace:
+  id: adaede08-45ae-4733-89b9-71fd5c0bb7eb
+
+localResources:
+  specs:
+    - ../RestaurantSuggestionApp/RestaurantSuggestionApp.WebApi/obj/Debug/net10.0/EndpointInfo/RestaurantSuggestionApp.WebApi.json
+    - ../RestaurantSuggestionApp/RestaurantSuggestionApp.WebApi/obj/Debug/net10.0/EndpointInfo/webapi.json

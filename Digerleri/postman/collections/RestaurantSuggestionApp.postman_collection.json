@@ -1,0 +1,804 @@
+{
+	"info": {
+		"_postman_id": "c8a6f3b9-1234-4567-8901-restaurant-app",
+		"name": "Restaurant Suggestion App API",
+		"description": "# Akıllı Restoran Öneri Sistemi - API Dokümantasyonu\n\nBu dokümantasyon, **Restaurant Suggestion App** backend servisinin sunduğu tüm API uç noktalarını (endpoints), istek parametrelerini, yetkilendirme gereksinimlerini ve örnek istek/yanıt gövdelerini içermektedir.\n\n## 🔑 Yetkilendirme (Authentication)\n\nSistem **JWT (JSON Web Token)** yetkilendirme mimarisini kullanır.\n1. `POST /api/Auth/login` uç noktası ile giriş yapın.\n2. Başarılı girişte dönen token, Postman Koleksiyon Değişkeni olan `{{bearer_token}}` değişkenine **otomatik olarak kaydedilir**.\n3. Korumalı uç noktaların tamamı (`[Authorize]`) bu token'ı `Authorization: Bearer {{bearer_token}}` başlığı ile otomatik olarak iletir.\n\n## 🌐 Ortam Değişkenleri (Variables)\n- `baseUrl`: API sunucusunun adresi (Varsayılan: `https://localhost:7085`)\n- `bearer_token`: Oturum açıldıktan sonra saklanan JWT erişim anahtarı.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://localhost:7085",
+			"type": "string"
+		},
+		{
+			"key": "bearer_token",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Auth (Kimlik Doğrulama)",
+			"description": "Kullanıcı kaydı, giriş ve 2FA doğrulama işlemleri.",
+			"item": [
+				{
+					"name": "Login (Giriş Yap & Token Al)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.isSuccess && jsonData.data) {",
+									"    if (typeof jsonData.data === 'string') {",
+									"        pm.collectionVariables.set('bearer_token', jsonData.data);",
+									"        console.log('JWT Token otomatik kaydedildi!');",
+									"    } else if (jsonData.data.token) {",
+									"        pm.collectionVariables.set('bearer_token', jsonData.data.token);",
+									"        console.log('JWT Token otomatik kaydedildi!');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"Password123!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Auth/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Auth",
+								"login"
+							]
+						},
+						"description": "Kullanıcı e-posta ve şifre ile giriş yapar. Dönüşte elde edilen JWT Token koleksiyon değişkeni `bearer_token` alanına otomatik yazılır."
+					}
+				},
+				{
+					"name": "Verify Login (2FA Doğrulama)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"testuser@example.com\",\n  \"code\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Auth/verify-login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Auth",
+								"verify-login"
+							]
+						},
+						"description": "İki aşamalı doğrulama (2FA) etkinleştirilmiş hesaplar için doğrulama kodunu doğrular."
+					}
+				},
+				{
+					"name": "Register (Kayıt Ol)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Test Kullanıcı\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"Password123!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Auth",
+								"register"
+							]
+						},
+						"description": "Sisteme yeni bir kullanıcı hesabı oluşturur."
+					}
+				}
+			]
+		},
+		{
+			"name": "Restaurants (Restoran İşlemleri)",
+			"description": "Restoran listeleme, detay görme, akıllı konum/mesafe bazlı öneri ve CRUD işlemleri.",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{bearer_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"item": [
+				{
+					"name": "Get All Restaurants (Tümünü Getir)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Restaurant",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Restaurant"
+							]
+						},
+						"description": "Sistemdeki tüm kayıtlı restoranların listesini döndürür."
+					}
+				},
+				{
+					"name": "Get Restaurant By ID (Detay Getir)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Restaurant/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Restaurant",
+								"1"
+							]
+						},
+						"description": "Belirtilen ID'ye sahip restoranın detaylı bilgilerini getirir."
+					}
+				},
+				{
+					"name": "Get Nearby / Recommendation (Yakındaki / Önerilen Restoranlar)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Restaurant/nearby?latitude=41.0082&longitude=28.9784&radiusInKm=5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Restaurant",
+								"nearby"
+							],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "41.0082",
+									"description": "Kullanıcının enlem (latitude) bilgisi"
+								},
+								{
+									"key": "longitude",
+									"value": "28.9784",
+									"description": "Kullanıcının boylam (longitude) bilgisi"
+								},
+								{
+									"key": "radiusInKm",
+									"value": "5",
+									"description": "Arama yarıçapı (KM cinsinden, varsayılan 5km)"
+								}
+							]
+						},
+						"description": "Verilen enlem/boylam koordinatlarına belirtilen km yarıçapı dahilinde en yakın ve önerilen restoranları hesaplar ve puan sırasına göre döndürür."
+					}
+				},
+				{
+					"name": "Create Restaurant (Restoran Ekle)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Test Lezzet Evi\",\n  \"category\": \"Kebap\",\n  \"latitude\": 41.0082,\n  \"longitude\": 28.9784,\n  \"averagePrice\": 250\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Restaurant",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Restaurant"
+							]
+						},
+						"description": "Sisteme yeni bir restoran kaydı ekler."
+					}
+				},
+				{
+					"name": "Update Restaurant (Restoran Güncelle)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Test Lezzet Evi (Güncellendi)\",\n  \"category\": \"Kebap & Pide\",\n  \"latitude\": 41.0082,\n  \"longitude\": 28.9784,\n  \"averagePrice\": 300\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Restaurant/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Restaurant",
+								"1"
+							]
+						},
+						"description": "Mevcut bir restoranın bilgilerini günceller."
+					}
+				},
+				{
+					"name": "Delete Restaurant (Restoran Sil)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Restaurant/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Restaurant",
+								"1"
+							]
+						},
+						"description": "Belirtilen ID'ye sahip restoranı sistemden siler."
+					}
+				}
+			]
+		},
+		{
+			"name": "Users & Profile (Kullanıcı İşlemleri)",
+			"description": "Kullanıcı profilini görüntüleme, güncelleme ve genel kullanıcı yönetimi uç noktaları.",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{bearer_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"item": [
+				{
+					"name": "Get Me / Current Profile (Profilim)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/User/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"me"
+							]
+						},
+						"description": "Oturum açmış geçerli kullanıcının kendi profil bilgilerini getirir."
+					}
+				},
+				{
+					"name": "Update Profile Name (Profil Adı Güncelle)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Özgür Türköz\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/User/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"profile"
+							]
+						},
+						"description": "Giriş yapmış kullanıcının ad/soyad profil bilgisini günceller."
+					}
+				},
+				{
+					"name": "Get All Users (Tüm Kullanıcılar)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/User",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User"
+							]
+						},
+						"description": "Tüm kullanıcıların listesini döndürür."
+					}
+				},
+				{
+					"name": "Get User By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/User/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"1"
+							]
+						},
+						"description": "ID'ye göre kullanıcı detayını getirir."
+					}
+				},
+				{
+					"name": "Create User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Yeni Kullanıcı\",\n  \"email\": \"yeni@example.com\",\n  \"password\": \"Password123!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/User",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User"
+							]
+						},
+						"description": "Manuel kullanıcı oluşturma uç noktası."
+					}
+				},
+				{
+					"name": "Update User By ID",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Test Kullanıcı Güncellendi\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"Password123!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/User/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"1"
+							]
+						},
+						"description": "ID ile kullanıcı güncelleme."
+					}
+				},
+				{
+					"name": "Delete User By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/User/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"1"
+							]
+						},
+						"description": "Kullanıcı hesabını ID ile siler."
+					}
+				}
+			]
+		},
+		{
+			"name": "Favorites (Favori İşlemleri)",
+			"description": "Kullanıcının favori restoran listesi ve ekleme/çıkarma işlemleri.",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{bearer_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"item": [
+				{
+					"name": "Get Favorites (Favorilerim)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/User/favorites",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"favorites"
+							]
+						},
+						"description": "Giriş yapmış kullanıcının favoriye eklediği restoranların listesini döndürür."
+					}
+				},
+				{
+					"name": "Add Favorite (Favoriye Ekle)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"restaurantId\": 1,\n  \"customNote\": \"Sürekli gittiğim lezzetli mekan\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/User/favorites",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"favorites"
+							]
+						},
+						"description": "Belirtilen restoranı kullanıcının favorilerine ekler."
+					}
+				},
+				{
+					"name": "Remove Favorite (Favoriden Çıkar)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/User/favorites/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"favorites",
+								"1"
+							]
+						},
+						"description": "Restoranı kullanıcının favorilerinden çıkarır."
+					}
+				}
+			]
+		},
+		{
+			"name": "Expenditures (Harcama Takibi)",
+			"description": "Restoranlarda yapılan harcamaların kaydı ve takibi.",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{bearer_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"item": [
+				{
+					"name": "Get Expenditures (Harcamalarım)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/User/expenditures",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"expenditures"
+							]
+						},
+						"description": "Giriş yapmış kullanıcının kaydettiği tüm restoran harcamalarını listeler."
+					}
+				},
+				{
+					"name": "Add Expenditure (Harcama Ekle)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"restaurantId\": 1,\n  \"amount\": 350.50,\n  \"description\": \"Öğle yemeği menüsü\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/User/expenditures",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"expenditures"
+							]
+						},
+						"description": "Belirli bir restoranda yapılan harcamayı kaydeder."
+					}
+				},
+				{
+					"name": "Delete Expenditure (Harcama Sil)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/User/expenditures/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"expenditures",
+								"1"
+							]
+						},
+						"description": "ID'si verilen harcama kaydını siler."
+					}
+				}
+			]
+		},
+		{
+			"name": "Account Security (Güvenlik & 2FA Kodu)",
+			"description": "E-posta ve şifre değiştirme doğrulama kodları işlemleri.",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{bearer_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"item": [
+				{
+					"name": "Send Password Reset Code (Şifre Sıfırlama Kodu Gönder)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/User/send-password-code",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"send-password-code"
+							]
+						},
+						"description": "Giriş yapmış kullanıcının e-postasına şifre sıfırlama doğrulama kodu gönderir."
+					}
+				},
+				{
+					"name": "Change Password With Code (Kod ile Şifre Değiştir)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"123456\",\n  \"newPassword\": \"NewPassword123!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/User/change-password-with-code",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"change-password-with-code"
+							]
+						},
+						"description": "E-postaya gelen doğrulama kodu ile yeni şifreyi belirler."
+					}
+				},
+				{
+					"name": "Send Email Change Code (E-posta Değiştirme Kodu Gönder)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"newEmail\": \"yeni.eposta@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/User/send-email-change-code",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"send-email-change-code"
+							]
+						},
+						"description": "Yeni e-posta adresine doğrulama kodu gönderir."
+					}
+				},
+				{
+					"name": "Change Email With Code (Kod ile E-posta Değiştir)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"newEmail\": \"yeni.eposta@example.com\",\n  \"code\": \"123456\",\n  \"currentPassword\": \"Password123!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/User/change-email-with-code",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"User",
+								"change-email-with-code"
+							]
+						},
+						"description": "Mevcut şifre ve doğrulama kodu doğrulandıktan sonra e-posta adresini günceller."
+					}
+				}
+			]
+		},
+		{
+			"name": "Localization (Dil & Yerelleştirme)",
+			"description": "Çoklu dil (i18n) sözlük verilerini getiren uç noktalar.",
+			"item": [
+				{
+					"name": "Get Localization Dictionary (Query Param ile)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Localization?lang=tr",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Localization"
+							],
+							"query": [
+								{
+									"key": "lang",
+									"value": "tr",
+									"description": "Dil kodu (tr, en vb.)"
+								}
+							]
+						},
+						"description": "Sistemdeki dil anahtarlarını JSON formatında döndürür."
+					}
+				},
+				{
+					"name": "Get Localization By Path (Route ile)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Localization/tr",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Localization",
+								"tr"
+							]
+						},
+						"description": "Path üzerinden dil koduna (ör. /tr veya /en) göre yerelleştirme sözlüğünü getirir."
+					}
+				}
+			]
+		}
+	]
+}
