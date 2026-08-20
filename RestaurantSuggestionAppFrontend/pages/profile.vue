@@ -6,7 +6,7 @@
         <div class="header-left">
           <NuxtLink to="/" class="logo">Sofra</NuxtLink>
           <nav>
-            <NuxtLink to="/" class="nav-link" :class="{ on: $route.path === '/' }" @click.prevent="navigateTo('/')">{{ t('nav.discover') }}</NuxtLink>
+            <NuxtLink to="/" class="nav-link" :class="{ on: $route.path === '/' }">{{ t('nav.discover') }}</NuxtLink>
             <NuxtLink to="/profile" class="nav-link" :class="{ on: $route.path === '/profile' }">{{ t('profile.myProfile') }}</NuxtLink>
           </nav>
         </div>
