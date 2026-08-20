@@ -52,14 +52,6 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     };
 });
 
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.Listen(System.Net.IPAddress.Any, 7085, listenOptions =>
-    {
-        listenOptions.UseHttps();
-    });
-    options.Listen(System.Net.IPAddress.Any, 5062);
-});
 
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
@@ -178,7 +170,10 @@ app.UseSwaggerUI(c =>
 var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
 app.UseRequestLocalization(localizationOptions);
 
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 app.UseCors();
 
 app.UseRateLimiter();
