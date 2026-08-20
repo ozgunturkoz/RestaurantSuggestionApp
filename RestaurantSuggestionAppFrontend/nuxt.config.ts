@@ -21,6 +21,12 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt'
   ],
+  imports: {
+    dirs: ['stores']
+  },
+  pinia: {
+    storesDirs: ['./stores/**']
+  },
 
   css: [
     'leaflet/dist/leaflet.css',
