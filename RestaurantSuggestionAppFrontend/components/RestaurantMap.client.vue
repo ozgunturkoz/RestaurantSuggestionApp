@@ -6,7 +6,7 @@
 import { ref, onMounted, watch, nextTick, onBeforeUnmount } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { useRestaurantStore } from '~/stores/restaurantStore'
+import { useRestaurantStore } from '~/stores/restaurantStore.ts'
 
 const props = defineProps({
   selectedRestaurantId: {

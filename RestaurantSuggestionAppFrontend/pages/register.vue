@@ -84,7 +84,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useAuthStore } from '~/stores/authStore'
+import { useAuthStore } from '~/stores/authStore.ts'
 import { useRouter } from '#app'
 import '~/assets/auth.css'
 

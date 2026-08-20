@@ -463,7 +463,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { useAuthStore } from '~/stores/authStore'
+import { useAuthStore } from '~/stores/authStore.ts'
 import { useUserService } from '~/composables/useUserService'
 import { useI18n } from '~/composables/useI18n'
 import { useToast } from '~/composables/useToast'

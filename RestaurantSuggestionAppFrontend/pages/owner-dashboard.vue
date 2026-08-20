@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useAuthStore } from '~/stores/authStore'
+import { useAuthStore } from '~/stores/authStore.ts'
 
 const authStore = useAuthStore()
 const isLoading = ref(false)
