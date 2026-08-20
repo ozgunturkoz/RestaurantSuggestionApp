@@ -100,11 +100,11 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    async register(name: string, email: string, password: string) {
+    async register(name: string, email: string, password: string, confirmPassword: string) {
       const authService = useAuthService()
 
       try {
-        const response = await authService.register({ name, email, password }) as any
+        const response = await authService.register({ name, email, password, confirmPassword }) as any
         const data = response?.data
         
         if (response?.isSuccess && data?.requiresVerification) {
@@ -126,6 +126,29 @@ export const useAuthStore = defineStore('auth', {
       } catch (error: any) {
         console.error('Kayıt başarısız:', error)
         return { requiresVerification: false, success: false, error: error?.data?.message || 'Kayıt işlemi başarısız.' }
+      }
+    },
+
+    async verifyRegister(email: string, code: string) {
+      const authService = useAuthService()
+      const tokenCookie = useCookie('auth_token', { path: '/', maxAge: 60 * 60 })
+
+      try {
+        const response = await authService.verifyRegister({ email, code }) as any
+        const token = response?.data || response?.token
+
+        if (token && typeof token === 'string') {
+          tokenCookie.value = token
+          const decoded = parseJwt(token)
+          this.isLoggedIn = true
+          this.user = extractUserFromDecoded(decoded)
+          useRestaurantStore().resetState()
+          return { success: true }
+        }
+        return { success: false, error: response?.message || 'Doğrulama başarısız.' }
+      } catch (error: any) {
+        console.error('Doğrulama başarısız:', error)
+        return { success: false, error: error?.data?.message || 'Doğrulama işlemi başarısız.' }
       }
     },
 

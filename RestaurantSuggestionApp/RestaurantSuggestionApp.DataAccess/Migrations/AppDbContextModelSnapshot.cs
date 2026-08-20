@@ -58,7 +58,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 1,
                             Culture = "tr",
                             ResourceKey = "UserNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(7493),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(1776),
                             Value = "Kullanıcı bulunamadı."
                         },
                         new
@@ -66,7 +66,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 2,
                             Culture = "tr",
                             ResourceKey = "InvalidPassword",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8033),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2292),
                             Value = "E-posta veya şifre hatalı!"
                         },
                         new
@@ -74,7 +74,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 3,
                             Culture = "tr",
                             ResourceKey = "InvalidInput",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8034),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2294),
                             Value = "E-posta ve şifre boş bırakılamaz."
                         },
                         new
@@ -82,7 +82,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 4,
                             Culture = "tr",
                             ResourceKey = "InvalidCode",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8035),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2295),
                             Value = "Girdiğiniz doğrulama kodu hatalı!"
                         },
                         new
@@ -90,7 +90,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 5,
                             Culture = "tr",
                             ResourceKey = "LoginSuccess",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8036),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2296),
                             Value = "Giriş başarılı."
                         },
                         new
@@ -98,7 +98,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 6,
                             Culture = "tr",
                             ResourceKey = "RegisterSuccess",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8040),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2299),
                             Value = "Kayıt işlemi başarılı."
                         },
                         new
@@ -106,7 +106,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 7,
                             Culture = "tr",
                             ResourceKey = "RestaurantNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8041),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2300),
                             Value = "Restoran bulunamadı."
                         },
                         new
@@ -114,7 +114,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 8,
                             Culture = "tr",
                             ResourceKey = "EmailAlreadyExists",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8042),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2301),
                             Value = "Bu e-posta adresi zaten kullanımda."
                         },
                         new
@@ -122,7 +122,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 9,
                             Culture = "tr",
                             ResourceKey = "Unauthorized",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8043),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2302),
                             Value = "Bu işlem için yetkiniz bulunmamaktadır."
                         },
                         new
@@ -130,7 +130,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 10,
                             Culture = "tr",
                             ResourceKey = "InvalidToken",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8045),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2304),
                             Value = "Geçersiz veya süresi dolmuş oturum."
                         },
                         new
@@ -138,7 +138,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 11,
                             Culture = "tr",
                             ResourceKey = "ExpenditureAdded",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8084),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2306),
                             Value = "Harcama başarıyla eklendi."
                         },
                         new
@@ -146,7 +146,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 12,
                             Culture = "tr",
                             ResourceKey = "FavoriteAdded",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8085),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2307),
                             Value = "Restoran favorilere eklendi."
                         },
                         new
@@ -154,7 +154,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 13,
                             Culture = "tr",
                             ResourceKey = "FavoriteRemoved",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8086),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2308),
                             Value = "Restoran favorilerden çıkarıldı."
                         },
                         new
@@ -162,7 +162,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 14,
                             Culture = "tr",
                             ResourceKey = "FavoriteNoteUpdated",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8087),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2309),
                             Value = "Favori notu güncellendi."
                         },
                         new
@@ -170,7 +170,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 15,
                             Culture = "tr",
                             ResourceKey = "RestaurantFetchError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8088),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2311),
                             Value = "Restoranlar getirilirken hata oluştu."
                         },
                         new
@@ -178,7 +178,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 16,
                             Culture = "tr",
                             ResourceKey = "RestaurantGetByIdError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8089),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2312),
                             Value = "Restoran getirilirken hata oluştu."
                         },
                         new
@@ -186,7 +186,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 17,
                             Culture = "tr",
                             ResourceKey = "RestaurantAddError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8090),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2313),
                             Value = "Restoran eklenirken hata oluştu."
                         },
                         new
@@ -194,7 +194,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 18,
                             Culture = "tr",
                             ResourceKey = "RestaurantUpdateError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8093),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2316),
                             Value = "Restoran güncellenirken hata oluştu."
                         },
                         new
@@ -202,7 +202,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 19,
                             Culture = "tr",
                             ResourceKey = "RestaurantDeleteError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8094),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2317),
                             Value = "Restoran silinirken hata oluştu."
                         },
                         new
@@ -210,7 +210,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 20,
                             Culture = "tr",
                             ResourceKey = "NearbyRestaurantsError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8095),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2318),
                             Value = "Yakın restoranlar hesaplanırken bir hata oluştu."
                         },
                         new
@@ -218,7 +218,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 21,
                             Culture = "tr",
                             ResourceKey = "RestaurantToUpdateNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8096),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2322),
                             Value = "Güncellenecek restoran bulunamadı."
                         },
                         new
@@ -226,7 +226,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 22,
                             Culture = "tr",
                             ResourceKey = "RestaurantToDeleteNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8097),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2323),
                             Value = "Silinecek restoran bulunamadı."
                         },
                         new
@@ -234,7 +234,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 23,
                             Culture = "tr",
                             ResourceKey = "FavoriteRestaurantNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8098),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2325),
                             Value = "Favoriye eklenecek restoran bulunamadı."
                         },
                         new
@@ -242,7 +242,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 24,
                             Culture = "tr",
                             ResourceKey = "FavoriteNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8099),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2325),
                             Value = "Kaldırılacak favori kaydı bulunamadı."
                         },
                         new
@@ -250,7 +250,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 25,
                             Culture = "tr",
                             ResourceKey = "FavoriteAddError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8101),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2326),
                             Value = "Favori eklenirken hata oluştu."
                         },
                         new
@@ -258,7 +258,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 26,
                             Culture = "tr",
                             ResourceKey = "FavoriteRemoveError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8102),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2327),
                             Value = "Favori kaldırılırken hata oluştu."
                         },
                         new
@@ -266,7 +266,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 27,
                             Culture = "tr",
                             ResourceKey = "FavoritesFetchError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8103),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2328),
                             Value = "Favoriler getirilirken hata oluştu."
                         },
                         new
@@ -274,7 +274,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 28,
                             Culture = "tr",
                             ResourceKey = "UsersFetchError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8104),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2329),
                             Value = "Kullanıcılar getirilirken hata oluştu."
                         },
                         new
@@ -282,7 +282,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 29,
                             Culture = "tr",
                             ResourceKey = "UserGetByIdError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8105),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2330),
                             Value = "Kullanıcı getirilirken hata oluştu."
                         },
                         new
@@ -290,7 +290,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 30,
                             Culture = "tr",
                             ResourceKey = "UserAddError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8107),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2331),
                             Value = "Kullanıcı eklenirken hata oluştu."
                         },
                         new
@@ -298,7 +298,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 31,
                             Culture = "tr",
                             ResourceKey = "UserUpdateError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8108),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2332),
                             Value = "Kullanıcı güncellenirken hata oluştu."
                         },
                         new
@@ -306,7 +306,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 32,
                             Culture = "tr",
                             ResourceKey = "UserDeleteError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8109),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2333),
                             Value = "Kullanıcı silinirken hata oluştu."
                         },
                         new
@@ -314,7 +314,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 33,
                             Culture = "tr",
                             ResourceKey = "UserToUpdateNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8110),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2334),
                             Value = "Güncellenecek kullanıcı bulunamadı."
                         },
                         new
@@ -322,7 +322,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 34,
                             Culture = "tr",
                             ResourceKey = "UserToDeleteNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8112),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2335),
                             Value = "Silinecek kullanıcı bulunamadı."
                         },
                         new
@@ -330,7 +330,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 35,
                             Culture = "tr",
                             ResourceKey = "ExpendituresFetchError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8113),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2336),
                             Value = "Harcamalar getirilirken hata oluştu."
                         },
                         new
@@ -338,7 +338,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 36,
                             Culture = "tr",
                             ResourceKey = "ExpenditureAmountInvalid",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8114),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2337),
                             Value = "Harcama tutarı 0'dan büyük olmalıdır."
                         },
                         new
@@ -346,7 +346,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 37,
                             Culture = "tr",
                             ResourceKey = "ExpenditureAddError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8115),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2367),
                             Value = "Harcama eklenirken hata oluştu."
                         },
                         new
@@ -354,7 +354,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 38,
                             Culture = "tr",
                             ResourceKey = "ExpenditureNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8116),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2368),
                             Value = "Silinecek harcama kaydı bulunamadı."
                         },
                         new
@@ -362,7 +362,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 39,
                             Culture = "tr",
                             ResourceKey = "ExpenditureDeleteError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8117),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2369),
                             Value = "Harcama silinirken hata oluştu."
                         },
                         new
@@ -370,7 +370,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 40,
                             Culture = "tr",
                             ResourceKey = "ProfileUpdateError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8118),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2370),
                             Value = "Profil güncellenirken hata oluştu."
                         },
                         new
@@ -378,7 +378,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 41,
                             Culture = "tr",
                             ResourceKey = "PasswordResetCodeSendError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8119),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2371),
                             Value = "Şifre sıfırlama kodu gönderilirken hata oluştu."
                         },
                         new
@@ -386,7 +386,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 42,
                             Culture = "tr",
                             ResourceKey = "PasswordAndCodeRequired",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8120),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2372),
                             Value = "Doğrulama kodu ve yeni şifre boş bırakılamaz."
                         },
                         new
@@ -394,7 +394,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 43,
                             Culture = "tr",
                             ResourceKey = "PasswordMinLength",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8121),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2373),
                             Value = "Şifre en az 6 karakter olmalıdır."
                         },
                         new
@@ -402,7 +402,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 44,
                             Culture = "tr",
                             ResourceKey = "CodeExpired",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8122),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2374),
                             Value = "Doğrulama kodunun süresi dolmuş. Lütfen tekrar kod isteyin."
                         },
                         new
@@ -410,7 +410,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 45,
                             Culture = "tr",
                             ResourceKey = "PasswordUpdateError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8123),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2375),
                             Value = "Şifre güncellenirken hata oluştu."
                         },
                         new
@@ -418,7 +418,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 46,
                             Culture = "tr",
                             ResourceKey = "InvalidEmailAddress",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8124),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2376),
                             Value = "Lütfen geçerli bir yeni e-posta adresi giriniz."
                         },
                         new
@@ -426,7 +426,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 47,
                             Culture = "tr",
                             ResourceKey = "EmailChangeCodeSendError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8126),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2377),
                             Value = "E-posta doğrulama kodu gönderilirken hata oluştu."
                         },
                         new
@@ -434,7 +434,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 48,
                             Culture = "tr",
                             ResourceKey = "AllFieldsRequired",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8137),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2378),
                             Value = "Tüm alanların doldurulması zorunludur."
                         },
                         new
@@ -442,7 +442,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 49,
                             Culture = "tr",
                             ResourceKey = "CurrentPasswordIncorrect",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8139),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2379),
                             Value = "Girdiğiniz mevcut şifre yanlış!"
                         },
                         new
@@ -450,7 +450,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 50,
                             Culture = "tr",
                             ResourceKey = "EmailUpdateError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8141),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2379),
                             Value = "E-posta adresi güncellenirken hata oluştu."
                         },
                         new
@@ -458,7 +458,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 51,
                             Culture = "tr",
                             ResourceKey = "EmailAndCodeRequired",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8142),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2380),
                             Value = "E-posta ve doğrulama kodu boş bırakılamaz."
                         },
                         new
@@ -466,7 +466,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 52,
                             Culture = "tr",
                             ResourceKey = "RegisterFieldsRequired",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8144),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2381),
                             Value = "Ad, e-posta ve şifre alanları boş bırakılamaz."
                         },
                         new
@@ -474,7 +474,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 53,
                             Culture = "tr",
                             ResourceKey = "LoginError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8167),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2382),
                             Value = "Giriş işlemi sırasında bir hata oluştu."
                         },
                         new
@@ -482,7 +482,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 54,
                             Culture = "tr",
                             ResourceKey = "VerificationError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8168),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2383),
                             Value = "Doğrulama işlemi sırasında hata oluştu."
                         },
                         new
@@ -490,7 +490,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 55,
                             Culture = "tr",
                             ResourceKey = "RegisterError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8169),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2384),
                             Value = "Kayıt işlemi sırasında bir hata oluştu."
                         },
                         new
@@ -498,7 +498,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 56,
                             Culture = "tr",
                             ResourceKey = "UnauthorizedProfileUpdate",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8171),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2385),
                             Value = "Başka bir kullanıcının profilini güncelleme yetkiniz yok."
                         },
                         new
@@ -506,7 +506,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 57,
                             Culture = "tr",
                             ResourceKey = "UnauthorizedAccountDelete",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8172),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2386),
                             Value = "Başka bir kullanıcının hesabını silme yetkiniz yok."
                         },
                         new
@@ -514,7 +514,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 58,
                             Culture = "tr",
                             ResourceKey = "PasswordRequired",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8173),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2387),
                             Value = "Şifre alanı boş bırakılamaz."
                         },
                         new
@@ -522,7 +522,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 59,
                             Culture = "tr",
                             ResourceKey = "nav.discover",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8175),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2388),
                             Value = "Keşfet"
                         },
                         new
@@ -530,7 +530,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 60,
                             Culture = "tr",
                             ResourceKey = "nav.hello",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8176),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2389),
                             Value = "MERHABA"
                         },
                         new
@@ -538,7 +538,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 61,
                             Culture = "tr",
                             ResourceKey = "nav.logout",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8177),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2390),
                             Value = "Çıkış Yap"
                         },
                         new
@@ -546,7 +546,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 62,
                             Culture = "tr",
                             ResourceKey = "profile.backToDiscover",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8178),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2391),
                             Value = "Keşfet Sayfasına Dön"
                         },
                         new
@@ -554,7 +554,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 63,
                             Culture = "tr",
                             ResourceKey = "profile.myProfile",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8179),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2392),
                             Value = "Profilim"
                         },
                         new
@@ -562,7 +562,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 64,
                             Culture = "tr",
                             ResourceKey = "sidebar.radiusPrefix",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8180),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2394),
                             Value = "Yarıçap"
                         },
                         new
@@ -570,7 +570,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 65,
                             Culture = "tr",
                             ResourceKey = "sidebar.title",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8182),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2395),
                             Value = "Yakınındaki restoranlar"
                         },
                         new
@@ -578,7 +578,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 66,
                             Culture = "tr",
                             ResourceKey = "sidebar.subtitle",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8185),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2397),
                             Value = "Konumuna göre listelenen restoranlar"
                         },
                         new
@@ -586,7 +586,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 67,
                             Culture = "tr",
                             ResourceKey = "sidebar.radiusLabel",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8186),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2398),
                             Value = "Mesafe Sınırı (Yarıçap)"
                         },
                         new
@@ -594,7 +594,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 68,
                             Culture = "tr",
                             ResourceKey = "sidebar.loading",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8187),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2400),
                             Value = "Yükleniyor..."
                         },
                         new
@@ -602,7 +602,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 69,
                             Culture = "tr",
                             ResourceKey = "sidebar.distance",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8188),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2401),
                             Value = "Mesafe"
                         },
                         new
@@ -610,7 +610,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 70,
                             Culture = "tr",
                             ResourceKey = "sidebar.noRestaurants",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8189),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2402),
                             Value = "Seçilen yarıçapta etrafınızda restoran bulunamadı."
                         },
                         new
@@ -618,7 +618,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 71,
                             Culture = "tr",
                             ResourceKey = "badge.recommendation",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8190),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2403),
                             Value = "%{score} Multinet profilinize ve konumunuza uygun"
                         },
                         new
@@ -626,7 +626,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 72,
                             Culture = "tr",
                             ResourceKey = "map.loading",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8192),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2404),
                             Value = "Harita Yükleniyor..."
                         },
                         new
@@ -634,7 +634,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 73,
                             Culture = "tr",
                             ResourceKey = "map.userMarker",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8193),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2414),
                             Value = "Buradasınız"
                         },
                         new
@@ -642,7 +642,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 74,
                             Culture = "tr",
                             ResourceKey = "map.category",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8194),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2415),
                             Value = "Kategori"
                         },
                         new
@@ -650,7 +650,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 75,
                             Culture = "tr",
                             ResourceKey = "map.price",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8196),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2417),
                             Value = "Fiyat"
                         },
                         new
@@ -658,7 +658,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 76,
                             Culture = "tr",
                             ResourceKey = "map.walk",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8197),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2417),
                             Value = "Yürüyüş"
                         },
                         new
@@ -666,7 +666,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 77,
                             Culture = "tr",
                             ResourceKey = "map.match",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8198),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2418),
                             Value = "Uyum"
                         },
                         new
@@ -674,7 +674,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 78,
                             Culture = "tr",
                             ResourceKey = "map.locationScore",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8198),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2419),
                             Value = "Konum"
                         },
                         new
@@ -682,7 +682,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 79,
                             Culture = "tr",
                             ResourceKey = "map.budgetScore",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8199),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2441),
                             Value = "Bütçe"
                         },
                         new
@@ -690,7 +690,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 80,
                             Culture = "tr",
                             ResourceKey = "filter.search",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8200),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2442),
                             Value = "Restoran Ara"
                         },
                         new
@@ -698,7 +698,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 81,
                             Culture = "tr",
                             ResourceKey = "filter.searchPlaceholder",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8201),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2443),
                             Value = "Restoran adı yazın..."
                         },
                         new
@@ -706,7 +706,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 82,
                             Culture = "tr",
                             ResourceKey = "filter.category",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8202),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2444),
                             Value = "Kategori"
                         },
                         new
@@ -714,7 +714,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 83,
                             Culture = "tr",
                             ResourceKey = "filter.allCategories",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8203),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2445),
                             Value = "Tümü"
                         },
                         new
@@ -722,7 +722,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 84,
                             Culture = "tr",
                             ResourceKey = "filter.price",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8204),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2445),
                             Value = "Fiyat Aralığı"
                         },
                         new
@@ -730,7 +730,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 85,
                             Culture = "tr",
                             ResourceKey = "filter.allPrices",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8205),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2446),
                             Value = "Tümü"
                         },
                         new
@@ -738,7 +738,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 86,
                             Culture = "tr",
                             ResourceKey = "filter.noResults",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8206),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2447),
                             Value = "Filtrelere uygun restoran bulunamadı."
                         },
                         new
@@ -746,7 +746,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 87,
                             Culture = "tr",
                             ResourceKey = "filter.clearFilters",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8207),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2448),
                             Value = "Filtreleri Temizle"
                         },
                         new
@@ -754,7 +754,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 88,
                             Culture = "tr",
                             ResourceKey = "filter.resultCount",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8208),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2449),
                             Value = "{count} restoran listeleniyor"
                         },
                         new
@@ -762,7 +762,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 89,
                             Culture = "tr",
                             ResourceKey = "detail.category",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8209),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2450),
                             Value = "Kategori"
                         },
                         new
@@ -770,7 +770,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 90,
                             Culture = "tr",
                             ResourceKey = "detail.price",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8210),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2451),
                             Value = "Ortalama Fiyat"
                         },
                         new
@@ -778,7 +778,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 91,
                             Culture = "tr",
                             ResourceKey = "detail.distance",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8212),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2452),
                             Value = "Yürüme Mesafesi"
                         },
                         new
@@ -786,7 +786,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 92,
                             Culture = "tr",
                             ResourceKey = "detail.duration",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8213),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2453),
                             Value = "Yürüme Süresi"
                         },
                         new
@@ -794,7 +794,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 93,
                             Culture = "tr",
                             ResourceKey = "detail.score",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8214),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2453),
                             Value = "Öneri Skoru"
                         },
                         new
@@ -802,7 +802,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 94,
                             Culture = "tr",
                             ResourceKey = "detail.locationScore",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8215),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2454),
                             Value = "Konum Skoru"
                         },
                         new
@@ -810,7 +810,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 95,
                             Culture = "tr",
                             ResourceKey = "detail.budgetScore",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8238),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2455),
                             Value = "Bütçe Skoru"
                         },
                         new
@@ -818,7 +818,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 96,
                             Culture = "tr",
                             ResourceKey = "detail.favoriteNote",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8239),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2456),
                             Value = "Favori Notunuz"
                         },
                         new
@@ -826,7 +826,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 97,
                             Culture = "tr",
                             ResourceKey = "detail.favoriteNotePlaceholder",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8240),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2457),
                             Value = "Bu mekan hakkında bir not ekleyin..."
                         },
                         new
@@ -834,7 +834,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 98,
                             Culture = "tr",
                             ResourceKey = "detail.saveNote",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8241),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2458),
                             Value = "Notu Kaydet"
                         },
                         new
@@ -842,7 +842,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 99,
                             Culture = "tr",
                             ResourceKey = "detail.addFavorite",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8242),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2459),
                             Value = "Favorilere Ekle"
                         },
                         new
@@ -850,7 +850,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 100,
                             Culture = "tr",
                             ResourceKey = "detail.removeFavorite",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8243),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2460),
                             Value = "Favorilerden Çıkar"
                         },
                         new
@@ -858,7 +858,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 101,
                             Culture = "tr",
                             ResourceKey = "detail.close",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8244),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2461),
                             Value = "Kapat"
                         },
                         new
@@ -866,7 +866,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 102,
                             Culture = "tr",
                             ResourceKey = "detail.noteSaved",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8244),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2462),
                             Value = "Not kaydedildi!"
                         },
                         new
@@ -874,7 +874,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 103,
                             Culture = "tr",
                             ResourceKey = "detail.addedToFavorites",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8245),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2463),
                             Value = "Favorilere eklendi!"
                         },
                         new
@@ -882,7 +882,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 104,
                             Culture = "tr",
                             ResourceKey = "detail.removedFromFavorites",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8246),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2463),
                             Value = "Favorilerden çıkarıldı."
                         },
                         new
@@ -890,7 +890,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 105,
                             Culture = "tr",
                             ResourceKey = "login.sub",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8248),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2464),
                             Value = "Multinet entegre öneri sistemi"
                         },
                         new
@@ -898,7 +898,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 106,
                             Culture = "tr",
                             ResourceKey = "login.taglineTitle",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8249),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2465),
                             Value = "Bakiyene ve damak tadına göre, yakınındaki doğru öğün."
                         },
                         new
@@ -906,7 +906,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 107,
                             Culture = "tr",
                             ResourceKey = "login.taglineSub",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8250),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2466),
                             Value = "Harcama alışkanlığın ve konumunla eşleşen restoranlar — her gün öğle molasında."
                         },
                         new
@@ -914,7 +914,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 108,
                             Culture = "tr",
                             ResourceKey = "login.welcome",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8251),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2467),
                             Value = "Tekrar hoş geldin"
                         },
                         new
@@ -922,7 +922,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 109,
                             Culture = "tr",
                             ResourceKey = "login.lead",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8252),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2468),
                             Value = "Öğle molası önerilerin seni bekliyor."
                         },
                         new
@@ -930,7 +930,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 110,
                             Culture = "tr",
                             ResourceKey = "login.email",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8253),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2468),
                             Value = "E-posta"
                         },
                         new
@@ -938,7 +938,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 111,
                             Culture = "tr",
                             ResourceKey = "login.emailPlaceholder",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8254),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2469),
                             Value = "deniz@sirket.com"
                         },
                         new
@@ -946,7 +946,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 112,
                             Culture = "tr",
                             ResourceKey = "login.password",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8255),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2471),
                             Value = "Şifre"
                         },
                         new
@@ -954,7 +954,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 113,
                             Culture = "tr",
                             ResourceKey = "login.submit",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8256),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2472),
                             Value = "Giriş yap"
                         },
                         new
@@ -962,7 +962,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 114,
                             Culture = "tr",
                             ResourceKey = "login.noAccount",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8257),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2473),
                             Value = "Hesabın yok mu?"
                         },
                         new
@@ -970,7 +970,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 115,
                             Culture = "tr",
                             ResourceKey = "login.registerLink",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8258),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2474),
                             Value = "Kayıt ol"
                         },
                         new
@@ -978,7 +978,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 116,
                             Culture = "tr",
                             ResourceKey = "login.errorMsg",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8259),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2475),
                             Value = "E-posta adresi veya şifre hatalı!"
                         },
                         new
@@ -986,7 +986,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 117,
                             Culture = "tr",
                             ResourceKey = "register.title",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8260),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2476),
                             Value = "Hesabını oluştur"
                         },
                         new
@@ -994,7 +994,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 118,
                             Culture = "tr",
                             ResourceKey = "register.lead",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8261),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2476),
                             Value = "Akıllı restoran önerilerini hemen keşfet."
                         },
                         new
@@ -1002,7 +1002,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 119,
                             Culture = "tr",
                             ResourceKey = "register.name",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8262),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2477),
                             Value = "Ad Soyad"
                         },
                         new
@@ -1010,7 +1010,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 120,
                             Culture = "tr",
                             ResourceKey = "register.namePlaceholder",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8263),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2478),
                             Value = "Deniz Yılmaz"
                         },
                         new
@@ -1018,7 +1018,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 121,
                             Culture = "tr",
                             ResourceKey = "register.email",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8264),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2499),
                             Value = "E-posta"
                         },
                         new
@@ -1026,7 +1026,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 122,
                             Culture = "tr",
                             ResourceKey = "register.emailPlaceholder",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8265),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2500),
                             Value = "deniz@sirket.com"
                         },
                         new
@@ -1034,7 +1034,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 123,
                             Culture = "tr",
                             ResourceKey = "register.password",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8266),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2501),
                             Value = "Şifre"
                         },
                         new
@@ -1042,7 +1042,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 124,
                             Culture = "tr",
                             ResourceKey = "register.submit",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8267),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2502),
                             Value = "Kayıt ol"
                         },
                         new
@@ -1050,7 +1050,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 125,
                             Culture = "tr",
                             ResourceKey = "register.hasAccount",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8268),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2502),
                             Value = "Zaten hesabın var mı?"
                         },
                         new
@@ -1058,7 +1058,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 126,
                             Culture = "tr",
                             ResourceKey = "register.loginLink",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8269),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2503),
                             Value = "Giriş yap"
                         },
                         new
@@ -1066,7 +1066,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 127,
                             Culture = "tr",
                             ResourceKey = "register.errorMsg",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8270),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2504),
                             Value = "Kayıt işlemi başarısız. Lütfen bilgilerinizi kontrol edin."
                         },
                         new
@@ -1074,7 +1074,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 128,
                             Culture = "en",
                             ResourceKey = "UserNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8271),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2505),
                             Value = "User not found."
                         },
                         new
@@ -1082,7 +1082,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 129,
                             Culture = "en",
                             ResourceKey = "InvalidPassword",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8272),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2506),
                             Value = "Invalid email or password!"
                         },
                         new
@@ -1090,7 +1090,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 130,
                             Culture = "en",
                             ResourceKey = "InvalidInput",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8274),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2508),
                             Value = "Email and password cannot be empty."
                         },
                         new
@@ -1098,7 +1098,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 131,
                             Culture = "en",
                             ResourceKey = "InvalidCode",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8275),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2508),
                             Value = "Invalid verification code!"
                         },
                         new
@@ -1106,7 +1106,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 132,
                             Culture = "en",
                             ResourceKey = "LoginSuccess",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8276),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2509),
                             Value = "Login successful."
                         },
                         new
@@ -1114,7 +1114,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 133,
                             Culture = "en",
                             ResourceKey = "RegisterSuccess",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8277),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2510),
                             Value = "Registration completed successfully."
                         },
                         new
@@ -1122,7 +1122,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 134,
                             Culture = "en",
                             ResourceKey = "RestaurantNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8278),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2511),
                             Value = "Restaurant not found."
                         },
                         new
@@ -1130,7 +1130,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 135,
                             Culture = "en",
                             ResourceKey = "EmailAlreadyExists",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8279),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2512),
                             Value = "This email address is already in use."
                         },
                         new
@@ -1138,7 +1138,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 136,
                             Culture = "en",
                             ResourceKey = "Unauthorized",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8280),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2514),
                             Value = "You are not authorized for this operation."
                         },
                         new
@@ -1146,7 +1146,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 137,
                             Culture = "en",
                             ResourceKey = "InvalidToken",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8302),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2514),
                             Value = "Invalid or expired session."
                         },
                         new
@@ -1154,7 +1154,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 138,
                             Culture = "en",
                             ResourceKey = "ExpenditureAdded",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8303),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2516),
                             Value = "Expenditure added successfully."
                         },
                         new
@@ -1162,7 +1162,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 139,
                             Culture = "en",
                             ResourceKey = "FavoriteAdded",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8311),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2517),
                             Value = "Restaurant added to favorites."
                         },
                         new
@@ -1170,7 +1170,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 140,
                             Culture = "en",
                             ResourceKey = "FavoriteRemoved",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8312),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2518),
                             Value = "Restaurant removed from favorites."
                         },
                         new
@@ -1178,7 +1178,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 141,
                             Culture = "en",
                             ResourceKey = "FavoriteNoteUpdated",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8314),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2518),
                             Value = "Favorite note updated."
                         },
                         new
@@ -1186,7 +1186,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 142,
                             Culture = "en",
                             ResourceKey = "RestaurantFetchError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8315),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2519),
                             Value = "An error occurred while fetching restaurants."
                         },
                         new
@@ -1194,7 +1194,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 143,
                             Culture = "en",
                             ResourceKey = "RestaurantGetByIdError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8316),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2520),
                             Value = "An error occurred while fetching the restaurant."
                         },
                         new
@@ -1202,7 +1202,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 144,
                             Culture = "en",
                             ResourceKey = "RestaurantAddError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8317),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2521),
                             Value = "An error occurred while adding the restaurant."
                         },
                         new
@@ -1210,7 +1210,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 145,
                             Culture = "en",
                             ResourceKey = "RestaurantUpdateError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8318),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2522),
                             Value = "An error occurred while updating the restaurant."
                         },
                         new
@@ -1218,7 +1218,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 146,
                             Culture = "en",
                             ResourceKey = "RestaurantDeleteError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8318),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2523),
                             Value = "An error occurred while deleting the restaurant."
                         },
                         new
@@ -1226,7 +1226,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 147,
                             Culture = "en",
                             ResourceKey = "NearbyRestaurantsError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8319),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2525),
                             Value = "An error occurred while calculating nearby restaurants."
                         },
                         new
@@ -1234,7 +1234,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 148,
                             Culture = "en",
                             ResourceKey = "RestaurantToUpdateNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8321),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2526),
                             Value = "Restaurant to update not found."
                         },
                         new
@@ -1242,7 +1242,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 149,
                             Culture = "en",
                             ResourceKey = "RestaurantToDeleteNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8321),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2527),
                             Value = "Restaurant to delete not found."
                         },
                         new
@@ -1250,7 +1250,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 150,
                             Culture = "en",
                             ResourceKey = "FavoriteRestaurantNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8322),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2528),
                             Value = "Restaurant to add to favorites not found."
                         },
                         new
@@ -1258,7 +1258,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 151,
                             Culture = "en",
                             ResourceKey = "FavoriteNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8323),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2529),
                             Value = "Favorite record to remove not found."
                         },
                         new
@@ -1266,7 +1266,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 152,
                             Culture = "en",
                             ResourceKey = "FavoriteAddError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8324),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2530),
                             Value = "An error occurred while adding favorite."
                         },
                         new
@@ -1274,7 +1274,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 153,
                             Culture = "en",
                             ResourceKey = "FavoriteRemoveError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8325),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2531),
                             Value = "An error occurred while removing favorite."
                         },
                         new
@@ -1282,7 +1282,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 154,
                             Culture = "en",
                             ResourceKey = "FavoritesFetchError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8326),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2532),
                             Value = "An error occurred while fetching favorites."
                         },
                         new
@@ -1290,7 +1290,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 155,
                             Culture = "en",
                             ResourceKey = "UsersFetchError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8327),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2533),
                             Value = "An error occurred while fetching users."
                         },
                         new
@@ -1298,7 +1298,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 156,
                             Culture = "en",
                             ResourceKey = "UserGetByIdError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8328),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2534),
                             Value = "An error occurred while fetching the user."
                         },
                         new
@@ -1306,7 +1306,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 157,
                             Culture = "en",
                             ResourceKey = "UserAddError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8329),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2535),
                             Value = "An error occurred while adding the user."
                         },
                         new
@@ -1314,7 +1314,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 158,
                             Culture = "en",
                             ResourceKey = "UserUpdateError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8330),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2535),
                             Value = "An error occurred while updating the user."
                         },
                         new
@@ -1322,7 +1322,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 159,
                             Culture = "en",
                             ResourceKey = "UserDeleteError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8331),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2536),
                             Value = "An error occurred while deleting the user."
                         },
                         new
@@ -1330,7 +1330,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 160,
                             Culture = "en",
                             ResourceKey = "UserToUpdateNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8332),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2537),
                             Value = "User to update not found."
                         },
                         new
@@ -1338,7 +1338,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 161,
                             Culture = "en",
                             ResourceKey = "UserToDeleteNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8333),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2538),
                             Value = "User to delete not found."
                         },
                         new
@@ -1346,7 +1346,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 162,
                             Culture = "en",
                             ResourceKey = "ExpendituresFetchError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8334),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2539),
                             Value = "An error occurred while fetching expenditures."
                         },
                         new
@@ -1354,7 +1354,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 163,
                             Culture = "en",
                             ResourceKey = "ExpenditureAmountInvalid",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8335),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2561),
                             Value = "Expenditure amount must be greater than 0."
                         },
                         new
@@ -1362,7 +1362,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 164,
                             Culture = "en",
                             ResourceKey = "ExpenditureAddError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8335),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2562),
                             Value = "An error occurred while adding expenditure."
                         },
                         new
@@ -1370,7 +1370,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 165,
                             Culture = "en",
                             ResourceKey = "ExpenditureNotFound",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8336),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2563),
                             Value = "Expenditure record to delete not found."
                         },
                         new
@@ -1378,7 +1378,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 166,
                             Culture = "en",
                             ResourceKey = "ExpenditureDeleteError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8337),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2564),
                             Value = "An error occurred while deleting expenditure."
                         },
                         new
@@ -1386,7 +1386,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 167,
                             Culture = "en",
                             ResourceKey = "ProfileUpdateError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8338),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2565),
                             Value = "An error occurred while updating profile."
                         },
                         new
@@ -1394,7 +1394,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 168,
                             Culture = "en",
                             ResourceKey = "PasswordResetCodeSendError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8339),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2566),
                             Value = "An error occurred while sending password reset code."
                         },
                         new
@@ -1402,7 +1402,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 169,
                             Culture = "en",
                             ResourceKey = "PasswordAndCodeRequired",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8340),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2567),
                             Value = "Verification code and new password cannot be empty."
                         },
                         new
@@ -1410,7 +1410,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 170,
                             Culture = "en",
                             ResourceKey = "PasswordMinLength",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8342),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2567),
                             Value = "Password must be at least 6 characters long."
                         },
                         new
@@ -1418,7 +1418,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 171,
                             Culture = "en",
                             ResourceKey = "CodeExpired",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8343),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2568),
                             Value = "Verification code expired. Please request a new code."
                         },
                         new
@@ -1426,7 +1426,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 172,
                             Culture = "en",
                             ResourceKey = "PasswordUpdateError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8344),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2569),
                             Value = "An error occurred while updating password."
                         },
                         new
@@ -1434,7 +1434,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 173,
                             Culture = "en",
                             ResourceKey = "InvalidEmailAddress",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8346),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2570),
                             Value = "Please enter a valid new email address."
                         },
                         new
@@ -1442,7 +1442,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 174,
                             Culture = "en",
                             ResourceKey = "EmailChangeCodeSendError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8347),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2571),
                             Value = "An error occurred while sending email change code."
                         },
                         new
@@ -1450,7 +1450,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 175,
                             Culture = "en",
                             ResourceKey = "AllFieldsRequired",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8348),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2572),
                             Value = "All fields are required."
                         },
                         new
@@ -1458,7 +1458,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 176,
                             Culture = "en",
                             ResourceKey = "CurrentPasswordIncorrect",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8349),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2573),
                             Value = "Current password entered is incorrect!"
                         },
                         new
@@ -1466,7 +1466,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 177,
                             Culture = "en",
                             ResourceKey = "EmailUpdateError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8350),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2573),
                             Value = "An error occurred while updating email address."
                         },
                         new
@@ -1474,7 +1474,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 178,
                             Culture = "en",
                             ResourceKey = "EmailAndCodeRequired",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8371),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2574),
                             Value = "Email and verification code cannot be empty."
                         },
                         new
@@ -1482,7 +1482,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 179,
                             Culture = "en",
                             ResourceKey = "RegisterFieldsRequired",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8372),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2575),
                             Value = "Name, email, and password fields are required."
                         },
                         new
@@ -1490,7 +1490,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 180,
                             Culture = "en",
                             ResourceKey = "LoginError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8373),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2576),
                             Value = "An error occurred during login."
                         },
                         new
@@ -1498,7 +1498,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 181,
                             Culture = "en",
                             ResourceKey = "VerificationError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8375),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2577),
                             Value = "An error occurred during verification."
                         },
                         new
@@ -1506,7 +1506,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 182,
                             Culture = "en",
                             ResourceKey = "RegisterError",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8376),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2578),
                             Value = "An error occurred during registration."
                         },
                         new
@@ -1514,7 +1514,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 183,
                             Culture = "en",
                             ResourceKey = "UnauthorizedProfileUpdate",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8377),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2585),
                             Value = "You do not have permission to update another user's profile."
                         },
                         new
@@ -1522,7 +1522,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 184,
                             Culture = "en",
                             ResourceKey = "UnauthorizedAccountDelete",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8378),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2586),
                             Value = "You do not have permission to delete another user's account."
                         },
                         new
@@ -1530,7 +1530,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 185,
                             Culture = "en",
                             ResourceKey = "PasswordRequired",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8379),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2587),
                             Value = "Password field cannot be empty."
                         },
                         new
@@ -1538,7 +1538,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 186,
                             Culture = "en",
                             ResourceKey = "nav.discover",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8381),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2587),
                             Value = "Discover"
                         },
                         new
@@ -1546,7 +1546,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 187,
                             Culture = "en",
                             ResourceKey = "nav.hello",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8382),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2588),
                             Value = "HELLO"
                         },
                         new
@@ -1554,7 +1554,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 188,
                             Culture = "en",
                             ResourceKey = "nav.logout",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8383),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2589),
                             Value = "Logout"
                         },
                         new
@@ -1562,7 +1562,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 189,
                             Culture = "en",
                             ResourceKey = "profile.backToDiscover",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8384),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2590),
                             Value = "Back to Discover Page"
                         },
                         new
@@ -1570,7 +1570,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 190,
                             Culture = "en",
                             ResourceKey = "profile.myProfile",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8385),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2592),
                             Value = "My Profile"
                         },
                         new
@@ -1578,7 +1578,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 191,
                             Culture = "en",
                             ResourceKey = "sidebar.radiusPrefix",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8386),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2593),
                             Value = "Radius"
                         },
                         new
@@ -1586,7 +1586,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 192,
                             Culture = "en",
                             ResourceKey = "sidebar.title",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8387),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2594),
                             Value = "Restaurants near you"
                         },
                         new
@@ -1594,7 +1594,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 193,
                             Culture = "en",
                             ResourceKey = "sidebar.subtitle",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8388),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2595),
                             Value = "Restaurants listed by your location"
                         },
                         new
@@ -1602,7 +1602,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 194,
                             Culture = "en",
                             ResourceKey = "sidebar.radiusLabel",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8389),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2596),
                             Value = "Distance Limit (Radius)"
                         },
                         new
@@ -1610,7 +1610,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 195,
                             Culture = "en",
                             ResourceKey = "sidebar.loading",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8390),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2596),
                             Value = "Loading..."
                         },
                         new
@@ -1618,7 +1618,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 196,
                             Culture = "en",
                             ResourceKey = "sidebar.distance",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8391),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2597),
                             Value = "Distance"
                         },
                         new
@@ -1626,7 +1626,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 197,
                             Culture = "en",
                             ResourceKey = "sidebar.noRestaurants",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8392),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2598),
                             Value = "No restaurants found around you within the selected radius."
                         },
                         new
@@ -1634,7 +1634,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 198,
                             Culture = "en",
                             ResourceKey = "badge.recommendation",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8393),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2599),
                             Value = "%{score} matches your Multinet profile and location"
                         },
                         new
@@ -1642,7 +1642,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 199,
                             Culture = "en",
                             ResourceKey = "map.loading",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8394),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2600),
                             Value = "Loading Map..."
                         },
                         new
@@ -1650,7 +1650,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 200,
                             Culture = "en",
                             ResourceKey = "map.userMarker",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8395),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2601),
                             Value = "You are here"
                         },
                         new
@@ -1658,7 +1658,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 201,
                             Culture = "en",
                             ResourceKey = "map.category",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8396),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2602),
                             Value = "Category"
                         },
                         new
@@ -1666,7 +1666,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 202,
                             Culture = "en",
                             ResourceKey = "map.price",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8397),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2602),
                             Value = "Price"
                         },
                         new
@@ -1674,7 +1674,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 203,
                             Culture = "en",
                             ResourceKey = "map.walk",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8398),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2604),
                             Value = "Walk"
                         },
                         new
@@ -1682,7 +1682,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 204,
                             Culture = "en",
                             ResourceKey = "map.match",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8399),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2605),
                             Value = "Match"
                         },
                         new
@@ -1690,7 +1690,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 205,
                             Culture = "en",
                             ResourceKey = "map.locationScore",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8399),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2629),
                             Value = "Location"
                         },
                         new
@@ -1698,7 +1698,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 206,
                             Culture = "en",
                             ResourceKey = "map.budgetScore",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8401),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2630),
                             Value = "Budget"
                         },
                         new
@@ -1706,7 +1706,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 207,
                             Culture = "en",
                             ResourceKey = "filter.search",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8402),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2631),
                             Value = "Search Restaurant"
                         },
                         new
@@ -1714,7 +1714,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 208,
                             Culture = "en",
                             ResourceKey = "filter.searchPlaceholder",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8402),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2632),
                             Value = "Type restaurant name..."
                         },
                         new
@@ -1722,7 +1722,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 209,
                             Culture = "en",
                             ResourceKey = "filter.category",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8403),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2633),
                             Value = "Category"
                         },
                         new
@@ -1730,7 +1730,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 210,
                             Culture = "en",
                             ResourceKey = "filter.allCategories",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8404),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2634),
                             Value = "All"
                         },
                         new
@@ -1738,7 +1738,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 211,
                             Culture = "en",
                             ResourceKey = "filter.price",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8405),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2635),
                             Value = "Price Range"
                         },
                         new
@@ -1746,7 +1746,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 212,
                             Culture = "en",
                             ResourceKey = "filter.allPrices",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8406),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2636),
                             Value = "All"
                         },
                         new
@@ -1754,7 +1754,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 213,
                             Culture = "en",
                             ResourceKey = "filter.noResults",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8407),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2636),
                             Value = "No restaurants match the filters."
                         },
                         new
@@ -1762,7 +1762,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 214,
                             Culture = "en",
                             ResourceKey = "filter.clearFilters",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8408),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2637),
                             Value = "Clear Filters"
                         },
                         new
@@ -1770,7 +1770,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 215,
                             Culture = "en",
                             ResourceKey = "filter.resultCount",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8409),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2638),
                             Value = "{count} restaurants listed"
                         },
                         new
@@ -1778,7 +1778,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 216,
                             Culture = "en",
                             ResourceKey = "detail.category",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8410),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2639),
                             Value = "Category"
                         },
                         new
@@ -1786,7 +1786,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 217,
                             Culture = "en",
                             ResourceKey = "detail.price",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8411),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2640),
                             Value = "Average Price"
                         },
                         new
@@ -1794,7 +1794,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 218,
                             Culture = "en",
                             ResourceKey = "detail.distance",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8412),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2641),
                             Value = "Walking Distance"
                         },
                         new
@@ -1802,7 +1802,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 219,
                             Culture = "en",
                             ResourceKey = "detail.duration",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8414),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2642),
                             Value = "Walking Duration"
                         },
                         new
@@ -1810,7 +1810,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 220,
                             Culture = "en",
                             ResourceKey = "detail.score",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8415),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2642),
                             Value = "Recommendation Score"
                         },
                         new
@@ -1818,7 +1818,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 221,
                             Culture = "en",
                             ResourceKey = "detail.locationScore",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8416),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2643),
                             Value = "Location Score"
                         },
                         new
@@ -1826,7 +1826,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 222,
                             Culture = "en",
                             ResourceKey = "detail.budgetScore",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8417),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2644),
                             Value = "Budget Score"
                         },
                         new
@@ -1834,7 +1834,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 223,
                             Culture = "en",
                             ResourceKey = "detail.favoriteNote",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8418),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2646),
                             Value = "Your Favorite Note"
                         },
                         new
@@ -1842,7 +1842,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 224,
                             Culture = "en",
                             ResourceKey = "detail.favoriteNotePlaceholder",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8419),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2647),
                             Value = "Add a note about this venue..."
                         },
                         new
@@ -1850,7 +1850,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 225,
                             Culture = "en",
                             ResourceKey = "detail.saveNote",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8420),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2648),
                             Value = "Save Note"
                         },
                         new
@@ -1858,7 +1858,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 226,
                             Culture = "en",
                             ResourceKey = "detail.addFavorite",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8421),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2649),
                             Value = "Add to Favorites"
                         },
                         new
@@ -1866,7 +1866,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 227,
                             Culture = "en",
                             ResourceKey = "detail.removeFavorite",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8422),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2650),
                             Value = "Remove from Favorites"
                         },
                         new
@@ -1874,7 +1874,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 228,
                             Culture = "en",
                             ResourceKey = "detail.close",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8423),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2650),
                             Value = "Close"
                         },
                         new
@@ -1882,7 +1882,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 229,
                             Culture = "en",
                             ResourceKey = "detail.noteSaved",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8425),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2651),
                             Value = "Note saved!"
                         },
                         new
@@ -1890,7 +1890,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 230,
                             Culture = "en",
                             ResourceKey = "detail.addedToFavorites",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8426),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2653),
                             Value = "Added to favorites!"
                         },
                         new
@@ -1898,7 +1898,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 231,
                             Culture = "en",
                             ResourceKey = "detail.removedFromFavorites",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8427),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2654),
                             Value = "Removed from favorites."
                         },
                         new
@@ -1906,7 +1906,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 232,
                             Culture = "en",
                             ResourceKey = "login.sub",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8428),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2655),
                             Value = "Multinet integrated recommendation system"
                         },
                         new
@@ -1914,7 +1914,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 233,
                             Culture = "en",
                             ResourceKey = "login.taglineTitle",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8429),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2656),
                             Value = "The right meal near you, based on your balance and taste."
                         },
                         new
@@ -1922,7 +1922,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 234,
                             Culture = "en",
                             ResourceKey = "login.taglineSub",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8430),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2657),
                             Value = "Restaurants matching your spending habits and location — every day at lunch."
                         },
                         new
@@ -1930,7 +1930,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 235,
                             Culture = "en",
                             ResourceKey = "login.welcome",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8431),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2658),
                             Value = "Welcome back"
                         },
                         new
@@ -1938,7 +1938,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 236,
                             Culture = "en",
                             ResourceKey = "login.lead",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8432),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2659),
                             Value = "Your lunch break recommendations are waiting."
                         },
                         new
@@ -1946,7 +1946,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 237,
                             Culture = "en",
                             ResourceKey = "login.email",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8432),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2660),
                             Value = "Email"
                         },
                         new
@@ -1954,7 +1954,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 238,
                             Culture = "en",
                             ResourceKey = "login.emailPlaceholder",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8433),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2661),
                             Value = "deniz@company.com"
                         },
                         new
@@ -1962,7 +1962,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 239,
                             Culture = "en",
                             ResourceKey = "login.password",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8434),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2662),
                             Value = "Password"
                         },
                         new
@@ -1970,7 +1970,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 240,
                             Culture = "en",
                             ResourceKey = "login.submit",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8435),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2662),
                             Value = "Sign in"
                         },
                         new
@@ -1978,7 +1978,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 241,
                             Culture = "en",
                             ResourceKey = "login.noAccount",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8436),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2663),
                             Value = "Don't have an account?"
                         },
                         new
@@ -1986,7 +1986,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 242,
                             Culture = "en",
                             ResourceKey = "login.registerLink",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8437),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2664),
                             Value = "Register"
                         },
                         new
@@ -1994,7 +1994,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 243,
                             Culture = "en",
                             ResourceKey = "login.errorMsg",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8438),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2665),
                             Value = "Invalid email address or password!"
                         },
                         new
@@ -2002,7 +2002,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 244,
                             Culture = "en",
                             ResourceKey = "register.title",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8439),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2666),
                             Value = "Create your account"
                         },
                         new
@@ -2010,7 +2010,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 245,
                             Culture = "en",
                             ResourceKey = "register.lead",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8440),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2666),
                             Value = "Discover smart restaurant recommendations now."
                         },
                         new
@@ -2018,7 +2018,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 246,
                             Culture = "en",
                             ResourceKey = "register.name",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8441),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2668),
                             Value = "Full Name"
                         },
                         new
@@ -2026,7 +2026,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 247,
                             Culture = "en",
                             ResourceKey = "register.namePlaceholder",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8441),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2669),
                             Value = "Deniz Yilmaz"
                         },
                         new
@@ -2034,7 +2034,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 248,
                             Culture = "en",
                             ResourceKey = "register.email",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8443),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2670),
                             Value = "Email"
                         },
                         new
@@ -2042,7 +2042,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 249,
                             Culture = "en",
                             ResourceKey = "register.emailPlaceholder",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8444),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2670),
                             Value = "deniz@company.com"
                         },
                         new
@@ -2050,7 +2050,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 250,
                             Culture = "en",
                             ResourceKey = "register.password",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8445),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2671),
                             Value = "Password"
                         },
                         new
@@ -2058,7 +2058,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 251,
                             Culture = "en",
                             ResourceKey = "register.submit",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8447),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2672),
                             Value = "Register"
                         },
                         new
@@ -2066,7 +2066,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 252,
                             Culture = "en",
                             ResourceKey = "register.hasAccount",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8448),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2673),
                             Value = "Already have an account?"
                         },
                         new
@@ -2074,7 +2074,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 253,
                             Culture = "en",
                             ResourceKey = "register.loginLink",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8449),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2674),
                             Value = "Sign in"
                         },
                         new
@@ -2082,8 +2082,104 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                             Id = 254,
                             Culture = "en",
                             ResourceKey = "register.errorMsg",
-                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8450),
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2675),
                             Value = "Registration failed. Please check your information."
+                        },
+                        new
+                        {
+                            Id = 255,
+                            Culture = "tr",
+                            ResourceKey = "LoginVerificationEmailSubject",
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2676),
+                            Value = "Giriş Doğrulama Kodunuz - Sofra Restoran"
+                        },
+                        new
+                        {
+                            Id = 256,
+                            Culture = "tr",
+                            ResourceKey = "LoginVerificationEmailBody",
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2676),
+                            Value = "<h3>Merhaba {0},</h3><p>Giriş yapabilmek için doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>Bu kod 10 dakika süreyle geçerlidir.</p>"
+                        },
+                        new
+                        {
+                            Id = 257,
+                            Culture = "tr",
+                            ResourceKey = "WelcomeEmailSubject",
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2677),
+                            Value = "Sofra Restoran'a Hoş Geldiniz!"
+                        },
+                        new
+                        {
+                            Id = 258,
+                            Culture = "tr",
+                            ResourceKey = "WelcomeEmailBody",
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2685),
+                            Value = "<h3>Merhaba {0},</h3><p>E-posta adresiniz başarıyla doğrulandı. Hesabınız aktif edildi!</p><p>Sofra Restoran Akıllı Öneri Sistemini keyifle kullanabilirsiniz.</p>"
+                        },
+                        new
+                        {
+                            Id = 259,
+                            Culture = "tr",
+                            ResourceKey = "RegisterVerificationEmailSubject",
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2686),
+                            Value = "Sofra Restoran - Hesabınızı Doğrulayın"
+                        },
+                        new
+                        {
+                            Id = 260,
+                            Culture = "tr",
+                            ResourceKey = "RegisterVerificationEmailBody",
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2687),
+                            Value = "<h3>Aramıza Hoş Geldiniz {0}!</h3><p>Kayıt işleminizi tamamlamak için doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>Bu kod 10 dakika süreyle geçerlidir.</p>"
+                        },
+                        new
+                        {
+                            Id = 261,
+                            Culture = "en",
+                            ResourceKey = "LoginVerificationEmailSubject",
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2688),
+                            Value = "Your Login Verification Code - Sofra Restaurant"
+                        },
+                        new
+                        {
+                            Id = 262,
+                            Culture = "en",
+                            ResourceKey = "LoginVerificationEmailBody",
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2688),
+                            Value = "<h3>Hello {0},</h3><p>Your verification code to sign in is: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>This code is valid for 10 minutes.</p>"
+                        },
+                        new
+                        {
+                            Id = 263,
+                            Culture = "en",
+                            ResourceKey = "WelcomeEmailSubject",
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2689),
+                            Value = "Welcome to Sofra Restaurant!"
+                        },
+                        new
+                        {
+                            Id = 264,
+                            Culture = "en",
+                            ResourceKey = "WelcomeEmailBody",
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2690),
+                            Value = "<h3>Hello {0},</h3><p>Your email address has been verified successfully. Your account is activated!</p><p>Enjoy using the Sofra Restaurant Smart Recommendation System.</p>"
+                        },
+                        new
+                        {
+                            Id = 265,
+                            Culture = "en",
+                            ResourceKey = "RegisterVerificationEmailSubject",
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2691),
+                            Value = "Sofra Restaurant - Verify Your Account"
+                        },
+                        new
+                        {
+                            Id = 266,
+                            Culture = "en",
+                            ResourceKey = "RegisterVerificationEmailBody",
+                            UpdatedAt = new DateTime(2026, 8, 20, 11, 11, 11, 37, DateTimeKind.Utc).AddTicks(2692),
+                            Value = "<h3>Welcome Aboard {0}!</h3><p>Your verification code to complete registration is: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>This code is valid for 10 minutes.</p>"
                         });
                 });
 
@@ -2128,452 +2224,452 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            AveragePrice = 237m,
-                            Category = "Kebab & Grill",
-                            Latitude = 40.99346212931823084m,
-                            Longitude = 29.01841814596746962m,
-                            Name = "Kadikoy Kebab & Grill Restaurant 1"
+                            AveragePrice = 350m,
+                            Category = "Home Cooking",
+                            Latitude = 40.9898m,
+                            Longitude = 29.0286m,
+                            Name = "Çiya Sofrası"
                         },
                         new
                         {
                             Id = 2,
-                            AveragePrice = 333m,
-                            Category = "World Cuisine",
-                            Latitude = 41.043255285520504826m,
-                            Longitude = 29.00086868448339808m,
-                            Name = "Besiktas World Cuisine Restaurant 2"
+                            AveragePrice = 300m,
+                            Category = "Home Cooking",
+                            Latitude = 40.9906m,
+                            Longitude = 29.0238m,
+                            Name = "Yanyalı Fehmi Lokantası"
                         },
                         new
                         {
                             Id = 3,
-                            AveragePrice = 271m,
-                            Category = "Seafood",
-                            Latitude = 41.06468816729452842m,
-                            Longitude = 28.987958455830746542m,
-                            Name = "Sisli Seafood Restaurant 3"
+                            AveragePrice = 280m,
+                            Category = "World Cuisine",
+                            Latitude = 40.9882m,
+                            Longitude = 29.0270m,
+                            Name = "Basta! Street Food"
                         },
                         new
                         {
                             Id = 4,
-                            AveragePrice = 330m,
-                            Category = "Cafe & Dessert",
-                            Latitude = 41.02172501117327484m,
-                            Longitude = 28.94489176916624036m,
-                            Name = "Fatih Cafe & Dessert Restaurant 4"
+                            AveragePrice = 200m,
+                            Category = "Kebab & Grill",
+                            Latitude = 40.9895m,
+                            Longitude = 29.0247m,
+                            Name = "Halil Lahmacun"
                         },
                         new
                         {
                             Id = 5,
-                            AveragePrice = 416m,
-                            Category = "Home Cooking",
-                            Latitude = 41.0268120708929896686m,
-                            Longitude = 29.01170466374643364m,
-                            Name = "Uskudar Home Cooking Restaurant 5"
+                            AveragePrice = 220m,
+                            Category = "Kebab & Grill",
+                            Latitude = 40.9898m,
+                            Longitude = 29.0245m,
+                            Name = "Ekspres İnegöl Köftecisi"
                         },
                         new
                         {
                             Id = 6,
-                            AveragePrice = 174m,
-                            Category = "Kebab & Grill",
-                            Latitude = 40.98530489270109912m,
-                            Longitude = 29.025949021996533974m,
-                            Name = "Kadikoy Kebab & Grill Restaurant 6"
+                            AveragePrice = 650m,
+                            Category = "World Cuisine",
+                            Latitude = 40.9883m,
+                            Longitude = 29.0261m,
+                            Name = "Viktor Levi Şarap Evi"
                         },
                         new
                         {
                             Id = 7,
-                            AveragePrice = 428m,
-                            Category = "World Cuisine",
-                            Latitude = 41.04908274751654022m,
-                            Longitude = 29.009043937079396070m,
-                            Name = "Besiktas World Cuisine Restaurant 7"
+                            AveragePrice = 240m,
+                            Category = "Home Cooking",
+                            Latitude = 40.9856m,
+                            Longitude = 29.0298m,
+                            Name = "Sayla Mantı"
                         },
                         new
                         {
                             Id = 8,
-                            AveragePrice = 643m,
-                            Category = "Seafood",
-                            Latitude = 41.05324386160478176m,
-                            Longitude = 28.97950225220592798m,
-                            Name = "Sisli Seafood Restaurant 8"
+                            AveragePrice = 190m,
+                            Category = "Kebab & Grill",
+                            Latitude = 40.9899m,
+                            Longitude = 29.0241m,
+                            Name = "Borsam Taşfırın Kadıköy"
                         },
                         new
                         {
                             Id = 9,
-                            AveragePrice = 180m,
-                            Category = "Cafe & Dessert",
-                            Latitude = 41.02282363899439742m,
-                            Longitude = 28.950999411642737414m,
-                            Name = "Fatih Cafe & Dessert Restaurant 9"
+                            AveragePrice = 750m,
+                            Category = "Seafood",
+                            Latitude = 40.9785m,
+                            Longitude = 29.0232m,
+                            Name = "Koço Restoran (Moda)"
                         },
                         new
                         {
                             Id = 10,
-                            AveragePrice = 784m,
-                            Category = "Home Cooking",
-                            Latitude = 41.03092309179521310m,
-                            Longitude = 29.00825522532563434m,
-                            Name = "Uskudar Home Cooking Restaurant 10"
+                            AveragePrice = 380m,
+                            Category = "Kebab & Grill",
+                            Latitude = 40.9894m,
+                            Longitude = 29.0282m,
+                            Name = "Çiya Kebap"
                         },
                         new
                         {
                             Id = 11,
-                            AveragePrice = 280m,
-                            Category = "Kebab & Grill",
-                            Latitude = 40.99395179445792538m,
-                            Longitude = 29.025928274280917026m,
-                            Name = "Kadikoy Kebab & Grill Restaurant 11"
+                            AveragePrice = 850m,
+                            Category = "World Cuisine",
+                            Latitude = 41.0441m,
+                            Longitude = 29.0163m,
+                            Name = "Tuğra Restaurant (Çırağan Palace)"
                         },
                         new
                         {
                             Id = 12,
-                            AveragePrice = 558m,
+                            AveragePrice = 820m,
                             Category = "World Cuisine",
-                            Latitude = 41.03363019932770646m,
-                            Longitude = 29.00366399325717426m,
-                            Name = "Besiktas World Cuisine Restaurant 12"
+                            Latitude = 41.0664m,
+                            Longitude = 29.0289m,
+                            Name = "Sunset Grill & Bar"
                         },
                         new
                         {
                             Id = 13,
-                            AveragePrice = 525m,
-                            Category = "Seafood",
-                            Latitude = 41.06662130303961286m,
-                            Longitude = 28.97777909721698570m,
-                            Name = "Sisli Seafood Restaurant 13"
+                            AveragePrice = 800m,
+                            Category = "World Cuisine",
+                            Latitude = 41.0645m,
+                            Longitude = 29.0272m,
+                            Name = "Ulus 29"
                         },
                         new
                         {
                             Id = 14,
-                            AveragePrice = 419m,
-                            Category = "Cafe & Dessert",
-                            Latitude = 41.02260368933347226m,
-                            Longitude = 28.955167178541686m,
-                            Name = "Fatih Cafe & Dessert Restaurant 14"
+                            AveragePrice = 850m,
+                            Category = "Kebab & Grill",
+                            Latitude = 41.0805m,
+                            Longitude = 29.0345m,
+                            Name = "Nusr-Et Steakhouse Etiler"
                         },
                         new
                         {
                             Id = 15,
-                            AveragePrice = 185m,
-                            Category = "Home Cooking",
-                            Latitude = 41.01968238143463730m,
-                            Longitude = 29.00582679028386566m,
-                            Name = "Uskudar Home Cooking Restaurant 15"
+                            AveragePrice = 750m,
+                            Category = "Kebab & Grill",
+                            Latitude = 41.0812m,
+                            Longitude = 29.0321m,
+                            Name = "Günaydın Steakhouse Etiler"
                         },
                         new
                         {
                             Id = 16,
-                            AveragePrice = 230m,
-                            Category = "Kebab & Grill",
-                            Latitude = 40.99573285833021294m,
-                            Longitude = 29.0281291276874622m,
-                            Name = "Kadikoy Kebab & Grill Restaurant 16"
+                            AveragePrice = 150m,
+                            Category = "Home Cooking",
+                            Latitude = 41.0427m,
+                            Longitude = 29.0062m,
+                            Name = "Balkan Lokantası Beşiktaş"
                         },
                         new
                         {
                             Id = 17,
-                            AveragePrice = 352m,
-                            Category = "World Cuisine",
-                            Latitude = 41.03779921656446496m,
-                            Longitude = 29.01294856648680222m,
-                            Name = "Besiktas World Cuisine Restaurant 17"
+                            AveragePrice = 250m,
+                            Category = "Kebab & Grill",
+                            Latitude = 41.0421m,
+                            Longitude = 29.0059m,
+                            Name = "Karadeniz Döner Asım Usta"
                         },
                         new
                         {
                             Id = 18,
-                            AveragePrice = 181m,
+                            AveragePrice = 800m,
                             Category = "Seafood",
-                            Latitude = 41.06316291814789312m,
-                            Longitude = 28.98057292969546882m,
-                            Name = "Sisli Seafood Restaurant 18"
+                            Latitude = 41.0758m,
+                            Longitude = 29.0441m,
+                            Name = "Bebek Balıkçısı"
                         },
                         new
                         {
                             Id = 19,
-                            AveragePrice = 185m,
+                            AveragePrice = 420m,
                             Category = "Cafe & Dessert",
-                            Latitude = 41.01859118567970170m,
-                            Longitude = 28.950518267713449090m,
-                            Name = "Fatih Cafe & Dessert Restaurant 19"
+                            Latitude = 41.0772m,
+                            Longitude = 29.0435m,
+                            Name = "Mangerie Bebek"
                         },
                         new
                         {
                             Id = 20,
-                            AveragePrice = 589m,
-                            Category = "Home Cooking",
-                            Latitude = 41.025107323187406792m,
-                            Longitude = 29.0194316465261074m,
-                            Name = "Uskudar Home Cooking Restaurant 20"
+                            AveragePrice = 600m,
+                            Category = "Cafe & Dessert",
+                            Latitude = 41.0765m,
+                            Longitude = 29.0438m,
+                            Name = "Lucca Bebek"
                         },
                         new
                         {
                             Id = 21,
-                            AveragePrice = 405m,
-                            Category = "Kebab & Grill",
-                            Latitude = 40.98446891074495804m,
-                            Longitude = 29.01586507549931532m,
-                            Name = "Kadikoy Kebab & Grill Restaurant 21"
+                            AveragePrice = 850m,
+                            Category = "World Cuisine",
+                            Latitude = 41.0573m,
+                            Longitude = 28.9814m,
+                            Name = "Turk Fatih Tutak"
                         },
                         new
                         {
                             Id = 22,
-                            AveragePrice = 652m,
-                            Category = "World Cuisine",
-                            Latitude = 41.0381487682181172m,
-                            Longitude = 28.99887321671534946m,
-                            Name = "Besiktas World Cuisine Restaurant 22"
+                            AveragePrice = 450m,
+                            Category = "Home Cooking",
+                            Latitude = 41.0505m,
+                            Longitude = 28.9932m,
+                            Name = "Hünkar Restoran Nişantaşı"
                         },
                         new
                         {
                             Id = 23,
-                            AveragePrice = 158m,
-                            Category = "Seafood",
-                            Latitude = 41.05161885883240908m,
-                            Longitude = 28.986981871565283216m,
-                            Name = "Sisli Seafood Restaurant 23"
+                            AveragePrice = 400m,
+                            Category = "World Cuisine",
+                            Latitude = 41.0492m,
+                            Longitude = 28.9941m,
+                            Name = "Nusr-Et Burger Nişantaşı"
                         },
                         new
                         {
                             Id = 24,
-                            AveragePrice = 509m,
-                            Category = "Cafe & Dessert",
-                            Latitude = 41.02245618653854178m,
-                            Longitude = 28.948983589661486256m,
-                            Name = "Fatih Cafe & Dessert Restaurant 24"
+                            AveragePrice = 500m,
+                            Category = "Kebab & Grill",
+                            Latitude = 41.0488m,
+                            Longitude = 28.9950m,
+                            Name = "Develi Kebap Nişantaşı"
                         },
                         new
                         {
                             Id = 25,
-                            AveragePrice = 730m,
-                            Category = "Home Cooking",
-                            Latitude = 41.02669193593393635782m,
-                            Longitude = 29.00547905818306796m,
-                            Name = "Uskudar Home Cooking Restaurant 25"
+                            AveragePrice = 700m,
+                            Category = "World Cuisine",
+                            Latitude = 41.0510m,
+                            Longitude = 28.9935m,
+                            Name = "Park Şamdan Nişantaşı"
                         },
                         new
                         {
                             Id = 26,
-                            AveragePrice = 194m,
-                            Category = "Kebab & Grill",
-                            Latitude = 40.98035793644611628m,
-                            Longitude = 29.01566148017014446m,
-                            Name = "Kadikoy Kebab & Grill Restaurant 26"
+                            AveragePrice = 480m,
+                            Category = "World Cuisine",
+                            Latitude = 41.0560m,
+                            Longitude = 28.9825m,
+                            Name = "Batard Bomonti"
                         },
                         new
                         {
                             Id = 27,
-                            AveragePrice = 789m,
-                            Category = "World Cuisine",
-                            Latitude = 41.04588286241864918m,
-                            Longitude = 28.99819078066418450m,
-                            Name = "Besiktas World Cuisine Restaurant 27"
+                            AveragePrice = 380m,
+                            Category = "Home Cooking",
+                            Latitude = 41.0782m,
+                            Longitude = 29.0112m,
+                            Name = "Konyalı Lokantası Kanyon"
                         },
                         new
                         {
                             Id = 28,
-                            AveragePrice = 412m,
-                            Category = "Seafood",
-                            Latitude = 41.06877941533372710m,
-                            Longitude = 28.986923875230748148m,
-                            Name = "Sisli Seafood Restaurant 28"
+                            AveragePrice = 220m,
+                            Category = "Cafe & Dessert",
+                            Latitude = 41.0498m,
+                            Longitude = 28.9920m,
+                            Name = "Saray Muhallebicisi Nişantaşı"
                         },
                         new
                         {
                             Id = 29,
-                            AveragePrice = 410m,
-                            Category = "Cafe & Dessert",
-                            Latitude = 41.01883212161452142m,
-                            Longitude = 28.94108887631003228m,
-                            Name = "Fatih Cafe & Dessert Restaurant 29"
+                            AveragePrice = 850m,
+                            Category = "World Cuisine",
+                            Latitude = 41.0315m,
+                            Longitude = 28.9752m,
+                            Name = "Mikla Restaurant"
                         },
                         new
                         {
                             Id = 30,
-                            AveragePrice = 704m,
-                            Category = "Home Cooking",
-                            Latitude = 41.01953760198524110m,
-                            Longitude = 29.014039013648004744m,
-                            Name = "Uskudar Home Cooking Restaurant 30"
+                            AveragePrice = 650m,
+                            Category = "Seafood",
+                            Latitude = 41.0232m,
+                            Longitude = 28.9754m,
+                            Name = "Karaköy Lokantası"
                         },
                         new
                         {
                             Id = 31,
-                            AveragePrice = 358m,
+                            AveragePrice = 450m,
                             Category = "Kebab & Grill",
-                            Latitude = 40.990747311969961650m,
-                            Longitude = 29.023613979852206064m,
-                            Name = "Kadikoy Kebab & Grill Restaurant 31"
+                            Latitude = 41.0360m,
+                            Longitude = 28.9828m,
+                            Name = "Zübeyir Ocakbaşı Beyoğlu"
                         },
                         new
                         {
                             Id = 32,
-                            AveragePrice = 664m,
+                            AveragePrice = 550m,
                             Category = "World Cuisine",
-                            Latitude = 41.05094516757528538m,
-                            Longitude = 29.009234778588514206m,
-                            Name = "Besiktas World Cuisine Restaurant 32"
+                            Latitude = 41.0302m,
+                            Longitude = 28.9745m,
+                            Name = "Aheste Pera"
                         },
                         new
                         {
                             Id = 33,
-                            AveragePrice = 820m,
-                            Category = "Seafood",
-                            Latitude = 41.05058824332896072m,
-                            Longitude = 28.99533361321652010m,
-                            Name = "Sisli Seafood Restaurant 33"
+                            AveragePrice = 600m,
+                            Category = "World Cuisine",
+                            Latitude = 41.0308m,
+                            Longitude = 28.9765m,
+                            Name = "Yeni Lokanta"
                         },
                         new
                         {
                             Id = 34,
-                            AveragePrice = 263m,
-                            Category = "Cafe & Dessert",
-                            Latitude = 41.0131566852976832m,
-                            Longitude = 28.95441399949780386m,
-                            Name = "Fatih Cafe & Dessert Restaurant 34"
+                            AveragePrice = 780m,
+                            Category = "Kebab & Grill",
+                            Latitude = 41.0255m,
+                            Longitude = 28.9790m,
+                            Name = "Mürver Restaurant Karaköy"
                         },
                         new
                         {
                             Id = 35,
-                            AveragePrice = 383m,
+                            AveragePrice = 420m,
                             Category = "Home Cooking",
-                            Latitude = 41.01876285693778790m,
-                            Longitude = 29.014343030025923174m,
-                            Name = "Uskudar Home Cooking Restaurant 35"
+                            Latitude = 41.0312m,
+                            Longitude = 28.9748m,
+                            Name = "Meze By Lemon Tree"
                         },
                         new
                         {
                             Id = 36,
-                            AveragePrice = 244m,
-                            Category = "Kebab & Grill",
-                            Latitude = 40.99562220879845424m,
-                            Longitude = 29.01857098221395676m,
-                            Name = "Kadikoy Kebab & Grill Restaurant 36"
+                            AveragePrice = 250m,
+                            Category = "Cafe & Dessert",
+                            Latitude = 41.0240m,
+                            Longitude = 28.9780m,
+                            Name = "Karaköy Güllüoğlu"
                         },
                         new
                         {
                             Id = 37,
-                            AveragePrice = 508m,
-                            Category = "World Cuisine",
-                            Latitude = 41.03711320860251468m,
-                            Longitude = 29.009333249233585432m,
-                            Name = "Besiktas World Cuisine Restaurant 37"
+                            AveragePrice = 280m,
+                            Category = "Kebab & Grill",
+                            Latitude = 41.0071m,
+                            Longitude = 28.9765m,
+                            Name = "Tarihi Sultanahmet Köftecisi Selim Usta"
                         },
                         new
                         {
                             Id = 38,
                             AveragePrice = 620m,
-                            Category = "Seafood",
-                            Latitude = 41.06994043183947934m,
-                            Longitude = 28.9930244607687576m,
-                            Name = "Sisli Seafood Restaurant 38"
+                            Category = "Home Cooking",
+                            Latitude = 41.0300m,
+                            Longitude = 28.9392m,
+                            Name = "Asitane Restaurant"
                         },
                         new
                         {
                             Id = 39,
-                            AveragePrice = 536m,
-                            Category = "Cafe & Dessert",
-                            Latitude = 41.02079898888538544m,
-                            Longitude = 28.94598949541123094m,
-                            Name = "Fatih Cafe & Dessert Restaurant 39"
+                            AveragePrice = 350m,
+                            Category = "Kebab & Grill",
+                            Latitude = 41.0162m,
+                            Longitude = 28.9555m,
+                            Name = "Siirt Şeref Büryan Kebap Salonu"
                         },
                         new
                         {
                             Id = 40,
-                            AveragePrice = 166m,
+                            AveragePrice = 520m,
                             Category = "Home Cooking",
-                            Latitude = 41.03649657166628008m,
-                            Longitude = 29.01831664660359576m,
-                            Name = "Uskudar Home Cooking Restaurant 40"
+                            Latitude = 41.0166m,
+                            Longitude = 28.9704m,
+                            Name = "Pandeli Restaurant"
                         },
                         new
                         {
                             Id = 41,
-                            AveragePrice = 169m,
-                            Category = "Kebab & Grill",
-                            Latitude = 40.98700815029987514m,
-                            Longitude = 29.03418125684716798m,
-                            Name = "Kadikoy Kebab & Grill Restaurant 41"
+                            AveragePrice = 750m,
+                            Category = "Seafood",
+                            Latitude = 41.0046m,
+                            Longitude = 28.9804m,
+                            Name = "Balıkçı Sabahattin"
                         },
                         new
                         {
                             Id = 42,
-                            AveragePrice = 176m,
+                            AveragePrice = 580m,
                             Category = "World Cuisine",
-                            Latitude = 41.0371949449455342m,
-                            Longitude = 29.00280887456858012m,
-                            Name = "Besiktas World Cuisine Restaurant 42"
+                            Latitude = 41.0078m,
+                            Longitude = 28.9778m,
+                            Name = "Deraliye Ottoman Cuisine"
                         },
                         new
                         {
                             Id = 43,
-                            AveragePrice = 445m,
-                            Category = "Seafood",
-                            Latitude = 41.05452247408866998m,
-                            Longitude = 28.989546768358650974m,
-                            Name = "Sisli Seafood Restaurant 43"
+                            AveragePrice = 640m,
+                            Category = "World Cuisine",
+                            Latitude = 41.0135m,
+                            Longitude = 28.9770m,
+                            Name = "Roof Mezze 360"
                         },
                         new
                         {
                             Id = 44,
-                            AveragePrice = 234m,
-                            Category = "Cafe & Dessert",
-                            Latitude = 41.00837465549533938m,
-                            Longitude = 28.96006969311715556m,
-                            Name = "Fatih Cafe & Dessert Restaurant 44"
+                            AveragePrice = 320m,
+                            Category = "Kebab & Grill",
+                            Latitude = 41.0128m,
+                            Longitude = 28.9768m,
+                            Name = "Bitlisli Restoran Sirkeci"
                         },
                         new
                         {
                             Id = 45,
-                            AveragePrice = 376m,
+                            AveragePrice = 290m,
                             Category = "Home Cooking",
-                            Latitude = 41.01882188835354610m,
-                            Longitude = 29.01172617712096598m,
-                            Name = "Uskudar Home Cooking Restaurant 45"
+                            Latitude = 41.0256m,
+                            Longitude = 29.0158m,
+                            Name = "Kanaat Lokantası Üsküdar"
                         },
                         new
                         {
                             Id = 46,
-                            AveragePrice = 156m,
-                            Category = "Kebab & Grill",
-                            Latitude = 40.99512302783309624m,
-                            Longitude = 29.0321165583959392m,
-                            Name = "Kadikoy Kebab & Grill Restaurant 46"
+                            AveragePrice = 680m,
+                            Category = "Seafood",
+                            Latitude = 41.0368m,
+                            Longitude = 29.0298m,
+                            Name = "İsmet Baba Balıkçısı Kuzguncuk"
                         },
                         new
                         {
                             Id = 47,
-                            AveragePrice = 777m,
-                            Category = "World Cuisine",
-                            Latitude = 41.03364168201351616m,
-                            Longitude = 29.01430991281606718m,
-                            Name = "Besiktas World Cuisine Restaurant 47"
+                            AveragePrice = 180m,
+                            Category = "Cafe & Dessert",
+                            Latitude = 41.0515m,
+                            Longitude = 29.0520m,
+                            Name = "Tarihi Çınaraltı Çay Bahçesi Çengelköy"
                         },
                         new
                         {
                             Id = 48,
-                            AveragePrice = 741m,
-                            Category = "Seafood",
-                            Latitude = 41.05496147307304734m,
-                            Longitude = 28.99622439338272642m,
-                            Name = "Sisli Seafood Restaurant 48"
+                            AveragePrice = 210m,
+                            Category = "Cafe & Dessert",
+                            Latitude = 41.0360m,
+                            Longitude = 29.0288m,
+                            Name = "Pita Kuzguncuk"
                         },
                         new
                         {
                             Id = 49,
-                            AveragePrice = 594m,
-                            Category = "Cafe & Dessert",
-                            Latitude = 41.01208893800042054m,
-                            Longitude = 28.951106880130482318m,
-                            Name = "Fatih Cafe & Dessert Restaurant 49"
+                            AveragePrice = 310m,
+                            Category = "Kebab & Grill",
+                            Latitude = 41.0355m,
+                            Longitude = 29.0285m,
+                            Name = "Metet Döner Kuzguncuk"
                         },
                         new
                         {
                             Id = 50,
-                            AveragePrice = 358m,
-                            Category = "Home Cooking",
-                            Latitude = 41.0292065848289554m,
-                            Longitude = 29.00914617868989994m,
-                            Name = "Uskudar Home Cooking Restaurant 50"
+                            AveragePrice = 330m,
+                            Category = "Kebab & Grill",
+                            Latitude = 40.9930m,
+                            Longitude = 29.1120m,
+                            Name = "Tatar Salim Döner Ataşehir"
                         });
                 });
 
@@ -2669,121 +2765,121 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            Amount = 636.48m,
-                            RestaurantId = 10,
-                            SpentAt = new DateTime(2025, 12, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 350.00m,
+                            RestaurantId = 1,
+                            SpentAt = new DateTime(2026, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 1
                         },
                         new
                         {
                             Id = 2,
-                            Amount = 928.49m,
-                            RestaurantId = 47,
-                            SpentAt = new DateTime(2025, 12, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 280.00m,
+                            RestaurantId = 3,
+                            SpentAt = new DateTime(2026, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 1
                         },
                         new
                         {
                             Id = 3,
-                            Amount = 493.64m,
-                            RestaurantId = 7,
-                            SpentAt = new DateTime(2025, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 200.00m,
+                            RestaurantId = 4,
+                            SpentAt = new DateTime(2026, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 1
                         },
                         new
                         {
                             Id = 4,
-                            Amount = 189.44m,
-                            RestaurantId = 15,
-                            SpentAt = new DateTime(2025, 12, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 220.00m,
+                            RestaurantId = 5,
+                            SpentAt = new DateTime(2026, 1, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 1
                         },
                         new
                         {
                             Id = 5,
-                            Amount = 207.10m,
-                            RestaurantId = 36,
-                            SpentAt = new DateTime(2025, 12, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 190.00m,
+                            RestaurantId = 8,
+                            SpentAt = new DateTime(2026, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 1
                         },
                         new
                         {
                             Id = 6,
-                            Amount = 678.75m,
-                            RestaurantId = 20,
-                            SpentAt = new DateTime(2025, 12, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 300.00m,
+                            RestaurantId = 2,
+                            SpentAt = new DateTime(2026, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 2
                         },
                         new
                         {
                             Id = 7,
-                            Amount = 214.58m,
-                            RestaurantId = 18,
-                            SpentAt = new DateTime(2025, 12, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 650.00m,
+                            RestaurantId = 6,
+                            SpentAt = new DateTime(2026, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 2
                         },
                         new
                         {
                             Id = 8,
-                            Amount = 485.79m,
-                            RestaurantId = 28,
-                            SpentAt = new DateTime(2025, 12, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 240.00m,
+                            RestaurantId = 7,
+                            SpentAt = new DateTime(2026, 1, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 2
                         },
                         new
                         {
                             Id = 9,
-                            Amount = 360.78m,
-                            RestaurantId = 7,
-                            SpentAt = new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 380.00m,
+                            RestaurantId = 10,
+                            SpentAt = new DateTime(2026, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 2
                         },
                         new
                         {
                             Id = 10,
-                            Amount = 922.08m,
-                            RestaurantId = 10,
-                            SpentAt = new DateTime(2025, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 850.00m,
+                            RestaurantId = 11,
+                            SpentAt = new DateTime(2026, 1, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 2
                         },
                         new
                         {
                             Id = 11,
-                            Amount = 419.71m,
-                            RestaurantId = 21,
-                            SpentAt = new DateTime(2025, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 820.00m,
+                            RestaurantId = 12,
+                            SpentAt = new DateTime(2026, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 3
                         },
                         new
                         {
                             Id = 12,
-                            Amount = 498.31m,
-                            RestaurantId = 7,
-                            SpentAt = new DateTime(2025, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 800.00m,
+                            RestaurantId = 13,
+                            SpentAt = new DateTime(2026, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 3
                         },
                         new
                         {
                             Id = 13,
-                            Amount = 326.76m,
-                            RestaurantId = 45,
-                            SpentAt = new DateTime(2025, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 850.00m,
+                            RestaurantId = 14,
+                            SpentAt = new DateTime(2026, 1, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 3
                         },
                         new
                         {
                             Id = 14,
-                            Amount = 431.11m,
-                            RestaurantId = 28,
-                            SpentAt = new DateTime(2025, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 750.00m,
+                            RestaurantId = 15,
+                            SpentAt = new DateTime(2026, 1, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 3
                         },
                         new
                         {
                             Id = 15,
-                            Amount = 193.41m,
-                            RestaurantId = 42,
-                            SpentAt = new DateTime(2025, 12, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Amount = 150.00m,
+                            RestaurantId = 16,
+                            SpentAt = new DateTime(2026, 1, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 3
                         });
                 });

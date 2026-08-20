@@ -50,7 +50,7 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public async Task Register_Successful_ReturnsJwtTokenAndSavesUser()
         {
-            var response = await _authService.Register("Ahmet Yılmaz", "ahmet@mail.com", "sifre123");
+            var response = await _authService.Register("Ahmet Yılmaz", "ahmet@mail.com", "sifre123", "sifre123");
 
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.True);
@@ -68,21 +68,51 @@ namespace RestaurantSuggestionApp.Tests.Services
         {
             TestDataHelper.SeedUser(_context, "Eski Kullanıcı", "ahmet@mail.com", "eskiSifre");
 
-            var response = await _authService.Register("Ahmet Yılmaz", "ahmet@mail.com", "sifre123");
+            var response = await _authService.Register("Ahmet Yılmaz", "ahmet@mail.com", "sifre123", "sifre123");
 
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.False);
-            Assert.That(response.ErrorMessage, Is.EqualTo("Bu e-posta adresi zaten kullanılmaktadır!"));
+            Assert.That(response.ErrorMessage, Is.EqualTo("Bu e-posta adresi zaten kullanımda."));
         }
 
         [Test]
         public async Task Register_EmptyInputs_ReturnsFail()
         {
-            var response = await _authService.Register("", "", "");
+            var response = await _authService.Register("", "", "", "");
 
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.False);
             Assert.That(response.ErrorMessage, Is.EqualTo("Ad, e-posta ve şifre alanları boş bırakılamaz."));
+        }
+
+        [Test]
+        public async Task Register_InvalidEmailFormat_ReturnsFail()
+        {
+            var response = await _authService.Register("Ahmet Yılmaz", "gecersiz-email", "sifre123", "sifre123");
+
+            Assert.That(response, Is.Not.Null);
+            Assert.That(response.IsSuccess, Is.False);
+            Assert.That(response.ErrorMessage, Is.EqualTo("Lütfen geçerli bir e-posta adresi giriniz."));
+        }
+
+        [Test]
+        public async Task Register_PasswordTooShort_ReturnsFail()
+        {
+            var response = await _authService.Register("Ahmet Yılmaz", "ahmet@mail.com", "123", "123");
+
+            Assert.That(response, Is.Not.Null);
+            Assert.That(response.IsSuccess, Is.False);
+            Assert.That(response.ErrorMessage, Is.EqualTo("Şifre en az 6 karakter olmalıdır."));
+        }
+
+        [Test]
+        public async Task Register_PasswordsDoNotMatch_ReturnsFail()
+        {
+            var response = await _authService.Register("Ahmet Yılmaz", "ahmet@mail.com", "sifre123", "farkliSifre");
+
+            Assert.That(response, Is.Not.Null);
+            Assert.That(response.IsSuccess, Is.False);
+            Assert.That(response.ErrorMessage, Is.EqualTo("Girdiğiniz şifreler birbiriyle eşleşmiyor."));
         }
 
         #endregion

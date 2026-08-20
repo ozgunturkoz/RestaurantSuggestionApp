@@ -80,7 +80,15 @@ namespace RestaurantSuggestionApp.Tests.Helpers
                 { "RegisterError", "Kayıt işlemi sırasında bir hata oluştu." },
                 { "UnauthorizedProfileUpdate", "Başka bir kullanıcının profilini güncelleme yetkiniz yok." },
                 { "UnauthorizedAccountDelete", "Başka bir kullanıcının hesabını silme yetkiniz yok." },
-                { "PasswordRequired", "Şifre alanı boş bırakılamaz." }
+                { "PasswordRequired", "Şifre alanı boş bırakılamaz." },
+                { "LoginVerificationEmailSubject", "Giriş Doğrulama Kodunuz - Sofra Restoran" },
+                { "LoginVerificationEmailBody", "<h3>Merhaba {0},</h3><p>Giriş yapabilmek için doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>Bu kod 10 dakika süreyle geçerlidir.</p>" },
+                { "WelcomeEmailSubject", "Sofra Restoran'a Hoş Geldiniz!" },
+                { "WelcomeEmailBody", "<h3>Merhaba {0},</h3><p>E-posta adresiniz başarıyla doğrulandı. Hesabınız aktif edildi!</p><p>Sofra Restoran Akıllı Öneri Sistemini keyifle kullanabilirsiniz.</p>" },
+                { "RegisterVerificationEmailSubject", "Sofra Restoran - Hesabınızı Doğrulayın" },
+                { "RegisterVerificationEmailBody", "<h3>Aramıza Hoş Geldiniz {0}!</h3><p>Kayıt işleminizi tamamlamak için doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>Bu kod 10 dakika süreyle geçerlidir.</p>" },
+                { "InvalidEmailFormat", "Lütfen geçerli bir e-posta adresi giriniz." },
+                { "PasswordsDoNotMatch", "Girdiğiniz şifreler birbiriyle eşleşmiyor." }
             };
 
             var mock = new Moq.Mock<Microsoft.Extensions.Localization.IStringLocalizer>();

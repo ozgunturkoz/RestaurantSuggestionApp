@@ -81,9 +81,14 @@
     "email": "Email",
     "emailPlaceholder": "deniz@company.com",
     "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "passwordHint": "At least 6 characters",
     "submit": "Register",
     "hasAccount": "Already have an account?",
     "loginLink": "Log in",
-    "errorMsg": "Registration failed. Please check your information."
+    "errorMsg": "Registration failed. Please check your information.",
+    "passwordsDoNotMatch": "Passwords do not match.",
+    "invalidEmail": "Please enter a valid email address.",
+    "passwordTooShort": "Password must be at least 6 characters long."
   }
 }

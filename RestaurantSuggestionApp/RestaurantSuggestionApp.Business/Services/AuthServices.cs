@@ -18,7 +18,8 @@ namespace RestaurantSuggestionApp.Business.Services
     {
         Task<BaseResponse<LoginResponseDto>> Login(string email, string password);
         Task<BaseResponse<string>> VerifyLogin(string email, string code);
-        Task<BaseResponse<LoginResponseDto>> Register(string name, string email, string password);
+        Task<BaseResponse<LoginResponseDto>> Register(string name, string email, string password, string confirmPassword);
+        Task<BaseResponse<string>> VerifyRegister(string email, string code);
     }
 
     public class AuthService : IAuthService
@@ -27,6 +28,9 @@ namespace RestaurantSuggestionApp.Business.Services
         private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
         private readonly IStringLocalizer _localizer;
+        private static readonly System.Text.RegularExpressions.Regex EmailRegex = new System.Text.RegularExpressions.Regex(
+            @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+            System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
         public AuthService(AppDbContext context, IConfiguration configuration, IEmailService emailService, IStringLocalizer localizer)
         {
@@ -36,6 +40,12 @@ namespace RestaurantSuggestionApp.Business.Services
             _localizer = localizer;
         }
 
+        private static bool IsValidEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email)) return false;
+            return EmailRegex.IsMatch(email.Trim());
+        }
+
         public async Task<BaseResponse<LoginResponseDto>> Login(string email, string password)
         {
             try
@@ -43,6 +53,11 @@ namespace RestaurantSuggestionApp.Business.Services
                 if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
                 {
                     return BaseResponse<LoginResponseDto>.Fail(_localizer["InvalidInput"]);
+                }
+
+                if (!IsValidEmail(email))
+                {
+                    return BaseResponse<LoginResponseDto>.Fail(_localizer["InvalidEmailFormat"]);
                 }
 
                 var cleanEmail = email.Trim().ToLower();
@@ -58,23 +73,16 @@ namespace RestaurantSuggestionApp.Business.Services
                 user.SetVerificationCode(randomCode, expireMinutes: 10);
                 _context.SaveChanges();
 
-                // 1. Terminal / Konsol ekranına bas
-                Console.WriteLine("\n=======================================================");
-                Console.WriteLine($"🔑 [GİRİŞ KODU] Email: {user.Email} ---> KOD: {randomCode}");
-                Console.WriteLine("=======================================================\n");
-
-                // 2. Aynı zamanda gerçek e-posta gönder
                 try
                 {
                     await _emailService.SendEmailAsync(
                         user.Email,
-                        "Giriş Doğrulama Kodunuz - Sofra Restoran",
-                        $"<h3>Merhaba {user.Name},</h3><p>Giriş yapabilmek için doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{randomCode}</b></p><p>Bu kod 10 dakika süreyle geçerlidir.</p>"
+                        _localizer["LoginVerificationEmailSubject"],
+                        _localizer["LoginVerificationEmailBody", user.Name, randomCode]
                     );
                 }
-                catch (Exception mailEx)
+                catch (Exception)
                 {
-                    Console.WriteLine($"E-posta gönderme uyarısı (Mail sunucusu): {mailEx.Message}");
                 }
 
                 return BaseResponse<LoginResponseDto>.Success(new LoginResponseDto
@@ -123,13 +131,12 @@ namespace RestaurantSuggestionApp.Business.Services
                 {
                     await _emailService.SendEmailAsync(
                         user.Email,
-                        "Sofra Restoran'a Hoş Geldiniz!",
-                        $"<h3>Merhaba {user.Name},</h3><p>E-posta adresiniz başarıyla doğrulandı. Hesabınız aktif edildi!</p><p>Sofra Restoran Akıllı Öneri Sistemini keyifle kullanabilirsiniz.</p>"
+                        _localizer["WelcomeEmailSubject"],
+                        _localizer["WelcomeEmailBody", user.Name]
                     );
                 }
-                catch (Exception mailEx)
+                catch (Exception)
                 {
-                    Console.WriteLine($"Hoşgeldin e-postası gönderme uyarısı: {mailEx.Message}");
                 }
 
                 var token = GenerateJwtToken(user);
@@ -141,21 +148,38 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        public async Task<BaseResponse<LoginResponseDto>> Register(string name, string email, string password)
+        public async Task<BaseResponse<LoginResponseDto>> Register(string name, string email, string password, string confirmPassword)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+                if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(confirmPassword))
                 {
                     return BaseResponse<LoginResponseDto>.Fail(_localizer["RegisterFieldsRequired"]);
                 }
 
-                if (_context.Users.Any(u => u.Email == email))
+                if (!IsValidEmail(email))
+                {
+                    return BaseResponse<LoginResponseDto>.Fail(_localizer["InvalidEmailFormat"]);
+                }
+
+                if (password.Length < 6)
+                {
+                    return BaseResponse<LoginResponseDto>.Fail(_localizer["PasswordMinLength"]);
+                }
+
+                if (password != confirmPassword)
+                {
+                    return BaseResponse<LoginResponseDto>.Fail(_localizer["PasswordsDoNotMatch"]);
+                }
+
+                var cleanEmail = email.Trim().ToLower();
+
+                if (_context.Users.Any(u => u.Email.ToLower() == cleanEmail))
                 {
                     return BaseResponse<LoginResponseDto>.Fail(_localizer["EmailAlreadyExists"]);
                 }
 
-                var newUser = new User(name, email, password);
+                var newUser = new User(name, cleanEmail, password);
 
                 var randomCode = new Random().Next(100000, 999999).ToString();
                 newUser.SetVerificationCode(randomCode, expireMinutes: 10);
@@ -163,23 +187,16 @@ namespace RestaurantSuggestionApp.Business.Services
                 _context.Users.Add(newUser);
                 _context.SaveChanges();
 
-                // 1. Terminal / Konsol ekranına bas
-                Console.WriteLine("\n=======================================================");
-                Console.WriteLine($"🔑 [KAYIT DOĞRULAMA KODU] Email: {newUser.Email} ---> KOD: {randomCode}");
-                Console.WriteLine("=======================================================\n");
-
-                // 2. Aynı zamanda gerçek e-posta gönder
                 try
                 {
                     await _emailService.SendEmailAsync(
                         newUser.Email,
-                        "Sofra Restoran - Hesabınızı Doğrulayın",
-                        $"<h3>Aramıza Hoş Geldiniz {newUser.Name}!</h3><p>Kayıt işleminizi tamamlamak için doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{randomCode}</b></p><p>Bu kod 10 dakika süreyle geçerlidir.</p>"
+                        _localizer["RegisterVerificationEmailSubject"],
+                        _localizer["RegisterVerificationEmailBody", newUser.Name, randomCode]
                     );
                 }
-                catch (Exception mailEx)
+                catch (Exception)
                 {
-                    Console.WriteLine($"E-posta gönderme uyarısı (Mail sunucusu): {mailEx.Message}");
                 }
 
                 return BaseResponse<LoginResponseDto>.Success(new LoginResponseDto
@@ -192,6 +209,11 @@ namespace RestaurantSuggestionApp.Business.Services
             {
                 return BaseResponse<LoginResponseDto>.Fail(_localizer["RegisterError"]);
             }
+        }
+
+        public async Task<BaseResponse<string>> VerifyRegister(string email, string code)
+        {
+            return await VerifyLogin(email, code);
         }
 
         private string GenerateJwtToken(User user)

@@ -31,19 +31,7 @@ namespace RestaurantSuggestionApp.Business.ExternalServices
             var resultList = new List<RestaurantDistance>();
             try
             {
-                var osrmBaseUrl = _configuration["OSRM:BaseUrl"] ?? throw new InvalidOperationException("OSRM:BaseUrl konfigürasyonu bulunamadı.");
-
-                var coords = new List<string> {
-                    $"{userLng.ToString(CultureInfo.InvariantCulture)},{userLat.ToString(CultureInfo.InvariantCulture)}"
-                };
-
-                foreach (var rest in nearbyCandidates)
-                {
-                    coords.Add($"{rest.Longitude.ToString(CultureInfo.InvariantCulture)},{rest.Latitude.ToString(CultureInfo.InvariantCulture)}");
-                }
-
-                var coordsString = string.Join(";", coords);
-                var url = $"{osrmBaseUrl}/table/v1/foot/{coordsString}?sources=0&annotations=distance,duration";
+                var url = BuildOsrmUrl(nearbyCandidates, userLat, userLng);
 
                 var response = await _httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
@@ -51,36 +39,63 @@ namespace RestaurantSuggestionApp.Business.ExternalServices
                     var osrmData = await response.Content.ReadFromJsonAsync<OsrmTableResponse>();
                     if (osrmData != null && osrmData.Code == "Ok" && osrmData.Distances != null && osrmData.Distances.Length > 0)
                     {
-                        for (int i = 0; i < nearbyCandidates.Count; i++)
-                        {
-                            var rest = nearbyCandidates[i];
-                            double? walkingDistance = null;
-                            double? walkingDuration = null;
-
-                            if (osrmData.Distances[0].Length > i + 1)
-                                walkingDistance = osrmData.Distances[0][i + 1];
-
-                            if (osrmData.Durations[0].Length > i + 1)
-                                walkingDuration = osrmData.Durations[0][i + 1];
-
-                            resultList.Add(new RestaurantDistance
-                            {
-                                Id = rest.Id,
-                                Name = rest.Name,
-                                Category = rest.Category,
-                                Latitude = rest.Latitude,
-                                Longitude = rest.Longitude,
-                                AveragePrice = rest.AveragePrice,
-                                WalkingDistanceInMeters = walkingDistance,
-                                WalkingDurationInSeconds = walkingDuration
-                            });
-                        }
+                        resultList = MapResponseToRestaurantDistances(osrmData, nearbyCandidates);
                     }
                 }
             }
             catch (Exception)
             {
             }
+            return resultList;
+        }
+
+        private string BuildOsrmUrl(List<Restaurant> nearbyCandidates, double userLat, double userLng)
+        {
+            var osrmBaseUrl = _configuration["OSRM:BaseUrl"] ?? throw new InvalidOperationException("OSRM:BaseUrl konfigürasyonu bulunamadı.");
+
+            var coords = new List<string>
+            {
+                $"{userLng.ToString(CultureInfo.InvariantCulture)},{userLat.ToString(CultureInfo.InvariantCulture)}"
+            };
+
+            foreach (var rest in nearbyCandidates)
+            {
+                coords.Add($"{rest.Longitude.ToString(CultureInfo.InvariantCulture)},{rest.Latitude.ToString(CultureInfo.InvariantCulture)}");
+            }
+
+            var coordsString = string.Join(";", coords);
+            return $"{osrmBaseUrl}/table/v1/foot/{coordsString}?sources=0&annotations=distance,duration";
+        }
+
+        private static List<RestaurantDistance> MapResponseToRestaurantDistances(OsrmTableResponse osrmData, List<Restaurant> nearbyCandidates)
+        {
+            var resultList = new List<RestaurantDistance>();
+
+            for (int i = 0; i < nearbyCandidates.Count; i++)
+            {
+                var rest = nearbyCandidates[i];
+                double? walkingDistance = null;
+                double? walkingDuration = null;
+
+                if (osrmData.Distances != null && osrmData.Distances.Length > 0 && osrmData.Distances[0].Length > i + 1)
+                    walkingDistance = osrmData.Distances[0][i + 1];
+
+                if (osrmData.Durations != null && osrmData.Durations.Length > 0 && osrmData.Durations[0].Length > i + 1)
+                    walkingDuration = osrmData.Durations[0][i + 1];
+
+                resultList.Add(new RestaurantDistance
+                {
+                    Id = rest.Id,
+                    Name = rest.Name,
+                    Category = rest.Category,
+                    Latitude = rest.Latitude,
+                    Longitude = rest.Longitude,
+                    AveragePrice = rest.AveragePrice,
+                    WalkingDistanceInMeters = walkingDistance,
+                    WalkingDurationInSeconds = walkingDuration
+                });
+            }
+
             return resultList;
         }
     }
@@ -90,7 +105,14 @@ namespace RestaurantSuggestionApp.Business.ExternalServices
         public string Code { get; set; } = string.Empty;
         public double[][] Distances { get; set; } = Array.Empty<double[]>();
         public double[][] Durations { get; set; } = Array.Empty<double[]>();
-    }
 
-    //constructor method ve privete set
+        public OsrmTableResponse() { }
+
+        public OsrmTableResponse(string code, double[][] distances, double[][] durations)
+        {
+            Code = code;
+            Distances = distances;
+            Durations = durations;
+        }
+    }
 }

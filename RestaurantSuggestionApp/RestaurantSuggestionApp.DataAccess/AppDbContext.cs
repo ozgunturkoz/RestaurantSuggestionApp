@@ -16,6 +16,12 @@ namespace RestaurantSuggestionApp.DataAccess
         public DbSet<UserFavorite> UserFavorites { get; set; }
         public DbSet<LocalizationResource> LocalizationResources { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.ConfigureWarnings(w => w.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+            base.OnConfiguring(optionsBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<LocalizationResource>()

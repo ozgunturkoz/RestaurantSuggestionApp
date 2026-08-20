@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -17,6 +17,18 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                 name: "RestaurantId",
                 table: "Users",
                 type: "int",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "VerificationCode",
+                table: "Users",
+                type: "nvarchar(max)",
+                nullable: true);
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "VerificationCodeExpiresAt",
+                table: "Users",
+                type: "datetime2",
                 nullable: true);
 
             migrationBuilder.AddColumn<int>(
@@ -730,6 +742,14 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
 
             migrationBuilder.DropColumn(
                 name: "RestaurantId",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "VerificationCode",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "VerificationCodeExpiresAt",
                 table: "Users");
 
             migrationBuilder.DropColumn(

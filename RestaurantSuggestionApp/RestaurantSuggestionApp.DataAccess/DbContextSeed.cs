@@ -18,63 +18,105 @@ namespace RestaurantSuggestionApp.DataAccess
 
             
             var restaurants = new List<Restaurant>();
-            var categories = new[] { "Kebab & Grill", "World Cuisine", "Seafood", "Cafe & Dessert", "Home Cooking" };
 
-            
-            var regions = new[]
+            var realRestaurantData = new (string Name, string Category, decimal Lat, decimal Lng, int AvgPrice)[]
             {
-                new { Name = "Kadikoy",   Lat = 40.9901, Lng = 29.0256 },
-                new { Name = "Besiktas",  Lat = 41.0428, Lng = 29.0075 },
-                new { Name = "Sisli",     Lat = 41.0602, Lng = 28.9877 },
-                new { Name = "Fatih",     Lat = 41.0165, Lng = 28.9502 },
-                new { Name = "Uskudar",   Lat = 41.0267, Lng = 29.0153 }
+                // Kadıköy
+                ("Çiya Sofrası", "Home Cooking", 40.9898m, 29.0286m, 350),
+                ("Yanyalı Fehmi Lokantası", "Home Cooking", 40.9906m, 29.0238m, 300),
+                ("Basta! Street Food", "World Cuisine", 40.9882m, 29.0270m, 280),
+                ("Halil Lahmacun", "Kebab & Grill", 40.9895m, 29.0247m, 200),
+                ("Ekspres İnegöl Köftecisi", "Kebab & Grill", 40.9898m, 29.0245m, 220),
+                ("Viktor Levi Şarap Evi", "World Cuisine", 40.9883m, 29.0261m, 650),
+                ("Sayla Mantı", "Home Cooking", 40.9856m, 29.0298m, 240),
+                ("Borsam Taşfırın Kadıköy", "Kebab & Grill", 40.9899m, 29.0241m, 190),
+                ("Koço Restoran (Moda)", "Seafood", 40.9785m, 29.0232m, 750),
+                ("Çiya Kebap", "Kebab & Grill", 40.9894m, 29.0282m, 380),
+
+                // Beşiktaş & Bebek & Ortaköy & Etiler
+                ("Tuğra Restaurant (Çırağan Palace)", "World Cuisine", 41.0441m, 29.0163m, 850),
+                ("Sunset Grill & Bar", "World Cuisine", 41.0664m, 29.0289m, 820),
+                ("Ulus 29", "World Cuisine", 41.0645m, 29.0272m, 800),
+                ("Nusr-Et Steakhouse Etiler", "Kebab & Grill", 41.0805m, 29.0345m, 850),
+                ("Günaydın Steakhouse Etiler", "Kebab & Grill", 41.0812m, 29.0321m, 750),
+                ("Balkan Lokantası Beşiktaş", "Home Cooking", 41.0427m, 29.0062m, 150),
+                ("Karadeniz Döner Asım Usta", "Kebab & Grill", 41.0421m, 29.0059m, 250),
+                ("Bebek Balıkçısı", "Seafood", 41.0758m, 29.0441m, 800),
+                ("Mangerie Bebek", "Cafe & Dessert", 41.0772m, 29.0435m, 420),
+                ("Lucca Bebek", "Cafe & Dessert", 41.0765m, 29.0438m, 600),
+
+                // Şişli & Nişantaşı & Bomonti
+                ("Turk Fatih Tutak", "World Cuisine", 41.0573m, 28.9814m, 850),
+                ("Hünkar Restoran Nişantaşı", "Home Cooking", 41.0505m, 28.9932m, 450),
+                ("Nusr-Et Burger Nişantaşı", "World Cuisine", 41.0492m, 28.9941m, 400),
+                ("Develi Kebap Nişantaşı", "Kebab & Grill", 41.0488m, 28.9950m, 500),
+                ("Park Şamdan Nişantaşı", "World Cuisine", 41.0510m, 28.9935m, 700),
+                ("Batard Bomonti", "World Cuisine", 41.0560m, 28.9825m, 480),
+                ("Konyalı Lokantası Kanyon", "Home Cooking", 41.0782m, 29.0112m, 380),
+                ("Saray Muhallebicisi Nişantaşı", "Cafe & Dessert", 41.0498m, 28.9920m, 220),
+
+                // Beyoğlu & Karaköy & Pera
+                ("Mikla Restaurant", "World Cuisine", 41.0315m, 28.9752m, 850),
+                ("Karaköy Lokantası", "Seafood", 41.0232m, 28.9754m, 650),
+                ("Zübeyir Ocakbaşı Beyoğlu", "Kebab & Grill", 41.0360m, 28.9828m, 450),
+                ("Aheste Pera", "World Cuisine", 41.0302m, 28.9745m, 550),
+                ("Yeni Lokanta", "World Cuisine", 41.0308m, 28.9765m, 600),
+                ("Mürver Restaurant Karaköy", "Kebab & Grill", 41.0255m, 28.9790m, 780),
+                ("Meze By Lemon Tree", "Home Cooking", 41.0312m, 28.9748m, 420),
+                ("Karaköy Güllüoğlu", "Cafe & Dessert", 41.0240m, 28.9780m, 250),
+
+                // Fatih & Sultanahmet & Sirkeci
+                ("Tarihi Sultanahmet Köftecisi Selim Usta", "Kebab & Grill", 41.0071m, 28.9765m, 280),
+                ("Asitane Restaurant", "Home Cooking", 41.0300m, 28.9392m, 620),
+                ("Siirt Şeref Büryan Kebap Salonu", "Kebab & Grill", 41.0162m, 28.9555m, 350),
+                ("Pandeli Restaurant", "Home Cooking", 41.0166m, 28.9704m, 520),
+                ("Balıkçı Sabahattin", "Seafood", 41.0046m, 28.9804m, 750),
+                ("Deraliye Ottoman Cuisine", "World Cuisine", 41.0078m, 28.9778m, 580),
+                ("Roof Mezze 360", "World Cuisine", 41.0135m, 28.9770m, 640),
+                ("Bitlisli Restoran Sirkeci", "Kebab & Grill", 41.0128m, 28.9768m, 320),
+
+                // Üsküdar & Kuzguncuk & Çengelköy & Ataşehir
+                ("Kanaat Lokantası Üsküdar", "Home Cooking", 41.0256m, 29.0158m, 290),
+                ("İsmet Baba Balıkçısı Kuzguncuk", "Seafood", 41.0368m, 29.0298m, 680),
+                ("Tarihi Çınaraltı Çay Bahçesi Çengelköy", "Cafe & Dessert", 41.0515m, 29.0520m, 180),
+                ("Pita Kuzguncuk", "Cafe & Dessert", 41.0360m, 29.0288m, 210),
+                ("Metet Döner Kuzguncuk", "Kebab & Grill", 41.0355m, 29.0285m, 310),
+                ("Tatar Salim Döner Ataşehir", "Kebab & Grill", 40.9930m, 29.1120m, 330)
             };
 
             int restaurantId = 1;
-            
-            var random = new Random(42);
-
-            for (int i = 0; i < 50; i++)
+            foreach (var item in realRestaurantData)
             {
-                var region   = regions[i % regions.Length];
-                var category = categories[i % categories.Length];
-
-                
-                decimal latOffset = (decimal)(random.NextDouble() - 0.5) * 0.02m;
-                decimal lngOffset = (decimal)(random.NextDouble() - 0.5) * 0.02m;
-
                 restaurants.Add(new Restaurant(
                     restaurantId,
-                    $"{region.Name} {category} Restaurant {restaurantId}",
-                    category,
-                    (decimal)region.Lat + latOffset,
-                    (decimal)region.Lng + lngOffset,
-                    random.Next(150, 850)
+                    item.Name,
+                    item.Category,
+                    item.Lat,
+                    item.Lng,
+                    item.AvgPrice
                 ));
                 restaurantId++;
             }
             modelBuilder.Entity<Restaurant>().HasData(restaurants);
 
-            var expenditures = new List<UserExpenditure>();
-            int expenditureId = 1;
-            var seedBaseDate  = new DateTime(2026, 1, 1);
-
-            foreach (var user in users)
+            var expenditures = new List<UserExpenditure>
             {
-                for (int j = 0; j < 5; j++)
-                {
-                    var targetRestaurant = restaurants[random.Next(restaurants.Count)];
-                    decimal amount = Math.Round(targetRestaurant.AveragePrice * (decimal)(0.8 + random.NextDouble() * 0.4), 2);
-                    expenditures.Add(new UserExpenditure(
-                        expenditureId,
-                        user.Id,
-                        targetRestaurant.Id,
-                        amount,
-                        seedBaseDate.AddDays(-random.Next(1, 30))
-                    ));
-                    expenditureId++;
-                }
-            }
+                new UserExpenditure(1, 1, 1, 350.00m, new DateTime(2026, 1, 15)),
+                new UserExpenditure(2, 1, 3, 280.00m, new DateTime(2026, 1, 18)),
+                new UserExpenditure(3, 1, 4, 200.00m, new DateTime(2026, 1, 20)),
+                new UserExpenditure(4, 1, 5, 220.00m, new DateTime(2026, 1, 22)),
+                new UserExpenditure(5, 1, 8, 190.00m, new DateTime(2026, 1, 25)),
+                new UserExpenditure(6, 2, 2, 300.00m, new DateTime(2026, 1, 10)),
+                new UserExpenditure(7, 2, 6, 650.00m, new DateTime(2026, 1, 12)),
+                new UserExpenditure(8, 2, 7, 240.00m, new DateTime(2026, 1, 14)),
+                new UserExpenditure(9, 2, 10, 380.00m, new DateTime(2026, 1, 16)),
+                new UserExpenditure(10, 2, 11, 850.00m, new DateTime(2026, 1, 28)),
+                new UserExpenditure(11, 3, 12, 820.00m, new DateTime(2026, 1, 5)),
+                new UserExpenditure(12, 3, 13, 800.00m, new DateTime(2026, 1, 8)),
+                new UserExpenditure(13, 3, 14, 850.00m, new DateTime(2026, 1, 11)),
+                new UserExpenditure(14, 3, 15, 750.00m, new DateTime(2026, 1, 19)),
+                new UserExpenditure(15, 3, 16, 150.00m, new DateTime(2026, 1, 27))
+            };
             modelBuilder.Entity<UserExpenditure>().HasData(expenditures);
 
             var locResources = new List<LocalizationResource>
@@ -332,7 +374,23 @@ namespace RestaurantSuggestionApp.DataAccess
                 new LocalizationResource(251, "en", "register.submit", "Register"),
                 new LocalizationResource(252, "en", "register.hasAccount", "Already have an account?"),
                 new LocalizationResource(253, "en", "register.loginLink", "Sign in"),
-                new LocalizationResource(254, "en", "register.errorMsg", "Registration failed. Please check your information.")
+                new LocalizationResource(254, "en", "register.errorMsg", "Registration failed. Please check your information."),
+                new LocalizationResource(255, "tr", "LoginVerificationEmailSubject", "Giriş Doğrulama Kodunuz - Sofra Restoran"),
+                new LocalizationResource(256, "tr", "LoginVerificationEmailBody", "<h3>Merhaba {0},</h3><p>Giriş yapabilmek için doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>Bu kod 10 dakika süreyle geçerlidir.</p>"),
+                new LocalizationResource(257, "tr", "WelcomeEmailSubject", "Sofra Restoran'a Hoş Geldiniz!"),
+                new LocalizationResource(258, "tr", "WelcomeEmailBody", "<h3>Merhaba {0},</h3><p>E-posta adresiniz başarıyla doğrulandı. Hesabınız aktif edildi!</p><p>Sofra Restoran Akıllı Öneri Sistemini keyifle kullanabilirsiniz.</p>"),
+                new LocalizationResource(259, "tr", "RegisterVerificationEmailSubject", "Sofra Restoran - Hesabınızı Doğrulayın"),
+                new LocalizationResource(260, "tr", "RegisterVerificationEmailBody", "<h3>Aramıza Hoş Geldiniz {0}!</h3><p>Kayıt işleminizi tamamlamak için doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>Bu kod 10 dakika süreyle geçerlidir.</p>"),
+                new LocalizationResource(261, "en", "LoginVerificationEmailSubject", "Your Login Verification Code - Sofra Restaurant"),
+                new LocalizationResource(262, "en", "LoginVerificationEmailBody", "<h3>Hello {0},</h3><p>Your verification code to sign in is: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>This code is valid for 10 minutes.</p>"),
+                new LocalizationResource(263, "en", "WelcomeEmailSubject", "Welcome to Sofra Restaurant!"),
+                new LocalizationResource(264, "en", "WelcomeEmailBody", "<h3>Hello {0},</h3><p>Your email address has been verified successfully. Your account is activated!</p><p>Enjoy using the Sofra Restaurant Smart Recommendation System.</p>"),
+                new LocalizationResource(265, "en", "RegisterVerificationEmailSubject", "Sofra Restaurant - Verify Your Account"),
+                new LocalizationResource(266, "en", "RegisterVerificationEmailBody", "<h3>Welcome Aboard {0}!</h3><p>Your verification code to complete registration is: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>This code is valid for 10 minutes.</p>"),
+                new LocalizationResource(267, "tr", "InvalidEmailFormat", "Lütfen geçerli bir e-posta adresi giriniz."),
+                new LocalizationResource(268, "en", "InvalidEmailFormat", "Please enter a valid email address."),
+                new LocalizationResource(269, "tr", "PasswordsDoNotMatch", "Girdiğiniz şifreler birbiriyle eşleşmiyor."),
+                new LocalizationResource(270, "en", "PasswordsDoNotMatch", "Passwords do not match.")
             };
             modelBuilder.Entity<LocalizationResource>().HasData(locResources);
         }

@@ -11,6 +11,7 @@ namespace RestaurantSuggestionApp.Core.DTOs.Requests
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
+        public string ConfirmPassword { get; set; } = string.Empty;
     }
 
     public class UserDto
@@ -23,6 +24,12 @@ namespace RestaurantSuggestionApp.Core.DTOs.Requests
     }
 
     public class VerifyLoginDto
+    {
+        public string Email { get; set; } = string.Empty;
+        public string Code { get; set; } = string.Empty;
+    }
+
+    public class VerifyRegisterDto
     {
         public string Email { get; set; } = string.Empty;
         public string Code { get; set; } = string.Empty;

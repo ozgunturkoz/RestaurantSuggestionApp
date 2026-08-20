@@ -81,9 +81,14 @@
     "email": "E-posta",
     "emailPlaceholder": "deniz@sirket.com",
     "password": "Şifre",
+    "confirmPassword": "Şifre Tekrarı",
+    "passwordHint": "En az 6 karakter",
     "submit": "Kayıt ol",
     "hasAccount": "Zaten hesabın var mı?",
     "loginLink": "Giriş yap",
-    "errorMsg": "Kayıt işlemi başarısız. Lütfen bilgilerinizi kontrol edin."
+    "errorMsg": "Kayıt işlemi başarısız. Lütfen bilgilerinizi kontrol edin.",
+    "passwordsDoNotMatch": "Girdiğiniz şifreler birbiriyle eşleşmiyor.",
+    "invalidEmail": "Lütfen geçerli bir e-posta adresi giriniz.",
+    "passwordTooShort": "Şifre en az 6 karakter olmalıdır."
   }
 }

@@ -93,8 +93,16 @@ const loading = ref(false)
 const authStore = useAuthStore()
 const router = useRouter()
 
+const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
+
 const handleLogin = async () => {
   errorMsg.value = ''
+
+  if (!emailRegex.test(email.value.trim())) {
+    errorMsg.value = t('register.invalidEmail')
+    return
+  }
+
   loading.value = true
   
   try {

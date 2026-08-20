@@ -34,10 +34,14 @@
 
         <label>{{ t('register.password') }}</label>
         <input v-model="password" type="password" placeholder="••••••••" required />
+        <span style="font-size: 11px; color: #A79483; margin-top: -6px; margin-bottom: 8px; display: block;">{{ t('register.passwordHint') }}</span>
+
+        <label>{{ t('register.confirmPassword') }}</label>
+        <input v-model="confirmPassword" type="password" placeholder="••••••••" required />
 
         <p v-if="errorMsg" class="error">{{ errorMsg }}</p>
 
-        <button class="primary" type="submit" :disabled="loading" style="display:flex;align-items:center;justify-content:center;gap:8px;">
+        <button class="primary" type="submit" :disabled="loading" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;">
           <LoadingSpinner v-if="loading" size="sm" inline />
           <span>{{ loading ? 'Kayıt Yapılıyor...' : t('register.submit') }}</span>
         </button>
@@ -89,6 +93,7 @@ const step = ref(1)
 const name = ref('')
 const email = ref('')
 const password = ref('')
+const confirmPassword = ref('')
 const verificationCode = ref('')
 const errorMsg = ref('')
 const loading = ref(false)
@@ -96,12 +101,30 @@ const loading = ref(false)
 const authStore = useAuthStore()
 const router = useRouter()
 
+const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
+
 const handleRegister = async () => {
   errorMsg.value = ''
+
+  if (!emailRegex.test(email.value.trim())) {
+    errorMsg.value = t('register.invalidEmail')
+    return
+  }
+
+  if (password.value.length < 6) {
+    errorMsg.value = t('register.passwordTooShort')
+    return
+  }
+
+  if (password.value !== confirmPassword.value) {
+    errorMsg.value = t('register.passwordsDoNotMatch')
+    return
+  }
+
   loading.value = true
 
   try {
-    const res = await authStore.register(name.value, email.value, password.value)
+    const res = await authStore.register(name.value, email.value, password.value, confirmPassword.value)
 
     if (res.requiresVerification) {
       step.value = 2
@@ -120,7 +143,7 @@ const handleVerify = async () => {
   loading.value = true
 
   try {
-    const res = await authStore.verifyLogin(email.value, verificationCode.value)
+    const res = await authStore.verifyRegister(email.value, verificationCode.value)
     if (res.success) {
       router.push('/')
     } else {

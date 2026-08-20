@@ -8,8 +8,11 @@ export const useAuthService = () => {
     verifyLogin(data: { email: string; code: string }) {
       return api.post('/api/Auth/verify-login', data)
     },
-    register(userData: { name: string; email: string; password: string }) {
+    register(userData: { name: string; email: string; password: string; confirmPassword: string }) {
       return api.post('/api/Auth/register', userData)
+    },
+    verifyRegister(data: { email: string; code: string }) {
+      return api.post('/api/Auth/verify-register', data)
     }
   }
 }
