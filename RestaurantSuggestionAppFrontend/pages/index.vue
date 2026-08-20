@@ -207,8 +207,6 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useRestaurantStore } from '~/stores/restaurantStore.ts'
-import { useAuthStore } from '~/stores/authStore.ts'
 import { useRouter } from '#app'
 
 const { locale, setLocale, t } = useI18n()
