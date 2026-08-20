@@ -4,7 +4,10 @@
       <div class="hbar">
         <div style="display:flex;align-items:center;gap:20px;">
           <span class="logo">Sofra</span>
-          <nav><span class="on">{{ t('nav.discover') }}</span></nav>
+          <nav>
+            <NuxtLink to="/" class="nav-link" :class="{ on: $route.path === '/' }">{{ t('nav.discover') }}</NuxtLink>
+            <NuxtLink to="/profile" class="nav-link" :class="{ on: $route.path === '/profile' }" @click.prevent="navigateTo('/profile')">{{ t('profile.myProfile') }}</NuxtLink>
+          </nav>
         </div>
 
         <div class="header-right">
@@ -23,10 +26,10 @@
 
       <div class="mobile-tabs">
         <button :class="{ active: mobileTab === 'list' }" @click="mobileTab = 'list'">
-          📋 Restoran Listesi ({{ filteredRestaurants.length }})
+          Restoran Listesi ({{ filteredRestaurants.length }})
         </button>
         <button :class="{ active: mobileTab === 'map' }" @click="mobileTab = 'map'">
-          🗺️ Harita Görünümü
+          Harita Görünümü
         </button>
       </div>
     </header>
@@ -51,21 +54,21 @@
           </select>
         </div>
 
-        <!-- 🔍 Arama -->
+        <!-- Arama -->
         <div class="filter-box search-box">
           <div class="search-input-wrap">
-            <span class="search-icon">🔍</span>
+            <span class="search-icon">Search</span>
             <input
               v-model="searchQuery"
               type="text"
               :placeholder="t('filter.searchPlaceholder')"
               class="search-input"
             />
-            <button v-if="searchQuery" class="search-clear" @click="searchQuery = ''">✕</button>
+            <button v-if="searchQuery" class="search-clear" @click="searchQuery = ''">X</button>
           </div>
         </div>
 
-        <!-- 🏷️ Kategori Filtresi -->
+        <!-- Kategori Filtresi -->
         <div v-if="availableCategories.length > 1" class="filter-box">
           <label class="filter-label">{{ t('filter.category') }}</label>
           <div class="chip-scroll">
@@ -88,7 +91,7 @@
           </div>
         </div>
 
-        <!-- 💰 Fiyat Aralığı Filtresi -->
+        <!-- Fiyat Aralığı Filtresi -->
         <div class="filter-box">
           <label class="filter-label">{{ t('filter.price') }}</label>
           <div class="chip-scroll">
@@ -121,12 +124,10 @@
         <RestaurantSkeleton v-if="store.isLoading" :count="4" />
 
         <div v-else-if="store.restaurants.length === 0" class="empty-state">
-          <div class="empty-icon">📍</div>
           <p>{{ t('sidebar.noRestaurants') }}</p>
         </div>
 
         <div v-else-if="filteredRestaurants.length === 0" class="empty-state">
-          <div class="empty-icon">🔎</div>
           <p>{{ t('filter.noResults') }}</p>
           <button class="clear-filters-link" @click="clearAllFilters">{{ t('filter.clearFilters') }}</button>
         </div>
@@ -154,7 +155,7 @@
                     ★
                   </button>
                   <span v-if="r.walkingDurationInSeconds !== null" class="walk-badge">
-                    🚶 {{ formatDuration(r.walkingDurationInSeconds) }}
+                    {{ formatDuration(r.walkingDurationInSeconds) }}
                   </span>
                 </div>
               </div>
@@ -167,7 +168,7 @@
                 class="score-badge"
                 :style="getScoreStyle(r.recommendationScore)"
               >
-                🎯 {{ t('badge.recommendation', { score: Math.round(r.recommendationScore) }) }}
+                {{ t('badge.recommendation', { score: Math.round(r.recommendationScore) }) }}
               </div>
             </div>
           </div>
@@ -401,8 +402,22 @@ const getScoreStyle = (score) => {
   return 'background: rgba(220, 53, 69, 0.15); color: #E08E58; border: 1px solid rgba(220, 53, 69, 0.3);'
 }
 
+import { useRoute } from 'vue-router'
+const route = useRoute()
+
 onMounted(() => {
   fetchFavorites()
+
+  const targetId = route.query.restaurantId ? parseInt(route.query.restaurantId) : null
+  if (targetId) {
+    selectedRestaurantId.value = targetId
+    watch(() => store.restaurants, (list) => {
+      const found = list.find(r => r.id === targetId)
+      if (found) {
+        openDetail(found)
+      }
+    }, { immediate: true })
+  }
 })
 </script>
 
@@ -413,9 +428,9 @@ onMounted(() => {
 header { flex: 0 0 auto; background: rgba(23,18,15,.85); backdrop-filter: blur(12px); border-bottom: 1px solid #33291F; }
 .hbar { padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 .logo { font-family: 'Instrument Serif', serif; font-size: 25px; font-style: italic; }
-nav { display: flex; gap: 24px; font-size: 14px; font-weight: 600; }
-nav span { cursor: pointer; color: #A79483; }
-nav span.on { color: #E0A458; }
+nav { display: flex; gap: 24px; font-size: 14px; font-weight: 600; align-items: center; }
+nav a, nav span { cursor: pointer; color: #A79483; text-decoration: none; transition: color 0.2s; }
+nav a.on, nav span.on, nav a:hover, nav span:hover { color: #E0A458; }
 
 .header-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
@@ -424,6 +439,8 @@ nav span.on { color: #E0A458; }
 .balance b { font-size: 14px; color: #E0A458; }
 .logout-btn { padding: 5px 10px; background: #40342A; color: #F3E9DE; border: none; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: 700; font-family: 'Manrope', sans-serif; }
 .logout-btn:hover { background: #5A4526; }
+.profile-nav-btn { padding: 5px 10px; background: rgba(224, 164, 88, 0.15); color: #E0A458; border: 1px solid rgba(224, 164, 88, 0.3); border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: 700; font-family: 'Manrope', sans-serif; text-decoration: none; display: inline-flex; align-items: center; transition: all .2s; }
+.profile-nav-btn:hover { background: rgba(224, 164, 88, 0.3); }
 
 .lang-switch { display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; color: #A79483; margin-right: 4px; }
 .lang-switch button { background: none; border: none; color: #A79483; cursor: pointer; font-weight: 700; font-family: 'Manrope', sans-serif; padding: 2px 4px; border-radius: 4px; transition: color .2s; }

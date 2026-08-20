@@ -6,13 +6,15 @@ export const useApi = () => {
   const toast = useToast()
 
   const customFetch = async (endpoint: string, options: any = {}) => {
-    const token = useCookie('auth_token')
+    const token = useCookie('auth_token', { path: '/' })
+    const { locale } = useI18n()
 
     try {
       const response: any = await $fetch(`${apiBase}${endpoint}`, {
         ...options,
         headers: {
           'Content-Type': 'application/json',
+          'Accept-Language': locale.value || 'tr',
           ...(token.value ? { 'Authorization': `Bearer ${token.value}` } : {}),
           ...options.headers,
         }

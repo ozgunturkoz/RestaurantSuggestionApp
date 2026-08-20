@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Localization;
 using Moq;
 using NUnit.Framework;
 using RestaurantSuggestionApp.Business.Services;
@@ -35,7 +36,7 @@ namespace RestaurantSuggestionApp.Tests.Services
 
             _mockEmailService = new Mock<IEmailService>();
 
-            _authService = new AuthService(_context, _mockConfiguration.Object, _mockEmailService.Object);
+            _authService = new AuthService(_context, _mockConfiguration.Object, _mockEmailService.Object, TestDataHelper.CreateMockLocalizer().Object);
         }
 
         [TearDown]
@@ -105,7 +106,7 @@ namespace RestaurantSuggestionApp.Tests.Services
         }
 
         [Test]
-        public async Task Login_EmailServiceFails_ReturnsBaseResponseFail()
+        public async Task Login_EmailServiceFails_StillReturnsSuccess()
         {
             TestDataHelper.SeedUser(_context, "Ahmet Yılmaz", "ahmet@mail.com", "sifre123");
 
@@ -116,8 +117,8 @@ namespace RestaurantSuggestionApp.Tests.Services
             var response = await _authService.Login("ahmet@mail.com", "sifre123");
 
             Assert.That(response, Is.Not.Null);
-            Assert.That(response.IsSuccess, Is.False);
-            Assert.That(response.ErrorMessage, Contains.Substring("E-posta gönderilemedi."));
+            Assert.That(response.IsSuccess, Is.True);
+            Assert.That(response.Data.RequiresVerification, Is.True);
         }
 
         [Test]

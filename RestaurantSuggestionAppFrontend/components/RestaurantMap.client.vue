@@ -25,6 +25,7 @@ const isLocationLoaded = ref(false)
 const userLocation = ref(null)
 let resizeObserver = null
 let mapInstance = null
+let handleResize = null
 const markerMap = new Map()
 
 const createCustomIcon = (color, isSelected = false) => {
@@ -113,7 +114,7 @@ onMounted(async () => {
         const pinColor = isSelected ? '#8FBF7E' : '#E0A458';
 
         const walkInfo = rest.walkingDistanceInMeters !== null
-          ? `<br>🚶 ${t('map.walk')}: ${formatDistance(rest.walkingDistanceInMeters)} (${formatDuration(rest.walkingDurationInSeconds)})`
+          ? `<br>${t('map.walk')}: ${formatDistance(rest.walkingDistanceInMeters)} (${formatDuration(rest.walkingDurationInSeconds)})`
           : '';
 
         let scoreHtml = '';
@@ -145,9 +146,9 @@ onMounted(async () => {
               font-family: 'Manrope', sans-serif;
               line-height: 1.4;
             ">
-              🎯 ${t('map.match')}: %${Math.round(rest.recommendationScore)}
+              ${t('map.match')}: %${Math.round(rest.recommendationScore)}
               <div style="font-size: 9.5px; font-weight: 500; opacity: 0.85; margin-top: 2px;">
-                📍 ${t('map.locationScore')}: %${Math.round(rest.locationScore)} | ₺ ${t('map.budgetScore')}: %${Math.round(rest.budgetScore)}
+                ${t('map.locationScore')}: %${Math.round(rest.locationScore)} | ${t('map.budgetScore')}: %${Math.round(rest.budgetScore)}
               </div>
             </div>
           `;
@@ -270,7 +271,7 @@ onMounted(async () => {
     renderMarkers();
   });
 
-  const handleResize = () => {
+  handleResize = () => {
     if (mapInstance) {
       mapInstance.invalidateSize({ animate: false })
     }
@@ -283,6 +284,8 @@ onBeforeUnmount(() => {
   if (resizeObserver) {
     resizeObserver.disconnect();
   }
-  window.removeEventListener('resize', handleResize);
+  if (handleResize) {
+    window.removeEventListener('resize', handleResize);
+  }
 })
 </script>

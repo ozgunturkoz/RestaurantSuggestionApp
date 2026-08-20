@@ -4,6 +4,10 @@
     "hello": "MERHABA",
     "logout": "Çıkış Yap"
   },
+  "profile": {
+    "backToDiscover": "Keşfet Sayfasına Dön",
+    "myProfile": "Profilim"
+  },
   "sidebar": {
     "radiusPrefix": "Yarıçap",
     "title": "Yakınındaki restoranlar",

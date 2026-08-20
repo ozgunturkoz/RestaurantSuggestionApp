@@ -17,7 +17,6 @@
             <!-- Stats Grid -->
             <div class="stats-grid">
               <div class="stat-card">
-                <span class="stat-icon">💰</span>
                 <div class="stat-info">
                   <small>{{ t('detail.price') }}</small>
                   <b>₺{{ restaurant.averagePrice }}</b>
@@ -25,7 +24,6 @@
               </div>
 
               <div v-if="restaurant.walkingDistanceInMeters != null" class="stat-card">
-                <span class="stat-icon">📍</span>
                 <div class="stat-info">
                   <small>{{ t('detail.distance') }}</small>
                   <b>{{ formatDistance(restaurant.walkingDistanceInMeters) }}</b>
@@ -33,7 +31,6 @@
               </div>
 
               <div v-if="restaurant.walkingDurationInSeconds != null" class="stat-card">
-                <span class="stat-icon">🚶</span>
                 <div class="stat-info">
                   <small>{{ t('detail.duration') }}</small>
                   <b>{{ formatDuration(restaurant.walkingDurationInSeconds) }}</b>
@@ -41,7 +38,6 @@
               </div>
 
               <div v-if="restaurant.recommendationScore != null" class="stat-card accent">
-                <span class="stat-icon">🎯</span>
                 <div class="stat-info">
                   <small>{{ t('detail.score') }}</small>
                   <b>%{{ Math.round(restaurant.recommendationScore) }}</b>
@@ -52,14 +48,14 @@
             <!-- Score Breakdown -->
             <div v-if="restaurant.locationScore != null || restaurant.budgetScore != null" class="score-breakdown">
               <div class="score-row" v-if="restaurant.locationScore != null">
-                <span class="score-label">📍 {{ t('detail.locationScore') }}</span>
+                <span class="score-label">{{ t('detail.locationScore') }}</span>
                 <div class="score-bar-wrap">
                   <div class="score-bar" :style="{ width: Math.round(restaurant.locationScore) + '%' }"></div>
                 </div>
                 <span class="score-value">%{{ Math.round(restaurant.locationScore) }}</span>
               </div>
               <div class="score-row" v-if="restaurant.budgetScore != null">
-                <span class="score-label">₺ {{ t('detail.budgetScore') }}</span>
+                <span class="score-label">{{ t('detail.budgetScore') }}</span>
                 <div class="score-bar-wrap">
                   <div class="score-bar budget" :style="{ width: Math.round(restaurant.budgetScore) + '%' }"></div>
                 </div>

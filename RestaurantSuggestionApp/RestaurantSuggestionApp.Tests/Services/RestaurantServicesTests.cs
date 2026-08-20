@@ -34,7 +34,8 @@ namespace RestaurantSuggestionApp.Tests.Services
 
             _restaurantService = new RestaurantService(
                 _context,
-                _mockOsrmService.Object
+                _mockOsrmService.Object,
+                TestDataHelper.CreateMockLocalizer().Object
             );
         }
 

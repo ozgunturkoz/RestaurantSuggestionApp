@@ -21,13 +21,14 @@ function extractUserFromDecoded(decoded: any) {
   return {
     id: decoded.nameid || decoded.sub || decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
     name: decoded.unique_name || decoded.name || decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
-    email: decoded.email || decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']
+    email: decoded.email || decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
+    restaurantId: decoded.restaurantId ? parseInt(decoded.restaurantId) : null
   }
 }
 
 export const useAuthStore = defineStore('auth', {
   state: () => {
-    const token = useCookie('auth_token')
+    const token = useCookie('auth_token', { path: '/' })
     const rawToken = token.value
 
     if (rawToken && rawToken !== 'null' && rawToken !== 'undefined' && rawToken.length > 10) {
@@ -60,7 +61,7 @@ export const useAuthStore = defineStore('auth', {
         
         const token = data || response?.token || (typeof response === 'string' ? response : null)
         if (token && typeof token === 'string' && token.length > 20) {
-          const tokenCookie = useCookie('auth_token', { maxAge: 60 * 60 })
+          const tokenCookie = useCookie('auth_token', { path: '/', maxAge: 60 * 60 })
           tokenCookie.value = token
           const decoded = parseJwt(token)
           this.isLoggedIn = true
@@ -78,7 +79,7 @@ export const useAuthStore = defineStore('auth', {
 
     async verifyLogin(email: string, code: string) {
       const authService = useAuthService()
-      const tokenCookie = useCookie('auth_token', { maxAge: 60 * 60 })
+      const tokenCookie = useCookie('auth_token', { path: '/', maxAge: 60 * 60 })
 
       try {
         const response = await authService.verifyLogin({ email, code }) as any
@@ -112,7 +113,7 @@ export const useAuthStore = defineStore('auth', {
 
         const token = data || response?.token || (typeof response === 'string' ? response : null)
         if (token && typeof token === 'string' && token.length > 20) {
-          const tokenCookie = useCookie('auth_token', { maxAge: 60 * 60 })
+          const tokenCookie = useCookie('auth_token', { path: '/', maxAge: 60 * 60 })
           tokenCookie.value = token
           const decoded = parseJwt(token)
           this.isLoggedIn = true
@@ -140,6 +141,12 @@ export const useAuthStore = defineStore('auth', {
       } else {
         return navigateTo('/login', { replace: true })
       }
+    },
+
+    updateUserName(newName: string) {
+      if (this.user) {
+        this.user.name = newName
+      }
     }
   }
-})
+})

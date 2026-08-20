@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Localization;
 using RestaurantSuggestionApp.Core.Entities;
 using RestaurantSuggestionApp.DataAccess;
 using RestaurantSuggestionApp.Business.Helpers;
@@ -26,11 +27,13 @@ namespace RestaurantSuggestionApp.Business.Services
     {
         private readonly AppDbContext _context;
         private readonly IOsrmService _osrmService;
+        private readonly IStringLocalizer _localizer;
 
-        public RestaurantService(AppDbContext context, IOsrmService osrmService)
+        public RestaurantService(AppDbContext context, IOsrmService osrmService, IStringLocalizer localizer)
         {
             _context = context;
             _osrmService = osrmService;
+            _localizer = localizer;
         }
 
         public BaseResponse<List<Restaurant>> GetAll()
@@ -40,25 +43,25 @@ namespace RestaurantSuggestionApp.Business.Services
                 var list = _context.Restaurants.ToList();
                 return BaseResponse<List<Restaurant>>.Success(list);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BaseResponse<List<Restaurant>>.Fail($"Restoranlar getirilirken hata oluştu: {ex.Message}");
+                return BaseResponse<List<Restaurant>>.Fail(_localizer["RestaurantFetchError"]);
             }
         }
         public BaseResponse<Restaurant> GetById(int id)
         {
             try
             {
-                var restaurant = GetRestaurantOrThrow(id, "Aradığınız restoran bulunamadı.");
+                var restaurant = GetRestaurantOrThrow(id, _localizer["RestaurantNotFound"]);
                 return BaseResponse<Restaurant>.Success(restaurant);
             }
             catch (ArgumentException ex)
             {
                 return BaseResponse<Restaurant>.Fail(ex.Message);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BaseResponse<Restaurant>.Fail($"Restoran getirilirken hata oluştu: {ex.Message}");
+                return BaseResponse<Restaurant>.Fail(_localizer["RestaurantGetByIdError"]);
             }
         }
 
@@ -70,9 +73,9 @@ namespace RestaurantSuggestionApp.Business.Services
                 _context.SaveChanges();
                 return BaseResponse<Restaurant>.Success(newRestaurant);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BaseResponse<Restaurant>.Fail($"Restoran eklenirken hata oluştu: {ex.Message}");
+                return BaseResponse<Restaurant>.Fail(_localizer["RestaurantAddError"]);
             }
         }
 
@@ -80,7 +83,7 @@ namespace RestaurantSuggestionApp.Business.Services
         {
             try
             {
-                var existing = GetRestaurantOrThrow(id, "Güncellenecek restoran bulunamadı.");
+                var existing = GetRestaurantOrThrow(id, _localizer["RestaurantToUpdateNotFound"]);
 
                 existing.UpdateDetails(updatedRestaurant.Name, updatedRestaurant.Category, updatedRestaurant.AveragePrice);
                 existing.UpdateLocation(updatedRestaurant.Latitude, updatedRestaurant.Longitude);
@@ -92,9 +95,9 @@ namespace RestaurantSuggestionApp.Business.Services
             {
                 return BaseResponse<Restaurant>.Fail(ex.Message);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BaseResponse<Restaurant>.Fail($"Restoran güncellenirken hata oluştu: {ex.Message}");
+                return BaseResponse<Restaurant>.Fail(_localizer["RestaurantUpdateError"]);
             }
         }
 
@@ -102,7 +105,7 @@ namespace RestaurantSuggestionApp.Business.Services
         {
             try
             {
-                var existing = GetRestaurantOrThrow(id, "Silinecek restoran bulunamadı.");
+                var existing = GetRestaurantOrThrow(id, _localizer["RestaurantToDeleteNotFound"]);
 
                 _context.Restaurants.Remove(existing);
                 _context.SaveChanges();
@@ -112,9 +115,9 @@ namespace RestaurantSuggestionApp.Business.Services
             {
                 return BaseResponse<bool>.Fail(ex.Message);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BaseResponse<bool>.Fail($"Restoran silinirken hata oluştu: {ex.Message}");
+                return BaseResponse<bool>.Fail(_localizer["RestaurantDeleteError"]);
             }
         }
 
@@ -144,9 +147,9 @@ namespace RestaurantSuggestionApp.Business.Services
                     resultList.OrderByDescending(r => r.RecommendationScore ?? 0).ToList()
                 );
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return BaseResponse<List<RestaurantDistance>>.Fail($"Yakın restoranlar hesaplanırken bir hata oluştu: {ex.Message}");
+                return BaseResponse<List<RestaurantDistance>>.Fail(_localizer["NearbyRestaurantsError"]);
             }
         }
 

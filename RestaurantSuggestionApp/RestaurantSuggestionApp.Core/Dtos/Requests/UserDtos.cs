@@ -19,6 +19,7 @@ namespace RestaurantSuggestionApp.Core.DTOs.Requests
         public string Name { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string? Password { get; set; }
+        public int? RestaurantId { get; set; }
     }
 
     public class VerifyLoginDto
@@ -33,4 +34,46 @@ namespace RestaurantSuggestionApp.Core.DTOs.Requests
         public string Email { get; set; } = string.Empty;
         public string? Token { get; set; }
     }
+
+    public class CreateExpenditureDto
+    {
+        public int? RestaurantId { get; set; }
+        public decimal Amount { get; set; }
+        public DateTime? SpentAt { get; set; }
+    }
+
+    public class UserExpenditureResponseDto
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int? RestaurantId { get; set; }
+        public string? RestaurantName { get; set; }
+        public string? RestaurantCategory { get; set; }
+        public decimal Amount { get; set; }
+        public DateTime SpentAt { get; set; }
+    }
+
+    public class UpdateProfileDto
+    {
+        public string Name { get; set; } = string.Empty;
+    }
+
+    public class ChangePasswordWithCodeDto
+    {
+        public string Code { get; set; } = string.Empty;
+        public string NewPassword { get; set; } = string.Empty;
+    }
+
+    public class SendEmailChangeCodeDto
+    {
+        public string NewEmail { get; set; } = string.Empty;
+    }
+
+    public class ChangeEmailWithCodeDto
+    {
+        public string NewEmail { get; set; } = string.Empty;
+        public string Code { get; set; } = string.Empty;
+        public string CurrentPassword { get; set; } = string.Empty;
+    }
 }
+

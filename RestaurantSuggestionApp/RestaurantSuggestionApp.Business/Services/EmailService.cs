@@ -21,10 +21,10 @@ namespace RestaurantSuggestionApp.Business.Services
 
         public async Task SendEmailAsync(string toEmail, string subject, string body)
         {
-            var smtpServer = _configuration["EmailSettings:SmtpServer"] ?? "smtp.gmail.com";
-            var port = int.Parse(_configuration["EmailSettings:Port"] ?? "587");
-            var senderEmail = _configuration["EmailSettings:SenderEmail"] ?? "";
-            var password = _configuration["EmailSettings:Password"] ?? "";
+            var smtpServer = _configuration["EmailSettings:SmtpServer"] ?? throw new InvalidOperationException("EmailSettings:SmtpServer konfigürasyonu eksik.");
+            var port = int.Parse(_configuration["EmailSettings:Port"] ?? throw new InvalidOperationException("EmailSettings:Port konfigürasyonu eksik."));
+            var senderEmail = _configuration["EmailSettings:SenderEmail"] ?? throw new InvalidOperationException("EmailSettings:SenderEmail konfigürasyonu eksik.");
+            var password = _configuration["EmailSettings:Password"] ?? throw new InvalidOperationException("EmailSettings:Password konfigürasyonu eksik.");
             var senderName = _configuration["EmailSettings:SenderName"] ?? "Akıllı Restoran Sistemi";
 
             if (string.IsNullOrWhiteSpace(senderEmail) || string.IsNullOrWhiteSpace(password))

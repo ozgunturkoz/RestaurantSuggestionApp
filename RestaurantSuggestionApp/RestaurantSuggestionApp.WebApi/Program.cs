@@ -1,16 +1,48 @@
-using Microsoft.EntityFrameworkCore;
-using RestaurantSuggestionApp.Business.Services;
-using RestaurantSuggestionApp.Business.ExternalServices;
-using RestaurantSuggestionApp.DataAccess;
-
+using System.Globalization;
 using System.Text;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using RestaurantSuggestionApp.Business.ExternalServices;
+using RestaurantSuggestionApp.Business.Services;
+using RestaurantSuggestionApp.Core.Entities;
+using RestaurantSuggestionApp.DataAccess;
+using RestaurantSuggestionApp.WebApi.Localizer;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Database + IMemoryCache tabanlı Localization Servisi
+builder.Services.AddSingleton<IStringLocalizerFactory, SqlStringLocalizerFactory>();
+builder.Services.AddSingleton<SqlStringLocalizer>();
+builder.Services.AddSingleton<IStringLocalizer>(sp => sp.GetRequiredService<SqlStringLocalizer>());
+builder.Services.AddTransient(typeof(IStringLocalizer<>), typeof(StringLocalizer<>));
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[]
+    {
+        new CultureInfo("tr"),
+        new CultureInfo("tr-TR"),
+        new CultureInfo("en"),
+        new CultureInfo("en-US")
+    };
+
+    options.DefaultRequestCulture = new RequestCulture("tr");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+
+    options.RequestCultureProviders = new List<IRequestCultureProvider>
+    {
+        new QueryStringRequestCultureProvider { QueryStringKey = "lang" },
+        new AcceptLanguageHeaderRequestCultureProvider()
+    };
+});
 
 builder.WebHost.ConfigureKestrel(options =>
 {
@@ -114,43 +146,11 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        context.Database.ExecuteSqlRaw(@"
-            IF NOT EXISTS (
-                SELECT 1 FROM sys.tables 
-                WHERE name = N'UserFavorites'
-            )
-            BEGIN
-                CREATE TABLE UserFavorites (
-                    Id INT IDENTITY(1,1) PRIMARY KEY,
-                    UserId INT NOT NULL,
-                    RestaurantId INT NOT NULL,
-                    CreatedDate DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
-                    CustomNote NVARCHAR(MAX) NULL,
-                    CONSTRAINT FK_UserFavorites_Users FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE,
-                    CONSTRAINT FK_UserFavorites_Restaurants FOREIGN KEY (RestaurantId) REFERENCES Restaurants(Id) ON DELETE CASCADE
-                );
-            END;
-
-            IF NOT EXISTS (
-                SELECT 1 FROM sys.columns 
-                WHERE object_id = OBJECT_ID(N'Users') AND name = N'VerificationCode'
-            )
-            BEGIN
-                ALTER TABLE Users ADD VerificationCode NVARCHAR(MAX) NULL;
-            END;
-
-            IF NOT EXISTS (
-                SELECT 1 FROM sys.columns 
-                WHERE object_id = OBJECT_ID(N'Users') AND name = N'VerificationCodeExpiresAt'
-            )
-            BEGIN
-                ALTER TABLE Users ADD VerificationCodeExpiresAt DATETIME2 NULL;
-            END;
-        ");
+        context.Database.Migrate();
     }
     catch (Exception ex)
     {
-        Console.WriteLine($"Veritabanı sütun/tablo güncelleme uyarısı: {ex.Message}");
+        Console.WriteLine($"Veritabanı migrasyon uyarısı: {ex.Message}");
     }
 }
 
@@ -159,6 +159,9 @@ app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "RestaurantSuggestionApp API v1");
 });
+
+var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
+app.UseRequestLocalization(localizationOptions);
 
 app.UseHttpsRedirection();
 app.UseCors();

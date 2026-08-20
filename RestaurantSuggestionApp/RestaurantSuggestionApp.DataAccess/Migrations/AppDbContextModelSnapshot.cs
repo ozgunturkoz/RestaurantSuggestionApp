@@ -22,7 +22,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("RestaurantSuggestionApp.Core.Entities.Comment", b =>
+            modelBuilder.Entity("RestaurantSuggestionApp.Core.Entities.LocalizationResource", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,29 +30,2061 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<string>("Culture")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ResourceKey")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Rating")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RestaurantId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Text")
+                    b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("RestaurantId");
+                    b.HasIndex("Culture", "ResourceKey")
+                        .IsUnique();
 
-                    b.HasIndex("UserId");
+                    b.ToTable("LocalizationResources");
 
-                    b.ToTable("Comments");
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Culture = "tr",
+                            ResourceKey = "UserNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(7493),
+                            Value = "Kullanıcı bulunamadı."
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Culture = "tr",
+                            ResourceKey = "InvalidPassword",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8033),
+                            Value = "E-posta veya şifre hatalı!"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Culture = "tr",
+                            ResourceKey = "InvalidInput",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8034),
+                            Value = "E-posta ve şifre boş bırakılamaz."
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Culture = "tr",
+                            ResourceKey = "InvalidCode",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8035),
+                            Value = "Girdiğiniz doğrulama kodu hatalı!"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Culture = "tr",
+                            ResourceKey = "LoginSuccess",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8036),
+                            Value = "Giriş başarılı."
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Culture = "tr",
+                            ResourceKey = "RegisterSuccess",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8040),
+                            Value = "Kayıt işlemi başarılı."
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Culture = "tr",
+                            ResourceKey = "RestaurantNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8041),
+                            Value = "Restoran bulunamadı."
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Culture = "tr",
+                            ResourceKey = "EmailAlreadyExists",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8042),
+                            Value = "Bu e-posta adresi zaten kullanımda."
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Culture = "tr",
+                            ResourceKey = "Unauthorized",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8043),
+                            Value = "Bu işlem için yetkiniz bulunmamaktadır."
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Culture = "tr",
+                            ResourceKey = "InvalidToken",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8045),
+                            Value = "Geçersiz veya süresi dolmuş oturum."
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Culture = "tr",
+                            ResourceKey = "ExpenditureAdded",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8084),
+                            Value = "Harcama başarıyla eklendi."
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Culture = "tr",
+                            ResourceKey = "FavoriteAdded",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8085),
+                            Value = "Restoran favorilere eklendi."
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Culture = "tr",
+                            ResourceKey = "FavoriteRemoved",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8086),
+                            Value = "Restoran favorilerden çıkarıldı."
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Culture = "tr",
+                            ResourceKey = "FavoriteNoteUpdated",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8087),
+                            Value = "Favori notu güncellendi."
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Culture = "tr",
+                            ResourceKey = "RestaurantFetchError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8088),
+                            Value = "Restoranlar getirilirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Culture = "tr",
+                            ResourceKey = "RestaurantGetByIdError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8089),
+                            Value = "Restoran getirilirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Culture = "tr",
+                            ResourceKey = "RestaurantAddError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8090),
+                            Value = "Restoran eklenirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Culture = "tr",
+                            ResourceKey = "RestaurantUpdateError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8093),
+                            Value = "Restoran güncellenirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Culture = "tr",
+                            ResourceKey = "RestaurantDeleteError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8094),
+                            Value = "Restoran silinirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Culture = "tr",
+                            ResourceKey = "NearbyRestaurantsError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8095),
+                            Value = "Yakın restoranlar hesaplanırken bir hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Culture = "tr",
+                            ResourceKey = "RestaurantToUpdateNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8096),
+                            Value = "Güncellenecek restoran bulunamadı."
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Culture = "tr",
+                            ResourceKey = "RestaurantToDeleteNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8097),
+                            Value = "Silinecek restoran bulunamadı."
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Culture = "tr",
+                            ResourceKey = "FavoriteRestaurantNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8098),
+                            Value = "Favoriye eklenecek restoran bulunamadı."
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Culture = "tr",
+                            ResourceKey = "FavoriteNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8099),
+                            Value = "Kaldırılacak favori kaydı bulunamadı."
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Culture = "tr",
+                            ResourceKey = "FavoriteAddError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8101),
+                            Value = "Favori eklenirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Culture = "tr",
+                            ResourceKey = "FavoriteRemoveError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8102),
+                            Value = "Favori kaldırılırken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Culture = "tr",
+                            ResourceKey = "FavoritesFetchError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8103),
+                            Value = "Favoriler getirilirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Culture = "tr",
+                            ResourceKey = "UsersFetchError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8104),
+                            Value = "Kullanıcılar getirilirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Culture = "tr",
+                            ResourceKey = "UserGetByIdError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8105),
+                            Value = "Kullanıcı getirilirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Culture = "tr",
+                            ResourceKey = "UserAddError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8107),
+                            Value = "Kullanıcı eklenirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Culture = "tr",
+                            ResourceKey = "UserUpdateError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8108),
+                            Value = "Kullanıcı güncellenirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Culture = "tr",
+                            ResourceKey = "UserDeleteError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8109),
+                            Value = "Kullanıcı silinirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Culture = "tr",
+                            ResourceKey = "UserToUpdateNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8110),
+                            Value = "Güncellenecek kullanıcı bulunamadı."
+                        },
+                        new
+                        {
+                            Id = 34,
+                            Culture = "tr",
+                            ResourceKey = "UserToDeleteNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8112),
+                            Value = "Silinecek kullanıcı bulunamadı."
+                        },
+                        new
+                        {
+                            Id = 35,
+                            Culture = "tr",
+                            ResourceKey = "ExpendituresFetchError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8113),
+                            Value = "Harcamalar getirilirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 36,
+                            Culture = "tr",
+                            ResourceKey = "ExpenditureAmountInvalid",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8114),
+                            Value = "Harcama tutarı 0'dan büyük olmalıdır."
+                        },
+                        new
+                        {
+                            Id = 37,
+                            Culture = "tr",
+                            ResourceKey = "ExpenditureAddError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8115),
+                            Value = "Harcama eklenirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 38,
+                            Culture = "tr",
+                            ResourceKey = "ExpenditureNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8116),
+                            Value = "Silinecek harcama kaydı bulunamadı."
+                        },
+                        new
+                        {
+                            Id = 39,
+                            Culture = "tr",
+                            ResourceKey = "ExpenditureDeleteError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8117),
+                            Value = "Harcama silinirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 40,
+                            Culture = "tr",
+                            ResourceKey = "ProfileUpdateError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8118),
+                            Value = "Profil güncellenirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 41,
+                            Culture = "tr",
+                            ResourceKey = "PasswordResetCodeSendError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8119),
+                            Value = "Şifre sıfırlama kodu gönderilirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 42,
+                            Culture = "tr",
+                            ResourceKey = "PasswordAndCodeRequired",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8120),
+                            Value = "Doğrulama kodu ve yeni şifre boş bırakılamaz."
+                        },
+                        new
+                        {
+                            Id = 43,
+                            Culture = "tr",
+                            ResourceKey = "PasswordMinLength",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8121),
+                            Value = "Şifre en az 6 karakter olmalıdır."
+                        },
+                        new
+                        {
+                            Id = 44,
+                            Culture = "tr",
+                            ResourceKey = "CodeExpired",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8122),
+                            Value = "Doğrulama kodunun süresi dolmuş. Lütfen tekrar kod isteyin."
+                        },
+                        new
+                        {
+                            Id = 45,
+                            Culture = "tr",
+                            ResourceKey = "PasswordUpdateError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8123),
+                            Value = "Şifre güncellenirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 46,
+                            Culture = "tr",
+                            ResourceKey = "InvalidEmailAddress",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8124),
+                            Value = "Lütfen geçerli bir yeni e-posta adresi giriniz."
+                        },
+                        new
+                        {
+                            Id = 47,
+                            Culture = "tr",
+                            ResourceKey = "EmailChangeCodeSendError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8126),
+                            Value = "E-posta doğrulama kodu gönderilirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 48,
+                            Culture = "tr",
+                            ResourceKey = "AllFieldsRequired",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8137),
+                            Value = "Tüm alanların doldurulması zorunludur."
+                        },
+                        new
+                        {
+                            Id = 49,
+                            Culture = "tr",
+                            ResourceKey = "CurrentPasswordIncorrect",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8139),
+                            Value = "Girdiğiniz mevcut şifre yanlış!"
+                        },
+                        new
+                        {
+                            Id = 50,
+                            Culture = "tr",
+                            ResourceKey = "EmailUpdateError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8141),
+                            Value = "E-posta adresi güncellenirken hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 51,
+                            Culture = "tr",
+                            ResourceKey = "EmailAndCodeRequired",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8142),
+                            Value = "E-posta ve doğrulama kodu boş bırakılamaz."
+                        },
+                        new
+                        {
+                            Id = 52,
+                            Culture = "tr",
+                            ResourceKey = "RegisterFieldsRequired",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8144),
+                            Value = "Ad, e-posta ve şifre alanları boş bırakılamaz."
+                        },
+                        new
+                        {
+                            Id = 53,
+                            Culture = "tr",
+                            ResourceKey = "LoginError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8167),
+                            Value = "Giriş işlemi sırasında bir hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 54,
+                            Culture = "tr",
+                            ResourceKey = "VerificationError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8168),
+                            Value = "Doğrulama işlemi sırasında hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 55,
+                            Culture = "tr",
+                            ResourceKey = "RegisterError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8169),
+                            Value = "Kayıt işlemi sırasında bir hata oluştu."
+                        },
+                        new
+                        {
+                            Id = 56,
+                            Culture = "tr",
+                            ResourceKey = "UnauthorizedProfileUpdate",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8171),
+                            Value = "Başka bir kullanıcının profilini güncelleme yetkiniz yok."
+                        },
+                        new
+                        {
+                            Id = 57,
+                            Culture = "tr",
+                            ResourceKey = "UnauthorizedAccountDelete",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8172),
+                            Value = "Başka bir kullanıcının hesabını silme yetkiniz yok."
+                        },
+                        new
+                        {
+                            Id = 58,
+                            Culture = "tr",
+                            ResourceKey = "PasswordRequired",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8173),
+                            Value = "Şifre alanı boş bırakılamaz."
+                        },
+                        new
+                        {
+                            Id = 59,
+                            Culture = "tr",
+                            ResourceKey = "nav.discover",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8175),
+                            Value = "Keşfet"
+                        },
+                        new
+                        {
+                            Id = 60,
+                            Culture = "tr",
+                            ResourceKey = "nav.hello",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8176),
+                            Value = "MERHABA"
+                        },
+                        new
+                        {
+                            Id = 61,
+                            Culture = "tr",
+                            ResourceKey = "nav.logout",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8177),
+                            Value = "Çıkış Yap"
+                        },
+                        new
+                        {
+                            Id = 62,
+                            Culture = "tr",
+                            ResourceKey = "profile.backToDiscover",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8178),
+                            Value = "Keşfet Sayfasına Dön"
+                        },
+                        new
+                        {
+                            Id = 63,
+                            Culture = "tr",
+                            ResourceKey = "profile.myProfile",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8179),
+                            Value = "Profilim"
+                        },
+                        new
+                        {
+                            Id = 64,
+                            Culture = "tr",
+                            ResourceKey = "sidebar.radiusPrefix",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8180),
+                            Value = "Yarıçap"
+                        },
+                        new
+                        {
+                            Id = 65,
+                            Culture = "tr",
+                            ResourceKey = "sidebar.title",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8182),
+                            Value = "Yakınındaki restoranlar"
+                        },
+                        new
+                        {
+                            Id = 66,
+                            Culture = "tr",
+                            ResourceKey = "sidebar.subtitle",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8185),
+                            Value = "Konumuna göre listelenen restoranlar"
+                        },
+                        new
+                        {
+                            Id = 67,
+                            Culture = "tr",
+                            ResourceKey = "sidebar.radiusLabel",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8186),
+                            Value = "Mesafe Sınırı (Yarıçap)"
+                        },
+                        new
+                        {
+                            Id = 68,
+                            Culture = "tr",
+                            ResourceKey = "sidebar.loading",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8187),
+                            Value = "Yükleniyor..."
+                        },
+                        new
+                        {
+                            Id = 69,
+                            Culture = "tr",
+                            ResourceKey = "sidebar.distance",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8188),
+                            Value = "Mesafe"
+                        },
+                        new
+                        {
+                            Id = 70,
+                            Culture = "tr",
+                            ResourceKey = "sidebar.noRestaurants",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8189),
+                            Value = "Seçilen yarıçapta etrafınızda restoran bulunamadı."
+                        },
+                        new
+                        {
+                            Id = 71,
+                            Culture = "tr",
+                            ResourceKey = "badge.recommendation",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8190),
+                            Value = "%{score} Multinet profilinize ve konumunuza uygun"
+                        },
+                        new
+                        {
+                            Id = 72,
+                            Culture = "tr",
+                            ResourceKey = "map.loading",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8192),
+                            Value = "Harita Yükleniyor..."
+                        },
+                        new
+                        {
+                            Id = 73,
+                            Culture = "tr",
+                            ResourceKey = "map.userMarker",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8193),
+                            Value = "Buradasınız"
+                        },
+                        new
+                        {
+                            Id = 74,
+                            Culture = "tr",
+                            ResourceKey = "map.category",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8194),
+                            Value = "Kategori"
+                        },
+                        new
+                        {
+                            Id = 75,
+                            Culture = "tr",
+                            ResourceKey = "map.price",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8196),
+                            Value = "Fiyat"
+                        },
+                        new
+                        {
+                            Id = 76,
+                            Culture = "tr",
+                            ResourceKey = "map.walk",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8197),
+                            Value = "Yürüyüş"
+                        },
+                        new
+                        {
+                            Id = 77,
+                            Culture = "tr",
+                            ResourceKey = "map.match",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8198),
+                            Value = "Uyum"
+                        },
+                        new
+                        {
+                            Id = 78,
+                            Culture = "tr",
+                            ResourceKey = "map.locationScore",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8198),
+                            Value = "Konum"
+                        },
+                        new
+                        {
+                            Id = 79,
+                            Culture = "tr",
+                            ResourceKey = "map.budgetScore",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8199),
+                            Value = "Bütçe"
+                        },
+                        new
+                        {
+                            Id = 80,
+                            Culture = "tr",
+                            ResourceKey = "filter.search",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8200),
+                            Value = "Restoran Ara"
+                        },
+                        new
+                        {
+                            Id = 81,
+                            Culture = "tr",
+                            ResourceKey = "filter.searchPlaceholder",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8201),
+                            Value = "Restoran adı yazın..."
+                        },
+                        new
+                        {
+                            Id = 82,
+                            Culture = "tr",
+                            ResourceKey = "filter.category",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8202),
+                            Value = "Kategori"
+                        },
+                        new
+                        {
+                            Id = 83,
+                            Culture = "tr",
+                            ResourceKey = "filter.allCategories",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8203),
+                            Value = "Tümü"
+                        },
+                        new
+                        {
+                            Id = 84,
+                            Culture = "tr",
+                            ResourceKey = "filter.price",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8204),
+                            Value = "Fiyat Aralığı"
+                        },
+                        new
+                        {
+                            Id = 85,
+                            Culture = "tr",
+                            ResourceKey = "filter.allPrices",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8205),
+                            Value = "Tümü"
+                        },
+                        new
+                        {
+                            Id = 86,
+                            Culture = "tr",
+                            ResourceKey = "filter.noResults",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8206),
+                            Value = "Filtrelere uygun restoran bulunamadı."
+                        },
+                        new
+                        {
+                            Id = 87,
+                            Culture = "tr",
+                            ResourceKey = "filter.clearFilters",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8207),
+                            Value = "Filtreleri Temizle"
+                        },
+                        new
+                        {
+                            Id = 88,
+                            Culture = "tr",
+                            ResourceKey = "filter.resultCount",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8208),
+                            Value = "{count} restoran listeleniyor"
+                        },
+                        new
+                        {
+                            Id = 89,
+                            Culture = "tr",
+                            ResourceKey = "detail.category",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8209),
+                            Value = "Kategori"
+                        },
+                        new
+                        {
+                            Id = 90,
+                            Culture = "tr",
+                            ResourceKey = "detail.price",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8210),
+                            Value = "Ortalama Fiyat"
+                        },
+                        new
+                        {
+                            Id = 91,
+                            Culture = "tr",
+                            ResourceKey = "detail.distance",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8212),
+                            Value = "Yürüme Mesafesi"
+                        },
+                        new
+                        {
+                            Id = 92,
+                            Culture = "tr",
+                            ResourceKey = "detail.duration",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8213),
+                            Value = "Yürüme Süresi"
+                        },
+                        new
+                        {
+                            Id = 93,
+                            Culture = "tr",
+                            ResourceKey = "detail.score",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8214),
+                            Value = "Öneri Skoru"
+                        },
+                        new
+                        {
+                            Id = 94,
+                            Culture = "tr",
+                            ResourceKey = "detail.locationScore",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8215),
+                            Value = "Konum Skoru"
+                        },
+                        new
+                        {
+                            Id = 95,
+                            Culture = "tr",
+                            ResourceKey = "detail.budgetScore",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8238),
+                            Value = "Bütçe Skoru"
+                        },
+                        new
+                        {
+                            Id = 96,
+                            Culture = "tr",
+                            ResourceKey = "detail.favoriteNote",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8239),
+                            Value = "Favori Notunuz"
+                        },
+                        new
+                        {
+                            Id = 97,
+                            Culture = "tr",
+                            ResourceKey = "detail.favoriteNotePlaceholder",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8240),
+                            Value = "Bu mekan hakkında bir not ekleyin..."
+                        },
+                        new
+                        {
+                            Id = 98,
+                            Culture = "tr",
+                            ResourceKey = "detail.saveNote",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8241),
+                            Value = "Notu Kaydet"
+                        },
+                        new
+                        {
+                            Id = 99,
+                            Culture = "tr",
+                            ResourceKey = "detail.addFavorite",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8242),
+                            Value = "Favorilere Ekle"
+                        },
+                        new
+                        {
+                            Id = 100,
+                            Culture = "tr",
+                            ResourceKey = "detail.removeFavorite",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8243),
+                            Value = "Favorilerden Çıkar"
+                        },
+                        new
+                        {
+                            Id = 101,
+                            Culture = "tr",
+                            ResourceKey = "detail.close",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8244),
+                            Value = "Kapat"
+                        },
+                        new
+                        {
+                            Id = 102,
+                            Culture = "tr",
+                            ResourceKey = "detail.noteSaved",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8244),
+                            Value = "Not kaydedildi!"
+                        },
+                        new
+                        {
+                            Id = 103,
+                            Culture = "tr",
+                            ResourceKey = "detail.addedToFavorites",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8245),
+                            Value = "Favorilere eklendi!"
+                        },
+                        new
+                        {
+                            Id = 104,
+                            Culture = "tr",
+                            ResourceKey = "detail.removedFromFavorites",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8246),
+                            Value = "Favorilerden çıkarıldı."
+                        },
+                        new
+                        {
+                            Id = 105,
+                            Culture = "tr",
+                            ResourceKey = "login.sub",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8248),
+                            Value = "Multinet entegre öneri sistemi"
+                        },
+                        new
+                        {
+                            Id = 106,
+                            Culture = "tr",
+                            ResourceKey = "login.taglineTitle",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8249),
+                            Value = "Bakiyene ve damak tadına göre, yakınındaki doğru öğün."
+                        },
+                        new
+                        {
+                            Id = 107,
+                            Culture = "tr",
+                            ResourceKey = "login.taglineSub",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8250),
+                            Value = "Harcama alışkanlığın ve konumunla eşleşen restoranlar — her gün öğle molasında."
+                        },
+                        new
+                        {
+                            Id = 108,
+                            Culture = "tr",
+                            ResourceKey = "login.welcome",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8251),
+                            Value = "Tekrar hoş geldin"
+                        },
+                        new
+                        {
+                            Id = 109,
+                            Culture = "tr",
+                            ResourceKey = "login.lead",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8252),
+                            Value = "Öğle molası önerilerin seni bekliyor."
+                        },
+                        new
+                        {
+                            Id = 110,
+                            Culture = "tr",
+                            ResourceKey = "login.email",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8253),
+                            Value = "E-posta"
+                        },
+                        new
+                        {
+                            Id = 111,
+                            Culture = "tr",
+                            ResourceKey = "login.emailPlaceholder",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8254),
+                            Value = "deniz@sirket.com"
+                        },
+                        new
+                        {
+                            Id = 112,
+                            Culture = "tr",
+                            ResourceKey = "login.password",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8255),
+                            Value = "Şifre"
+                        },
+                        new
+                        {
+                            Id = 113,
+                            Culture = "tr",
+                            ResourceKey = "login.submit",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8256),
+                            Value = "Giriş yap"
+                        },
+                        new
+                        {
+                            Id = 114,
+                            Culture = "tr",
+                            ResourceKey = "login.noAccount",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8257),
+                            Value = "Hesabın yok mu?"
+                        },
+                        new
+                        {
+                            Id = 115,
+                            Culture = "tr",
+                            ResourceKey = "login.registerLink",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8258),
+                            Value = "Kayıt ol"
+                        },
+                        new
+                        {
+                            Id = 116,
+                            Culture = "tr",
+                            ResourceKey = "login.errorMsg",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8259),
+                            Value = "E-posta adresi veya şifre hatalı!"
+                        },
+                        new
+                        {
+                            Id = 117,
+                            Culture = "tr",
+                            ResourceKey = "register.title",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8260),
+                            Value = "Hesabını oluştur"
+                        },
+                        new
+                        {
+                            Id = 118,
+                            Culture = "tr",
+                            ResourceKey = "register.lead",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8261),
+                            Value = "Akıllı restoran önerilerini hemen keşfet."
+                        },
+                        new
+                        {
+                            Id = 119,
+                            Culture = "tr",
+                            ResourceKey = "register.name",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8262),
+                            Value = "Ad Soyad"
+                        },
+                        new
+                        {
+                            Id = 120,
+                            Culture = "tr",
+                            ResourceKey = "register.namePlaceholder",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8263),
+                            Value = "Deniz Yılmaz"
+                        },
+                        new
+                        {
+                            Id = 121,
+                            Culture = "tr",
+                            ResourceKey = "register.email",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8264),
+                            Value = "E-posta"
+                        },
+                        new
+                        {
+                            Id = 122,
+                            Culture = "tr",
+                            ResourceKey = "register.emailPlaceholder",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8265),
+                            Value = "deniz@sirket.com"
+                        },
+                        new
+                        {
+                            Id = 123,
+                            Culture = "tr",
+                            ResourceKey = "register.password",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8266),
+                            Value = "Şifre"
+                        },
+                        new
+                        {
+                            Id = 124,
+                            Culture = "tr",
+                            ResourceKey = "register.submit",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8267),
+                            Value = "Kayıt ol"
+                        },
+                        new
+                        {
+                            Id = 125,
+                            Culture = "tr",
+                            ResourceKey = "register.hasAccount",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8268),
+                            Value = "Zaten hesabın var mı?"
+                        },
+                        new
+                        {
+                            Id = 126,
+                            Culture = "tr",
+                            ResourceKey = "register.loginLink",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8269),
+                            Value = "Giriş yap"
+                        },
+                        new
+                        {
+                            Id = 127,
+                            Culture = "tr",
+                            ResourceKey = "register.errorMsg",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8270),
+                            Value = "Kayıt işlemi başarısız. Lütfen bilgilerinizi kontrol edin."
+                        },
+                        new
+                        {
+                            Id = 128,
+                            Culture = "en",
+                            ResourceKey = "UserNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8271),
+                            Value = "User not found."
+                        },
+                        new
+                        {
+                            Id = 129,
+                            Culture = "en",
+                            ResourceKey = "InvalidPassword",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8272),
+                            Value = "Invalid email or password!"
+                        },
+                        new
+                        {
+                            Id = 130,
+                            Culture = "en",
+                            ResourceKey = "InvalidInput",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8274),
+                            Value = "Email and password cannot be empty."
+                        },
+                        new
+                        {
+                            Id = 131,
+                            Culture = "en",
+                            ResourceKey = "InvalidCode",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8275),
+                            Value = "Invalid verification code!"
+                        },
+                        new
+                        {
+                            Id = 132,
+                            Culture = "en",
+                            ResourceKey = "LoginSuccess",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8276),
+                            Value = "Login successful."
+                        },
+                        new
+                        {
+                            Id = 133,
+                            Culture = "en",
+                            ResourceKey = "RegisterSuccess",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8277),
+                            Value = "Registration completed successfully."
+                        },
+                        new
+                        {
+                            Id = 134,
+                            Culture = "en",
+                            ResourceKey = "RestaurantNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8278),
+                            Value = "Restaurant not found."
+                        },
+                        new
+                        {
+                            Id = 135,
+                            Culture = "en",
+                            ResourceKey = "EmailAlreadyExists",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8279),
+                            Value = "This email address is already in use."
+                        },
+                        new
+                        {
+                            Id = 136,
+                            Culture = "en",
+                            ResourceKey = "Unauthorized",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8280),
+                            Value = "You are not authorized for this operation."
+                        },
+                        new
+                        {
+                            Id = 137,
+                            Culture = "en",
+                            ResourceKey = "InvalidToken",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8302),
+                            Value = "Invalid or expired session."
+                        },
+                        new
+                        {
+                            Id = 138,
+                            Culture = "en",
+                            ResourceKey = "ExpenditureAdded",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8303),
+                            Value = "Expenditure added successfully."
+                        },
+                        new
+                        {
+                            Id = 139,
+                            Culture = "en",
+                            ResourceKey = "FavoriteAdded",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8311),
+                            Value = "Restaurant added to favorites."
+                        },
+                        new
+                        {
+                            Id = 140,
+                            Culture = "en",
+                            ResourceKey = "FavoriteRemoved",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8312),
+                            Value = "Restaurant removed from favorites."
+                        },
+                        new
+                        {
+                            Id = 141,
+                            Culture = "en",
+                            ResourceKey = "FavoriteNoteUpdated",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8314),
+                            Value = "Favorite note updated."
+                        },
+                        new
+                        {
+                            Id = 142,
+                            Culture = "en",
+                            ResourceKey = "RestaurantFetchError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8315),
+                            Value = "An error occurred while fetching restaurants."
+                        },
+                        new
+                        {
+                            Id = 143,
+                            Culture = "en",
+                            ResourceKey = "RestaurantGetByIdError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8316),
+                            Value = "An error occurred while fetching the restaurant."
+                        },
+                        new
+                        {
+                            Id = 144,
+                            Culture = "en",
+                            ResourceKey = "RestaurantAddError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8317),
+                            Value = "An error occurred while adding the restaurant."
+                        },
+                        new
+                        {
+                            Id = 145,
+                            Culture = "en",
+                            ResourceKey = "RestaurantUpdateError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8318),
+                            Value = "An error occurred while updating the restaurant."
+                        },
+                        new
+                        {
+                            Id = 146,
+                            Culture = "en",
+                            ResourceKey = "RestaurantDeleteError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8318),
+                            Value = "An error occurred while deleting the restaurant."
+                        },
+                        new
+                        {
+                            Id = 147,
+                            Culture = "en",
+                            ResourceKey = "NearbyRestaurantsError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8319),
+                            Value = "An error occurred while calculating nearby restaurants."
+                        },
+                        new
+                        {
+                            Id = 148,
+                            Culture = "en",
+                            ResourceKey = "RestaurantToUpdateNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8321),
+                            Value = "Restaurant to update not found."
+                        },
+                        new
+                        {
+                            Id = 149,
+                            Culture = "en",
+                            ResourceKey = "RestaurantToDeleteNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8321),
+                            Value = "Restaurant to delete not found."
+                        },
+                        new
+                        {
+                            Id = 150,
+                            Culture = "en",
+                            ResourceKey = "FavoriteRestaurantNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8322),
+                            Value = "Restaurant to add to favorites not found."
+                        },
+                        new
+                        {
+                            Id = 151,
+                            Culture = "en",
+                            ResourceKey = "FavoriteNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8323),
+                            Value = "Favorite record to remove not found."
+                        },
+                        new
+                        {
+                            Id = 152,
+                            Culture = "en",
+                            ResourceKey = "FavoriteAddError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8324),
+                            Value = "An error occurred while adding favorite."
+                        },
+                        new
+                        {
+                            Id = 153,
+                            Culture = "en",
+                            ResourceKey = "FavoriteRemoveError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8325),
+                            Value = "An error occurred while removing favorite."
+                        },
+                        new
+                        {
+                            Id = 154,
+                            Culture = "en",
+                            ResourceKey = "FavoritesFetchError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8326),
+                            Value = "An error occurred while fetching favorites."
+                        },
+                        new
+                        {
+                            Id = 155,
+                            Culture = "en",
+                            ResourceKey = "UsersFetchError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8327),
+                            Value = "An error occurred while fetching users."
+                        },
+                        new
+                        {
+                            Id = 156,
+                            Culture = "en",
+                            ResourceKey = "UserGetByIdError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8328),
+                            Value = "An error occurred while fetching the user."
+                        },
+                        new
+                        {
+                            Id = 157,
+                            Culture = "en",
+                            ResourceKey = "UserAddError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8329),
+                            Value = "An error occurred while adding the user."
+                        },
+                        new
+                        {
+                            Id = 158,
+                            Culture = "en",
+                            ResourceKey = "UserUpdateError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8330),
+                            Value = "An error occurred while updating the user."
+                        },
+                        new
+                        {
+                            Id = 159,
+                            Culture = "en",
+                            ResourceKey = "UserDeleteError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8331),
+                            Value = "An error occurred while deleting the user."
+                        },
+                        new
+                        {
+                            Id = 160,
+                            Culture = "en",
+                            ResourceKey = "UserToUpdateNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8332),
+                            Value = "User to update not found."
+                        },
+                        new
+                        {
+                            Id = 161,
+                            Culture = "en",
+                            ResourceKey = "UserToDeleteNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8333),
+                            Value = "User to delete not found."
+                        },
+                        new
+                        {
+                            Id = 162,
+                            Culture = "en",
+                            ResourceKey = "ExpendituresFetchError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8334),
+                            Value = "An error occurred while fetching expenditures."
+                        },
+                        new
+                        {
+                            Id = 163,
+                            Culture = "en",
+                            ResourceKey = "ExpenditureAmountInvalid",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8335),
+                            Value = "Expenditure amount must be greater than 0."
+                        },
+                        new
+                        {
+                            Id = 164,
+                            Culture = "en",
+                            ResourceKey = "ExpenditureAddError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8335),
+                            Value = "An error occurred while adding expenditure."
+                        },
+                        new
+                        {
+                            Id = 165,
+                            Culture = "en",
+                            ResourceKey = "ExpenditureNotFound",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8336),
+                            Value = "Expenditure record to delete not found."
+                        },
+                        new
+                        {
+                            Id = 166,
+                            Culture = "en",
+                            ResourceKey = "ExpenditureDeleteError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8337),
+                            Value = "An error occurred while deleting expenditure."
+                        },
+                        new
+                        {
+                            Id = 167,
+                            Culture = "en",
+                            ResourceKey = "ProfileUpdateError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8338),
+                            Value = "An error occurred while updating profile."
+                        },
+                        new
+                        {
+                            Id = 168,
+                            Culture = "en",
+                            ResourceKey = "PasswordResetCodeSendError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8339),
+                            Value = "An error occurred while sending password reset code."
+                        },
+                        new
+                        {
+                            Id = 169,
+                            Culture = "en",
+                            ResourceKey = "PasswordAndCodeRequired",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8340),
+                            Value = "Verification code and new password cannot be empty."
+                        },
+                        new
+                        {
+                            Id = 170,
+                            Culture = "en",
+                            ResourceKey = "PasswordMinLength",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8342),
+                            Value = "Password must be at least 6 characters long."
+                        },
+                        new
+                        {
+                            Id = 171,
+                            Culture = "en",
+                            ResourceKey = "CodeExpired",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8343),
+                            Value = "Verification code expired. Please request a new code."
+                        },
+                        new
+                        {
+                            Id = 172,
+                            Culture = "en",
+                            ResourceKey = "PasswordUpdateError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8344),
+                            Value = "An error occurred while updating password."
+                        },
+                        new
+                        {
+                            Id = 173,
+                            Culture = "en",
+                            ResourceKey = "InvalidEmailAddress",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8346),
+                            Value = "Please enter a valid new email address."
+                        },
+                        new
+                        {
+                            Id = 174,
+                            Culture = "en",
+                            ResourceKey = "EmailChangeCodeSendError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8347),
+                            Value = "An error occurred while sending email change code."
+                        },
+                        new
+                        {
+                            Id = 175,
+                            Culture = "en",
+                            ResourceKey = "AllFieldsRequired",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8348),
+                            Value = "All fields are required."
+                        },
+                        new
+                        {
+                            Id = 176,
+                            Culture = "en",
+                            ResourceKey = "CurrentPasswordIncorrect",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8349),
+                            Value = "Current password entered is incorrect!"
+                        },
+                        new
+                        {
+                            Id = 177,
+                            Culture = "en",
+                            ResourceKey = "EmailUpdateError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8350),
+                            Value = "An error occurred while updating email address."
+                        },
+                        new
+                        {
+                            Id = 178,
+                            Culture = "en",
+                            ResourceKey = "EmailAndCodeRequired",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8371),
+                            Value = "Email and verification code cannot be empty."
+                        },
+                        new
+                        {
+                            Id = 179,
+                            Culture = "en",
+                            ResourceKey = "RegisterFieldsRequired",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8372),
+                            Value = "Name, email, and password fields are required."
+                        },
+                        new
+                        {
+                            Id = 180,
+                            Culture = "en",
+                            ResourceKey = "LoginError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8373),
+                            Value = "An error occurred during login."
+                        },
+                        new
+                        {
+                            Id = 181,
+                            Culture = "en",
+                            ResourceKey = "VerificationError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8375),
+                            Value = "An error occurred during verification."
+                        },
+                        new
+                        {
+                            Id = 182,
+                            Culture = "en",
+                            ResourceKey = "RegisterError",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8376),
+                            Value = "An error occurred during registration."
+                        },
+                        new
+                        {
+                            Id = 183,
+                            Culture = "en",
+                            ResourceKey = "UnauthorizedProfileUpdate",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8377),
+                            Value = "You do not have permission to update another user's profile."
+                        },
+                        new
+                        {
+                            Id = 184,
+                            Culture = "en",
+                            ResourceKey = "UnauthorizedAccountDelete",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8378),
+                            Value = "You do not have permission to delete another user's account."
+                        },
+                        new
+                        {
+                            Id = 185,
+                            Culture = "en",
+                            ResourceKey = "PasswordRequired",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8379),
+                            Value = "Password field cannot be empty."
+                        },
+                        new
+                        {
+                            Id = 186,
+                            Culture = "en",
+                            ResourceKey = "nav.discover",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8381),
+                            Value = "Discover"
+                        },
+                        new
+                        {
+                            Id = 187,
+                            Culture = "en",
+                            ResourceKey = "nav.hello",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8382),
+                            Value = "HELLO"
+                        },
+                        new
+                        {
+                            Id = 188,
+                            Culture = "en",
+                            ResourceKey = "nav.logout",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8383),
+                            Value = "Logout"
+                        },
+                        new
+                        {
+                            Id = 189,
+                            Culture = "en",
+                            ResourceKey = "profile.backToDiscover",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8384),
+                            Value = "Back to Discover Page"
+                        },
+                        new
+                        {
+                            Id = 190,
+                            Culture = "en",
+                            ResourceKey = "profile.myProfile",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8385),
+                            Value = "My Profile"
+                        },
+                        new
+                        {
+                            Id = 191,
+                            Culture = "en",
+                            ResourceKey = "sidebar.radiusPrefix",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8386),
+                            Value = "Radius"
+                        },
+                        new
+                        {
+                            Id = 192,
+                            Culture = "en",
+                            ResourceKey = "sidebar.title",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8387),
+                            Value = "Restaurants near you"
+                        },
+                        new
+                        {
+                            Id = 193,
+                            Culture = "en",
+                            ResourceKey = "sidebar.subtitle",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8388),
+                            Value = "Restaurants listed by your location"
+                        },
+                        new
+                        {
+                            Id = 194,
+                            Culture = "en",
+                            ResourceKey = "sidebar.radiusLabel",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8389),
+                            Value = "Distance Limit (Radius)"
+                        },
+                        new
+                        {
+                            Id = 195,
+                            Culture = "en",
+                            ResourceKey = "sidebar.loading",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8390),
+                            Value = "Loading..."
+                        },
+                        new
+                        {
+                            Id = 196,
+                            Culture = "en",
+                            ResourceKey = "sidebar.distance",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8391),
+                            Value = "Distance"
+                        },
+                        new
+                        {
+                            Id = 197,
+                            Culture = "en",
+                            ResourceKey = "sidebar.noRestaurants",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8392),
+                            Value = "No restaurants found around you within the selected radius."
+                        },
+                        new
+                        {
+                            Id = 198,
+                            Culture = "en",
+                            ResourceKey = "badge.recommendation",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8393),
+                            Value = "%{score} matches your Multinet profile and location"
+                        },
+                        new
+                        {
+                            Id = 199,
+                            Culture = "en",
+                            ResourceKey = "map.loading",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8394),
+                            Value = "Loading Map..."
+                        },
+                        new
+                        {
+                            Id = 200,
+                            Culture = "en",
+                            ResourceKey = "map.userMarker",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8395),
+                            Value = "You are here"
+                        },
+                        new
+                        {
+                            Id = 201,
+                            Culture = "en",
+                            ResourceKey = "map.category",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8396),
+                            Value = "Category"
+                        },
+                        new
+                        {
+                            Id = 202,
+                            Culture = "en",
+                            ResourceKey = "map.price",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8397),
+                            Value = "Price"
+                        },
+                        new
+                        {
+                            Id = 203,
+                            Culture = "en",
+                            ResourceKey = "map.walk",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8398),
+                            Value = "Walk"
+                        },
+                        new
+                        {
+                            Id = 204,
+                            Culture = "en",
+                            ResourceKey = "map.match",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8399),
+                            Value = "Match"
+                        },
+                        new
+                        {
+                            Id = 205,
+                            Culture = "en",
+                            ResourceKey = "map.locationScore",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8399),
+                            Value = "Location"
+                        },
+                        new
+                        {
+                            Id = 206,
+                            Culture = "en",
+                            ResourceKey = "map.budgetScore",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8401),
+                            Value = "Budget"
+                        },
+                        new
+                        {
+                            Id = 207,
+                            Culture = "en",
+                            ResourceKey = "filter.search",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8402),
+                            Value = "Search Restaurant"
+                        },
+                        new
+                        {
+                            Id = 208,
+                            Culture = "en",
+                            ResourceKey = "filter.searchPlaceholder",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8402),
+                            Value = "Type restaurant name..."
+                        },
+                        new
+                        {
+                            Id = 209,
+                            Culture = "en",
+                            ResourceKey = "filter.category",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8403),
+                            Value = "Category"
+                        },
+                        new
+                        {
+                            Id = 210,
+                            Culture = "en",
+                            ResourceKey = "filter.allCategories",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8404),
+                            Value = "All"
+                        },
+                        new
+                        {
+                            Id = 211,
+                            Culture = "en",
+                            ResourceKey = "filter.price",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8405),
+                            Value = "Price Range"
+                        },
+                        new
+                        {
+                            Id = 212,
+                            Culture = "en",
+                            ResourceKey = "filter.allPrices",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8406),
+                            Value = "All"
+                        },
+                        new
+                        {
+                            Id = 213,
+                            Culture = "en",
+                            ResourceKey = "filter.noResults",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8407),
+                            Value = "No restaurants match the filters."
+                        },
+                        new
+                        {
+                            Id = 214,
+                            Culture = "en",
+                            ResourceKey = "filter.clearFilters",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8408),
+                            Value = "Clear Filters"
+                        },
+                        new
+                        {
+                            Id = 215,
+                            Culture = "en",
+                            ResourceKey = "filter.resultCount",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8409),
+                            Value = "{count} restaurants listed"
+                        },
+                        new
+                        {
+                            Id = 216,
+                            Culture = "en",
+                            ResourceKey = "detail.category",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8410),
+                            Value = "Category"
+                        },
+                        new
+                        {
+                            Id = 217,
+                            Culture = "en",
+                            ResourceKey = "detail.price",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8411),
+                            Value = "Average Price"
+                        },
+                        new
+                        {
+                            Id = 218,
+                            Culture = "en",
+                            ResourceKey = "detail.distance",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8412),
+                            Value = "Walking Distance"
+                        },
+                        new
+                        {
+                            Id = 219,
+                            Culture = "en",
+                            ResourceKey = "detail.duration",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8414),
+                            Value = "Walking Duration"
+                        },
+                        new
+                        {
+                            Id = 220,
+                            Culture = "en",
+                            ResourceKey = "detail.score",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8415),
+                            Value = "Recommendation Score"
+                        },
+                        new
+                        {
+                            Id = 221,
+                            Culture = "en",
+                            ResourceKey = "detail.locationScore",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8416),
+                            Value = "Location Score"
+                        },
+                        new
+                        {
+                            Id = 222,
+                            Culture = "en",
+                            ResourceKey = "detail.budgetScore",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8417),
+                            Value = "Budget Score"
+                        },
+                        new
+                        {
+                            Id = 223,
+                            Culture = "en",
+                            ResourceKey = "detail.favoriteNote",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8418),
+                            Value = "Your Favorite Note"
+                        },
+                        new
+                        {
+                            Id = 224,
+                            Culture = "en",
+                            ResourceKey = "detail.favoriteNotePlaceholder",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8419),
+                            Value = "Add a note about this venue..."
+                        },
+                        new
+                        {
+                            Id = 225,
+                            Culture = "en",
+                            ResourceKey = "detail.saveNote",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8420),
+                            Value = "Save Note"
+                        },
+                        new
+                        {
+                            Id = 226,
+                            Culture = "en",
+                            ResourceKey = "detail.addFavorite",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8421),
+                            Value = "Add to Favorites"
+                        },
+                        new
+                        {
+                            Id = 227,
+                            Culture = "en",
+                            ResourceKey = "detail.removeFavorite",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8422),
+                            Value = "Remove from Favorites"
+                        },
+                        new
+                        {
+                            Id = 228,
+                            Culture = "en",
+                            ResourceKey = "detail.close",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8423),
+                            Value = "Close"
+                        },
+                        new
+                        {
+                            Id = 229,
+                            Culture = "en",
+                            ResourceKey = "detail.noteSaved",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8425),
+                            Value = "Note saved!"
+                        },
+                        new
+                        {
+                            Id = 230,
+                            Culture = "en",
+                            ResourceKey = "detail.addedToFavorites",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8426),
+                            Value = "Added to favorites!"
+                        },
+                        new
+                        {
+                            Id = 231,
+                            Culture = "en",
+                            ResourceKey = "detail.removedFromFavorites",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8427),
+                            Value = "Removed from favorites."
+                        },
+                        new
+                        {
+                            Id = 232,
+                            Culture = "en",
+                            ResourceKey = "login.sub",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8428),
+                            Value = "Multinet integrated recommendation system"
+                        },
+                        new
+                        {
+                            Id = 233,
+                            Culture = "en",
+                            ResourceKey = "login.taglineTitle",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8429),
+                            Value = "The right meal near you, based on your balance and taste."
+                        },
+                        new
+                        {
+                            Id = 234,
+                            Culture = "en",
+                            ResourceKey = "login.taglineSub",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8430),
+                            Value = "Restaurants matching your spending habits and location — every day at lunch."
+                        },
+                        new
+                        {
+                            Id = 235,
+                            Culture = "en",
+                            ResourceKey = "login.welcome",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8431),
+                            Value = "Welcome back"
+                        },
+                        new
+                        {
+                            Id = 236,
+                            Culture = "en",
+                            ResourceKey = "login.lead",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8432),
+                            Value = "Your lunch break recommendations are waiting."
+                        },
+                        new
+                        {
+                            Id = 237,
+                            Culture = "en",
+                            ResourceKey = "login.email",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8432),
+                            Value = "Email"
+                        },
+                        new
+                        {
+                            Id = 238,
+                            Culture = "en",
+                            ResourceKey = "login.emailPlaceholder",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8433),
+                            Value = "deniz@company.com"
+                        },
+                        new
+                        {
+                            Id = 239,
+                            Culture = "en",
+                            ResourceKey = "login.password",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8434),
+                            Value = "Password"
+                        },
+                        new
+                        {
+                            Id = 240,
+                            Culture = "en",
+                            ResourceKey = "login.submit",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8435),
+                            Value = "Sign in"
+                        },
+                        new
+                        {
+                            Id = 241,
+                            Culture = "en",
+                            ResourceKey = "login.noAccount",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8436),
+                            Value = "Don't have an account?"
+                        },
+                        new
+                        {
+                            Id = 242,
+                            Culture = "en",
+                            ResourceKey = "login.registerLink",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8437),
+                            Value = "Register"
+                        },
+                        new
+                        {
+                            Id = 243,
+                            Culture = "en",
+                            ResourceKey = "login.errorMsg",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8438),
+                            Value = "Invalid email address or password!"
+                        },
+                        new
+                        {
+                            Id = 244,
+                            Culture = "en",
+                            ResourceKey = "register.title",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8439),
+                            Value = "Create your account"
+                        },
+                        new
+                        {
+                            Id = 245,
+                            Culture = "en",
+                            ResourceKey = "register.lead",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8440),
+                            Value = "Discover smart restaurant recommendations now."
+                        },
+                        new
+                        {
+                            Id = 246,
+                            Culture = "en",
+                            ResourceKey = "register.name",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8441),
+                            Value = "Full Name"
+                        },
+                        new
+                        {
+                            Id = 247,
+                            Culture = "en",
+                            ResourceKey = "register.namePlaceholder",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8441),
+                            Value = "Deniz Yilmaz"
+                        },
+                        new
+                        {
+                            Id = 248,
+                            Culture = "en",
+                            ResourceKey = "register.email",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8443),
+                            Value = "Email"
+                        },
+                        new
+                        {
+                            Id = 249,
+                            Culture = "en",
+                            ResourceKey = "register.emailPlaceholder",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8444),
+                            Value = "deniz@company.com"
+                        },
+                        new
+                        {
+                            Id = 250,
+                            Culture = "en",
+                            ResourceKey = "register.password",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8445),
+                            Value = "Password"
+                        },
+                        new
+                        {
+                            Id = 251,
+                            Culture = "en",
+                            ResourceKey = "register.submit",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8447),
+                            Value = "Register"
+                        },
+                        new
+                        {
+                            Id = 252,
+                            Culture = "en",
+                            ResourceKey = "register.hasAccount",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8448),
+                            Value = "Already have an account?"
+                        },
+                        new
+                        {
+                            Id = 253,
+                            Culture = "en",
+                            ResourceKey = "register.loginLink",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8449),
+                            Value = "Sign in"
+                        },
+                        new
+                        {
+                            Id = 254,
+                            Culture = "en",
+                            ResourceKey = "register.errorMsg",
+                            UpdatedAt = new DateTime(2026, 8, 20, 10, 9, 53, 125, DateTimeKind.Utc).AddTicks(8450),
+                            Value = "Registration failed. Please check your information."
+                        });
                 });
 
             modelBuilder.Entity("RestaurantSuggestionApp.Core.Entities.Restaurant", b =>
@@ -83,7 +2115,12 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("OwnerId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("Restaurants");
 
@@ -560,7 +2597,18 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VerificationCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("VerificationCodeExpiresAt")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
 
                     b.ToTable("Users");
 
@@ -621,7 +2669,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            Amount = 636.477411670832592m,
+                            Amount = 636.48m,
                             RestaurantId = 10,
                             SpentAt = new DateTime(2025, 12, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 1
@@ -629,7 +2677,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 2,
-                            Amount = 928.49223386593632m,
+                            Amount = 928.49m,
                             RestaurantId = 47,
                             SpentAt = new DateTime(2025, 12, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 1
@@ -637,7 +2685,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 3,
-                            Amount = 493.63732665368996m,
+                            Amount = 493.64m,
                             RestaurantId = 7,
                             SpentAt = new DateTime(2025, 12, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 1
@@ -645,7 +2693,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 4,
-                            Amount = 189.43901842620265m,
+                            Amount = 189.44m,
                             RestaurantId = 15,
                             SpentAt = new DateTime(2025, 12, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 1
@@ -653,7 +2701,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 5,
-                            Amount = 207.100139163015464m,
+                            Amount = 207.10m,
                             RestaurantId = 36,
                             SpentAt = new DateTime(2025, 12, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 1
@@ -661,7 +2709,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 6,
-                            Amount = 678.74644226429074m,
+                            Amount = 678.75m,
                             RestaurantId = 20,
                             SpentAt = new DateTime(2025, 12, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 2
@@ -669,7 +2717,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 7,
-                            Amount = 214.57897900928618m,
+                            Amount = 214.58m,
                             RestaurantId = 18,
                             SpentAt = new DateTime(2025, 12, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 2
@@ -677,7 +2725,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 8,
-                            Amount = 485.78829073877536m,
+                            Amount = 485.79m,
                             RestaurantId = 28,
                             SpentAt = new DateTime(2025, 12, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 2
@@ -685,7 +2733,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 9,
-                            Amount = 360.775557061645968m,
+                            Amount = 360.78m,
                             RestaurantId = 7,
                             SpentAt = new DateTime(2025, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 2
@@ -693,7 +2741,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 10,
-                            Amount = 922.07818889937968m,
+                            Amount = 922.08m,
                             RestaurantId = 10,
                             SpentAt = new DateTime(2025, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 2
@@ -701,7 +2749,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 11,
-                            Amount = 419.70870300368745m,
+                            Amount = 419.71m,
                             RestaurantId = 21,
                             SpentAt = new DateTime(2025, 12, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 3
@@ -709,7 +2757,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 12,
-                            Amount = 498.30972329634816m,
+                            Amount = 498.31m,
                             RestaurantId = 7,
                             SpentAt = new DateTime(2025, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 3
@@ -717,7 +2765,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 13,
-                            Amount = 326.763967031409816m,
+                            Amount = 326.76m,
                             RestaurantId = 45,
                             SpentAt = new DateTime(2025, 12, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 3
@@ -725,7 +2773,7 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 14,
-                            Amount = 431.10550813633092m,
+                            Amount = 431.11m,
                             RestaurantId = 28,
                             SpentAt = new DateTime(2025, 12, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 3
@@ -733,30 +2781,60 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                         new
                         {
                             Id = 15,
-                            Amount = 193.41102879113136m,
+                            Amount = 193.41m,
                             RestaurantId = 42,
                             SpentAt = new DateTime(2025, 12, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             UserId = 3
                         });
                 });
 
-            modelBuilder.Entity("RestaurantSuggestionApp.Core.Entities.Comment", b =>
+            modelBuilder.Entity("RestaurantSuggestionApp.Core.Entities.UserFavorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CustomNote")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserFavorites");
+                });
+
+            modelBuilder.Entity("RestaurantSuggestionApp.Core.Entities.Restaurant", b =>
+                {
+                    b.HasOne("RestaurantSuggestionApp.Core.Entities.User", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Owner");
+                });
+
+            modelBuilder.Entity("RestaurantSuggestionApp.Core.Entities.User", b =>
                 {
                     b.HasOne("RestaurantSuggestionApp.Core.Entities.Restaurant", "Restaurant")
-                        .WithMany("Comments")
+                        .WithMany()
                         .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RestaurantSuggestionApp.Core.Entities.User", "User")
-                        .WithMany("Comments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Restaurant");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("RestaurantSuggestionApp.Core.Entities.UserExpenditure", b =>
@@ -776,18 +2854,35 @@ namespace RestaurantSuggestionApp.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("RestaurantSuggestionApp.Core.Entities.UserFavorite", b =>
+                {
+                    b.HasOne("RestaurantSuggestionApp.Core.Entities.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RestaurantSuggestionApp.Core.Entities.User", "User")
+                        .WithMany("Favorites")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("RestaurantSuggestionApp.Core.Entities.Restaurant", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Expenditures");
                 });
 
             modelBuilder.Entity("RestaurantSuggestionApp.Core.Entities.User", b =>
                 {
-                    b.Navigation("Comments");
-
                     b.Navigation("Expenditures");
+
+                    b.Navigation("Favorites");
                 });
 #pragma warning restore 612, 618
         }

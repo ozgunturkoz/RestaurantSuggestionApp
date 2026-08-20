@@ -4,6 +4,10 @@
     "hello": "HELLO",
     "logout": "Log Out"
   },
+  "profile": {
+    "backToDiscover": "Back to Discover",
+    "myProfile": "My Profile"
+  },
   "sidebar": {
     "radiusPrefix": "Radius",
     "title": "Nearby Restaurants",

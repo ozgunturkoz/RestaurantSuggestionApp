@@ -13,12 +13,15 @@ namespace RestaurantSuggestionApp.DataAccess
         public DbSet<User> Users { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<UserExpenditure> UserExpenditures { get; set; }
-        public DbSet<Comment> Comments { get; set; }
         public DbSet<UserFavorite> UserFavorites { get; set; }
+        public DbSet<LocalizationResource> LocalizationResources { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
+            modelBuilder.Entity<LocalizationResource>()
+                .HasIndex(l => new { l.Culture, l.ResourceKey })
+                .IsUnique();
+
             modelBuilder.Entity<Restaurant>()
                 .Property(r => r.Latitude)
                 .HasPrecision(9, 6);
@@ -36,6 +39,20 @@ namespace RestaurantSuggestionApp.DataAccess
             modelBuilder.Entity<UserExpenditure>()
                 .Property(u => u.Amount)
                 .HasPrecision(18, 2);
+
+
+
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Restaurant)
+                .WithMany()
+                .HasForeignKey(u => u.RestaurantId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Restaurant>()
+                .HasOne(r => r.Owner)
+                .WithMany()
+                .HasForeignKey(r => r.OwnerId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.SeedData();
             base.OnModelCreating(modelBuilder);

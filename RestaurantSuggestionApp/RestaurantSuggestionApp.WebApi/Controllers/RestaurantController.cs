@@ -1,6 +1,6 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using RestaurantSuggestionApp.Business.Helpers;
 using RestaurantSuggestionApp.Business.Services;
 using RestaurantSuggestionApp.Core.DTOs.Requests;
 using RestaurantSuggestionApp.Core.Entities;
@@ -78,7 +78,7 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
         [HttpGet("nearby")]
         public async Task<IActionResult> GetNearby([FromQuery] decimal latitude, [FromQuery] decimal longitude, [FromQuery] double radiusInKm = 5)
         {
-            int? userId = User.GetUserId();
+            int? userId = GetCurrentUserId();
 
             var result = await _restaurantService.GetNearbyAsync(latitude, longitude, radiusInKm, userId);
             if (!result.IsSuccess)
@@ -86,6 +86,16 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
                 return BadRequest(result);
             }
             return Ok(result);
+        }
+
+        private int? GetCurrentUserId()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier) ?? User.FindFirst("sub");
+            if (userIdClaim != null && int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return userId;
+            }
+            return null;
         }
 
         private Restaurant MapToRestaurant(RestaurantDto dto)

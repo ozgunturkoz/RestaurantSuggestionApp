@@ -13,8 +13,11 @@ namespace RestaurantSuggestionApp.Core.Entities
 
         public decimal AveragePrice { get; private set; }
 
+        public int? OwnerId { get; private set; }
+        public User? Owner { get; set; }
+
         public ICollection<UserExpenditure>? Expenditures { get; set; }
-        public ICollection<Comment>? Comments { get; set; }
+        
 
         public Restaurant() { }
 
@@ -23,6 +26,11 @@ namespace RestaurantSuggestionApp.Core.Entities
             Id = id;
             UpdateDetails(name, category, averagePrice);
             UpdateLocation(lat, lng);
+        }
+
+        public void SetOwner(int ownerId)
+        {
+            OwnerId = ownerId;
         }
 
         public void UpdateDetails(string name, string category, decimal averagePrice)

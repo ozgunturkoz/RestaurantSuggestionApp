@@ -31,7 +31,7 @@ namespace RestaurantSuggestionApp.Business.ExternalServices
             var resultList = new List<RestaurantDistance>();
             try
             {
-                var osrmBaseUrl = _configuration["OSRM:BaseUrl"] ?? "http://router.project-osrm.org";
+                var osrmBaseUrl = _configuration["OSRM:BaseUrl"] ?? throw new InvalidOperationException("OSRM:BaseUrl konfigürasyonu bulunamadı.");
 
                 var coords = new List<string> {
                     $"{userLng.ToString(CultureInfo.InvariantCulture)},{userLat.ToString(CultureInfo.InvariantCulture)}"
@@ -91,4 +91,6 @@ namespace RestaurantSuggestionApp.Business.ExternalServices
         public double[][] Distances { get; set; } = Array.Empty<double[]>();
         public double[][] Durations { get; set; } = Array.Empty<double[]>();
     }
+
+    //constructor method ve privete set
 }
