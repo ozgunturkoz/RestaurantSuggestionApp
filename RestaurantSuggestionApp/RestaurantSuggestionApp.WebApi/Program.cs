@@ -18,6 +18,13 @@ using RestaurantSuggestionApp.WebApi.Localizer;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Disable reloadOnChange for appsettings.json to prevent inotify limit crashes on Linux container hosts (Render)
+builder.Configuration.Sources.Clear();
+var env = builder.Environment;
+builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
+                     .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: false)
+                     .AddEnvironmentVariables();
+
 // Database + IMemoryCache tabanlı Localization Servisi
 builder.Services.AddSingleton<IStringLocalizerFactory, SqlStringLocalizerFactory>();
 builder.Services.AddSingleton<SqlStringLocalizer>();

@@ -20,8 +20,9 @@ FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 
-# Environment variables for Render.com
+# Environment variables for Linux Docker / Render.com
 ENV ASPNETCORE_URLS=http://+:8080
+ENV DOTNET_USE_POLLING_FILE_WATCHER=true
 EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "RestaurantSuggestionApp.WebApi.dll"]
