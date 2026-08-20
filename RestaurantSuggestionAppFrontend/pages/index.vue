@@ -11,7 +11,7 @@
         </div>
 
         <div class="header-right">
-          <div class="balance">
+          <div class="user-info-box">
             <div class="lang-switch">
               <button :class="{ active: locale === 'tr' }" @click="setLocale('tr')">TR</button>
               <span>|</span>
