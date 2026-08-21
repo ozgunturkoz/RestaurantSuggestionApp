@@ -15,6 +15,7 @@ using RestaurantSuggestionApp.Business.Services;
 using RestaurantSuggestionApp.Core.Entities;
 using RestaurantSuggestionApp.DataAccess;
 using RestaurantSuggestionApp.WebApi.Localizer;
+using RestaurantSuggestionApp.WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -161,6 +162,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+app.UseMiddleware<SwaggerBasicAuthMiddleware>();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
