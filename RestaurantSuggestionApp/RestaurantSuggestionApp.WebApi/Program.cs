@@ -183,7 +183,7 @@ app.UseRateLimiter();
 app.UseAuthentication(); 
 app.UseAuthorization();  
 
-app.MapGet("/health", () => Results.Ok(new { status = "Healthy", timestamp = DateTime.UtcNow }));
+app.MapMethods("/health", new[] { "GET", "HEAD" }, () => Results.Ok(new { status = "Healthy", timestamp = DateTime.UtcNow }));
 
 app.MapControllers();
 
