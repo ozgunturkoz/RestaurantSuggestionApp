@@ -73,17 +73,21 @@ namespace RestaurantSuggestionApp.Business.Services
                 user.SetVerificationCode(randomCode, expireMinutes: 10);
                 _context.SaveChanges();
 
-                try
+                _ = Task.Run(async () =>
                 {
-                    await _emailService.SendEmailAsync(
-                        user.Email,
-                        _localizer["LoginVerificationEmailSubject"],
-                        _localizer["LoginVerificationEmailBody", user.Name, randomCode]
-                    );
-                }
-                catch (Exception)
-                {
-                }
+                    try
+                    {
+                        await _emailService.SendEmailAsync(
+                            user.Email,
+                            _localizer["LoginVerificationEmailSubject"],
+                            _localizer["LoginVerificationEmailBody", user.Name, randomCode]
+                        );
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[AuthService] Email send error: {ex.Message}");
+                    }
+                });
 
                 return BaseResponse<LoginResponseDto>.Success(new LoginResponseDto
                 {
@@ -127,17 +131,21 @@ namespace RestaurantSuggestionApp.Business.Services
                 user.ClearVerificationCode();
                 _context.SaveChanges();
 
-                try
+                _ = Task.Run(async () =>
                 {
-                    await _emailService.SendEmailAsync(
-                        user.Email,
-                        _localizer["WelcomeEmailSubject"],
-                        _localizer["WelcomeEmailBody", user.Name]
-                    );
-                }
-                catch (Exception)
-                {
-                }
+                    try
+                    {
+                        await _emailService.SendEmailAsync(
+                            user.Email,
+                            _localizer["WelcomeEmailSubject"],
+                            _localizer["WelcomeEmailBody", user.Name]
+                        );
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[AuthService] Welcome email send error: {ex.Message}");
+                    }
+                });
 
                 var token = GenerateJwtToken(user);
                 return BaseResponse<string>.Success(token);
@@ -187,17 +195,21 @@ namespace RestaurantSuggestionApp.Business.Services
                 _context.Users.Add(newUser);
                 _context.SaveChanges();
 
-                try
+                _ = Task.Run(async () =>
                 {
-                    await _emailService.SendEmailAsync(
-                        newUser.Email,
-                        _localizer["RegisterVerificationEmailSubject"],
-                        _localizer["RegisterVerificationEmailBody", newUser.Name, randomCode]
-                    );
-                }
-                catch (Exception)
-                {
-                }
+                    try
+                    {
+                        await _emailService.SendEmailAsync(
+                            newUser.Email,
+                            _localizer["RegisterVerificationEmailSubject"],
+                            _localizer["RegisterVerificationEmailBody", newUser.Name, randomCode]
+                        );
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[AuthService] Register email send error: {ex.Message}");
+                    }
+                });
 
                 return BaseResponse<LoginResponseDto>.Success(new LoginResponseDto
                 {
