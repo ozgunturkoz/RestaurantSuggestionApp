@@ -114,12 +114,12 @@ namespace RestaurantSuggestionApp.Business.Services
                     return BaseResponse<string>.Fail(_localizer["UserNotFound"]);
                 }
 
-                if (code != "123456" && (string.IsNullOrEmpty(user.VerificationCode) || user.VerificationCode != code))
+                if (string.IsNullOrEmpty(user.VerificationCode) || user.VerificationCode != code)
                 {
                     return BaseResponse<string>.Fail(_localizer["InvalidCode"]);
                 }
 
-                if (code != "123456" && (user.VerificationCodeExpiresAt == null || user.VerificationCodeExpiresAt < DateTime.UtcNow))
+                if (user.VerificationCodeExpiresAt == null || user.VerificationCodeExpiresAt < DateTime.UtcNow)
                 {
                     return BaseResponse<string>.Fail(_localizer["InvalidToken"]);
                 }
