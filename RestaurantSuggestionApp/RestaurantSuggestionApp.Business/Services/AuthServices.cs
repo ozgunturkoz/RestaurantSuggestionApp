@@ -80,8 +80,6 @@ namespace RestaurantSuggestionApp.Business.Services
                 var subject = _localizer["LoginVerificationEmailSubject"].Value;
                 var body = _localizer["LoginVerificationEmailBody", user.Name, randomCode].Value;
 
-                Console.WriteLine($"[AuthService] >>> DOĞRULAMA KODU ({toEmail}): {randomCode} <<<");
-
                 _ = Task.Run(async () =>
                 {
                     try
@@ -209,8 +207,6 @@ namespace RestaurantSuggestionApp.Business.Services
                 var toEmail = newUser.Email;
                 var subject = _localizer["RegisterVerificationEmailSubject"].Value;
                 var body = _localizer["RegisterVerificationEmailBody", newUser.Name, randomCode].Value;
-
-                Console.WriteLine($"[AuthService] >>> DOĞRULAMA KODU ({toEmail}): {randomCode} <<<");
 
                 _ = Task.Run(async () =>
                 {
