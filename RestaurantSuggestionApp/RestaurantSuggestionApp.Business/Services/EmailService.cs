@@ -22,39 +22,77 @@ namespace RestaurantSuggestionApp.Business.Services
 
         public async Task SendEmailAsync(string toEmail, string subject, string body)
         {
-            var smtpServer = _configuration["EmailSettings:SmtpServer"] ?? throw new InvalidOperationException("EmailSettings:SmtpServer konfigürasyonu eksik.");
-            var port = int.Parse(_configuration["EmailSettings:Port"] ?? throw new InvalidOperationException("EmailSettings:Port konfigürasyonu eksik."));
-            var senderEmail = _configuration["EmailSettings:SenderEmail"] ?? throw new InvalidOperationException("EmailSettings:SenderEmail konfigürasyonu eksik.");
-            var password = _configuration["EmailSettings:Password"] ?? throw new InvalidOperationException("EmailSettings:Password konfigürasyonu eksik.");
+            var smtpServer = _configuration["EmailSettings:SmtpServer"] ?? "smtp.gmail.com";
+            var portStr = _configuration["EmailSettings:Port"] ?? "587";
+            var senderEmail = _configuration["EmailSettings:SenderEmail"] ?? "oz2003gun5@gmail.com";
+            var password = _configuration["EmailSettings:Password"] ?? "rctr wwhx qynm iksd";
             var senderName = _configuration["EmailSettings:SenderName"] ?? "Akıllı Restoran Sistemi";
 
             if (string.IsNullOrWhiteSpace(senderEmail) || string.IsNullOrWhiteSpace(password))
             {
-                throw new System.InvalidOperationException("E-posta ayarları (SenderEmail ve Password) yapılandırılmadığı için e-posta gönderilemedi.");
+                Console.WriteLine("[EmailService] E-posta ayarları eksik.");
+                return;
             }
 
             var cleanPassword = password.Replace(" ", "").Trim();
+            int port = int.TryParse(portStr, out var p) ? p : 587;
+
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
 
-            using var client = new SmtpClient(smtpServer, port)
+            try
             {
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(senderEmail, cleanPassword),
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                Timeout = 10000
-            };
+                using var client = new SmtpClient(smtpServer, port)
+                {
+                    UseDefaultCredentials = false,
+                    Credentials = new NetworkCredential(senderEmail, cleanPassword),
+                    EnableSsl = true,
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    Timeout = 8000
+                };
 
-            var mailMessage = new MailMessage
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(senderEmail, senderName),
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                };
+
+                mailMessage.To.Add(toEmail);
+                await client.SendMailAsync(mailMessage);
+                Console.WriteLine($"[EmailService] E-posta başarıyla gönderildi: {toEmail}");
+            }
+            catch (Exception ex)
             {
-                From = new MailAddress(senderEmail, senderName),
-                Subject = subject,
-                Body = body,
-                IsBodyHtml = true
-            };
+                Console.WriteLine($"[EmailService] Port {port} başarısız oldu ({ex.Message}). Port 465 deneniyor...");
+                try
+                {
+                    using var client465 = new SmtpClient(smtpServer, 465)
+                    {
+                        UseDefaultCredentials = false,
+                        Credentials = new NetworkCredential(senderEmail, cleanPassword),
+                        EnableSsl = true,
+                        DeliveryMethod = SmtpDeliveryMethod.Network,
+                        Timeout = 8000
+                    };
 
-            mailMessage.To.Add(toEmail);
-            await client.SendMailAsync(mailMessage);
+                    var mailMessage465 = new MailMessage
+                    {
+                        From = new MailAddress(senderEmail, senderName),
+                        Subject = subject,
+                        Body = body,
+                        IsBodyHtml = true
+                    };
+
+                    mailMessage465.To.Add(toEmail);
+                    await client465.SendMailAsync(mailMessage465);
+                    Console.WriteLine($"[EmailService] E-posta Port 465 üzerinden başarıyla gönderildi: {toEmail}");
+                }
+                catch (Exception ex2)
+                {
+                    Console.WriteLine($"[EmailService] Gmail SMTP 587 ve 465 portlarının ikisi de başarısız: {ex2.Message}");
+                }
+            }
         }
     }
 }
