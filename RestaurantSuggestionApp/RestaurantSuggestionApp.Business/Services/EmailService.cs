@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Net;
 using System.Net.Mail;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RestaurantSuggestionApp.Business.Services
@@ -21,33 +23,48 @@ namespace RestaurantSuggestionApp.Business.Services
 
         public async Task SendEmailAsync(string toEmail, string subject, string body)
         {
-            var smtpServer = _configuration["EmailSettings:SmtpServer"] ?? throw new InvalidOperationException("EmailSettings:SmtpServer konfigürasyonu eksik.");
-            var port = int.Parse(_configuration["EmailSettings:Port"] ?? throw new InvalidOperationException("EmailSettings:Port konfigürasyonu eksik."));
-            var senderEmail = _configuration["EmailSettings:SenderEmail"] ?? throw new InvalidOperationException("EmailSettings:SenderEmail konfigürasyonu eksik.");
-            var password = _configuration["EmailSettings:Password"] ?? throw new InvalidOperationException("EmailSettings:Password konfigürasyonu eksik.");
+            var smtpServer = _configuration["EmailSettings:SmtpServer"];
+            var portStr = _configuration["EmailSettings:Port"];
+            var senderEmail = _configuration["EmailSettings:SenderEmail"];
+            var password = _configuration["EmailSettings:Password"];
             var senderName = _configuration["EmailSettings:SenderName"] ?? "Akıllı Restoran Sistemi";
 
-            if (string.IsNullOrWhiteSpace(senderEmail) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(smtpServer) || string.IsNullOrWhiteSpace(senderEmail) || string.IsNullOrWhiteSpace(password))
             {
-                throw new System.InvalidOperationException("E-posta ayarları (SenderEmail ve Password) yapılandırılmadığı için e-posta gönderilemedi.");
+                Console.WriteLine($"[EmailService] SMTP ayarları tanımlanmadığı için e-posta gönderimi simüle edildi ({toEmail}): {subject}");
+                return;
             }
 
-            using var client = new SmtpClient(smtpServer, port)
+            if (!int.TryParse(portStr, out int port))
             {
-                Credentials = new NetworkCredential(senderEmail, password),
-                EnableSsl = true
-            };
+                port = 587;
+            }
 
-            var mailMessage = new MailMessage
+            try
             {
-                From = new MailAddress(senderEmail, senderName),
-                Subject = subject,
-                Body = body,
-                IsBodyHtml = true
-            };
+                using var client = new SmtpClient(smtpServer, port)
+                {
+                    Credentials = new NetworkCredential(senderEmail, password),
+                    EnableSsl = true,
+                    Timeout = 3000
+                };
 
-            mailMessage.To.Add(toEmail);
-            await client.SendMailAsync(mailMessage);
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(senderEmail, senderName),
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                };
+
+                mailMessage.To.Add(toEmail);
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
+                await client.SendMailAsync(mailMessage, cts.Token);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[EmailService] E-posta gönderim uyarısı ({toEmail}): {ex.Message}");
+            }
         }
     }
 }
