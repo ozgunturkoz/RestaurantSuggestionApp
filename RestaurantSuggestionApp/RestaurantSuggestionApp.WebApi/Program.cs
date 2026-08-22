@@ -149,18 +149,33 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    try
-    {
-        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-        context.Database.Migrate();
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Veritabanı migrasyon uyarısı: {ex.Message}");
-    }
-}
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                try
+                {
+                    dbContext.Database.Migrate();
+                    dbContext.Database.ExecuteSqlRaw(@"
+                        IF OBJECT_ID(N'[UserFavorites]', N'U') IS NULL
+                        BEGIN
+                            CREATE TABLE [UserFavorites] (
+                                [Id] int NOT NULL IDENTITY,
+                                [UserId] int NOT NULL,
+                                [RestaurantId] int NOT NULL,
+                                [CreatedDate] datetime2 NOT NULL,
+                                [CustomNote] nvarchar(max) NULL,
+                                CONSTRAINT [PK_UserFavorites] PRIMARY KEY ([Id]),
+                                CONSTRAINT [FK_UserFavorites_Restaurants_RestaurantId] FOREIGN KEY ([RestaurantId]) REFERENCES [Restaurants] ([Id]) ON DELETE CASCADE,
+                                CONSTRAINT [FK_UserFavorites_Users_UserId] FOREIGN KEY ([UserId]) REFERENCES [Users] ([Id]) ON DELETE CASCADE
+                            );
+                        END;
+                    ");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Veritabanı migrasyon uyarısı: {ex.Message}");
+                }
+            }
 
 app.UseMiddleware<SwaggerBasicAuthMiddleware>();
 app.UseSwagger();
