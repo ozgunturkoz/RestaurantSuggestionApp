@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Moq;
 using NUnit.Framework;
@@ -34,9 +35,16 @@ namespace RestaurantSuggestionApp.Tests.Services
             _mockConfiguration.Setup(c => c["Jwt:Issuer"]).Returns("RestaurantApp");
             _mockConfiguration.Setup(c => c["Jwt:Audience"]).Returns("RestaurantAppUsers");
 
-            _mockEmailService = new Mock<IEmailService>();
+            var mockServiceProvider = new Mock<IServiceProvider>();
+            mockServiceProvider.Setup(s => s.GetService(typeof(IEmailService))).Returns(_mockEmailService.Object);
 
-            _authService = new AuthService(_context, _mockConfiguration.Object, _mockEmailService.Object, TestDataHelper.CreateMockLocalizer().Object);
+            var mockScope = new Mock<IServiceScope>();
+            mockScope.Setup(s => s.ServiceProvider).Returns(mockServiceProvider.Object);
+
+            var mockScopeFactory = new Mock<IServiceScopeFactory>();
+            mockScopeFactory.Setup(f => f.CreateScope()).Returns(mockScope.Object);
+
+            _authService = new AuthService(_context, _mockConfiguration.Object, _mockEmailService.Object, TestDataHelper.CreateMockLocalizer().Object, mockScopeFactory.Object);
         }
 
         [TearDown]

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using RestaurantSuggestionApp.Core.DTOs.Requests;
@@ -28,16 +29,18 @@ namespace RestaurantSuggestionApp.Business.Services
         private readonly IConfiguration _configuration;
         private readonly IEmailService _emailService;
         private readonly IStringLocalizer _localizer;
+        private readonly IServiceScopeFactory _scopeFactory;
         private static readonly System.Text.RegularExpressions.Regex EmailRegex = new System.Text.RegularExpressions.Regex(
             @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
             System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-        public AuthService(AppDbContext context, IConfiguration configuration, IEmailService emailService, IStringLocalizer localizer)
+        public AuthService(AppDbContext context, IConfiguration configuration, IEmailService emailService, IStringLocalizer localizer, IServiceScopeFactory scopeFactory)
         {
             _context = context;
             _configuration = configuration;
             _emailService = emailService;
             _localizer = localizer;
+            _scopeFactory = scopeFactory;
         }
 
         private static bool IsValidEmail(string email)
@@ -73,19 +76,22 @@ namespace RestaurantSuggestionApp.Business.Services
                 user.SetVerificationCode(randomCode, expireMinutes: 10);
                 _context.SaveChanges();
 
+                var toEmail = user.Email;
+                var subject = _localizer["LoginVerificationEmailSubject"].Value;
+                var body = _localizer["LoginVerificationEmailBody", user.Name, randomCode].Value;
+
                 _ = Task.Run(async () =>
                 {
                     try
                     {
-                        await _emailService.SendEmailAsync(
-                            user.Email,
-                            _localizer["LoginVerificationEmailSubject"],
-                            _localizer["LoginVerificationEmailBody", user.Name, randomCode]
-                        );
+                        using var scope = _scopeFactory.CreateScope();
+                        var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
+                        await emailService.SendEmailAsync(toEmail, subject, body);
+                        Console.WriteLine($"[AuthService] Login verification email successfully delivered to {toEmail}");
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"[AuthService] Email send error: {ex.Message}");
+                        Console.WriteLine($"[AuthService] Login email error: {ex}");
                     }
                 });
 
@@ -131,19 +137,22 @@ namespace RestaurantSuggestionApp.Business.Services
                 user.ClearVerificationCode();
                 _context.SaveChanges();
 
+                var toEmail = user.Email;
+                var subject = _localizer["WelcomeEmailSubject"].Value;
+                var body = _localizer["WelcomeEmailBody", user.Name].Value;
+
                 _ = Task.Run(async () =>
                 {
                     try
                     {
-                        await _emailService.SendEmailAsync(
-                            user.Email,
-                            _localizer["WelcomeEmailSubject"],
-                            _localizer["WelcomeEmailBody", user.Name]
-                        );
+                        using var scope = _scopeFactory.CreateScope();
+                        var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
+                        await emailService.SendEmailAsync(toEmail, subject, body);
+                        Console.WriteLine($"[AuthService] Welcome email successfully delivered to {toEmail}");
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"[AuthService] Welcome email send error: {ex.Message}");
+                        Console.WriteLine($"[AuthService] Welcome email error: {ex}");
                     }
                 });
 
@@ -195,19 +204,22 @@ namespace RestaurantSuggestionApp.Business.Services
                 _context.Users.Add(newUser);
                 _context.SaveChanges();
 
+                var toEmail = newUser.Email;
+                var subject = _localizer["RegisterVerificationEmailSubject"].Value;
+                var body = _localizer["RegisterVerificationEmailBody", newUser.Name, randomCode].Value;
+
                 _ = Task.Run(async () =>
                 {
                     try
                     {
-                        await _emailService.SendEmailAsync(
-                            newUser.Email,
-                            _localizer["RegisterVerificationEmailSubject"],
-                            _localizer["RegisterVerificationEmailBody", newUser.Name, randomCode]
-                        );
+                        using var scope = _scopeFactory.CreateScope();
+                        var emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
+                        await emailService.SendEmailAsync(toEmail, subject, body);
+                        Console.WriteLine($"[AuthService] Register verification email successfully delivered to {toEmail}");
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"[AuthService] Register email send error: {ex.Message}");
+                        Console.WriteLine($"[AuthService] Register email error: {ex}");
                     }
                 });
 
