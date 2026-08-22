@@ -33,10 +33,15 @@ namespace RestaurantSuggestionApp.Business.Services
                 throw new System.InvalidOperationException("E-posta ayarları (SenderEmail ve Password) yapılandırılmadığı için e-posta gönderilemedi.");
             }
 
+            var cleanPassword = password.Replace(" ", "").Trim();
+
             using var client = new SmtpClient(smtpServer, port)
             {
-                Credentials = new NetworkCredential(senderEmail, password),
-                EnableSsl = true
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(senderEmail, cleanPassword),
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Timeout = 10000
             };
 
             var mailMessage = new MailMessage
