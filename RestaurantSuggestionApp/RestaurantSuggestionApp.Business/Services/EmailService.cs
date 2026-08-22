@@ -34,6 +34,7 @@ namespace RestaurantSuggestionApp.Business.Services
             }
 
             var cleanPassword = password.Replace(" ", "").Trim();
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
 
             using var client = new SmtpClient(smtpServer, port)
             {
