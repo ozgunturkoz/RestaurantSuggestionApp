@@ -27,11 +27,31 @@ namespace RestaurantSuggestionApp.Business.Services
 
         public async Task SendEmailAsync(string toEmail, string subject, string body)
         {
-            var brevoApiKey = _configuration["EmailSettings:BrevoApiKey"];
-            var senderEmail = _configuration["EmailSettings:SenderEmail"] ?? "oz2003gun5@gmail.com";
+            var brevoApiKey = _configuration["EmailSettings:BrevoApiKey"] 
+                ?? _configuration["BREVO_API_KEY"] 
+                ?? _configuration["EmailSettings__BrevoApiKey"]
+                ?? Environment.GetEnvironmentVariable("EmailSettings__BrevoApiKey")
+                ?? Environment.GetEnvironmentVariable("BREVO_API_KEY")
+                ?? Environment.GetEnvironmentVariable("EmailSettings:BrevoApiKey");
+
+            var resendApiKey = _configuration["EmailSettings:ResendApiKey"]
+                ?? _configuration["RESEND_API_KEY"]
+                ?? _configuration["EmailSettings__ResendApiKey"]
+                ?? Environment.GetEnvironmentVariable("EmailSettings__ResendApiKey")
+                ?? Environment.GetEnvironmentVariable("RESEND_API_KEY");
+
+            var senderEmail = _configuration["EmailSettings:SenderEmail"] 
+                ?? _configuration["SENDER_EMAIL"] 
+                ?? _configuration["EmailSettings__SenderEmail"]
+                ?? Environment.GetEnvironmentVariable("EmailSettings__SenderEmail")
+                ?? Environment.GetEnvironmentVariable("SENDER_EMAIL")
+                ?? "oz2003gun5@gmail.com";
+
             var senderName = _configuration["EmailSettings:SenderName"] ?? "Akıllı Restoran Sistemi";
 
-            // 1. Brevo HTTPS API (Port 443) - Sends to EVERYONE in the world (300 free emails/day, no domain needed!)
+            Console.WriteLine($"[EmailService] Gönderim başlıyor -> Alıcı: {toEmail}, BrevoKey: {!string.IsNullOrWhiteSpace(brevoApiKey)}, ResendKey: {!string.IsNullOrWhiteSpace(resendApiKey)}, Gönderici: {senderEmail}");
+
+            // 1. Brevo HTTPS API (Port 443)
             if (!string.IsNullOrWhiteSpace(brevoApiKey))
             {
                 try
@@ -41,8 +61,8 @@ namespace RestaurantSuggestionApp.Business.Services
 
                     var payload = new
                     {
-                        sender = new { name = senderName, email = senderEmail },
-                        to = new[] { new { email = toEmail } },
+                        sender = new { name = senderName, email = senderEmail.Trim() },
+                        to = new[] { new { email = toEmail.Trim() } },
                         subject = subject,
                         htmlContent = body
                     };
@@ -52,13 +72,13 @@ namespace RestaurantSuggestionApp.Business.Services
 
                     if (httpResponse.IsSuccessStatusCode)
                     {
-                        Console.WriteLine($"[EmailService] Brevo HTTPS API SUCCESS: Email delivered to {toEmail}");
+                        Console.WriteLine($"[EmailService] Brevo HTTPS API SUCCESS: E-posta başarıyla iletildi: {toEmail}");
                         return;
                     }
                     else
                     {
                         var errorBody = await httpResponse.Content.ReadAsStringAsync();
-                        Console.WriteLine($"[EmailService] Brevo HTTPS API error ({httpResponse.StatusCode}): {errorBody}");
+                        Console.WriteLine($"[EmailService] Brevo HTTPS API Hatası ({httpResponse.StatusCode}): {errorBody}");
                     }
                 }
                 catch (Exception ex)
@@ -68,7 +88,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
 
             // 2. Resend HTTPS API (Port 443)
-            var resendApiKey = _configuration["EmailSettings:ResendApiKey"];
             if (!string.IsNullOrWhiteSpace(resendApiKey))
             {
                 try
@@ -79,7 +98,7 @@ namespace RestaurantSuggestionApp.Business.Services
                     var payload = new
                     {
                         from = $"{senderName} <onboarding@resend.dev>",
-                        to = new[] { toEmail },
+                        to = new[] { toEmail.Trim() },
                         subject = subject,
                         html = body
                     };
@@ -89,13 +108,13 @@ namespace RestaurantSuggestionApp.Business.Services
 
                     if (httpResponse.IsSuccessStatusCode)
                     {
-                        Console.WriteLine($"[EmailService] Resend HTTPS API SUCCESS: Email delivered to {toEmail}");
+                        Console.WriteLine($"[EmailService] Resend HTTPS API SUCCESS: E-posta başarıyla iletildi: {toEmail}");
                         return;
                     }
                     else
                     {
                         var errorBody = await httpResponse.Content.ReadAsStringAsync();
-                        Console.WriteLine($"[EmailService] Resend HTTPS API error ({httpResponse.StatusCode}): {errorBody}");
+                        Console.WriteLine($"[EmailService] Resend HTTPS API Hatası ({httpResponse.StatusCode}): {errorBody}");
                     }
                 }
                 catch (Exception ex)
