@@ -39,7 +39,10 @@ namespace RestaurantSuggestionApp.Business.Services
             {
                 try
                 {
-                    using var httpClient = new HttpClient();
+                    var handler = new HttpClientHandler { AllowAutoRedirect = true };
+                    using var httpClient = new HttpClient(handler);
+                    httpClient.Timeout = TimeSpan.FromSeconds(15);
+
                     var payload = new
                     {
                         to = toEmail.Trim(),
@@ -50,15 +53,16 @@ namespace RestaurantSuggestionApp.Business.Services
                     var jsonContent = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
                     var httpResponse = await httpClient.PostAsync(webhookUrl.Trim(), jsonContent);
 
-                    if (httpResponse.IsSuccessStatusCode)
+                    // Note: Google Apps Script returns 200 or 302 redirect after sending email
+                    if (httpResponse.IsSuccessStatusCode || (int)httpResponse.StatusCode == 302)
                     {
-                        Console.WriteLine($"[EmailService] Gmail Webhook SUCCESS: E-posta başarıyla iletildi: {toEmail}");
+                        Console.WriteLine($"[EmailService] Google Apps Script Gmail Webhook SUCCESS: E-posta başarıyla iletildi: {toEmail}");
                         return;
                     }
                     else
                     {
                         var errorBody = await httpResponse.Content.ReadAsStringAsync();
-                        Console.WriteLine($"[EmailService] Gmail Webhook Hatası ({httpResponse.StatusCode}): {errorBody}");
+                        Console.WriteLine($"[EmailService] Gmail Webhook Yanıtı ({httpResponse.StatusCode}): {errorBody}");
                     }
                 }
                 catch (Exception ex)
