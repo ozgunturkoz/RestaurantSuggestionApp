@@ -27,6 +27,47 @@ namespace RestaurantSuggestionApp.Business.Services
 
         public async Task SendEmailAsync(string toEmail, string subject, string body)
         {
+            // 0. Google Apps Script Webhook (Direct Official Gmail Delivery - 100% Free, 0% Spam, No Domain Needed)
+            var webhookUrl = _configuration["EmailSettings:WebhookUrl"] 
+                ?? _configuration["GMAIL_WEBHOOK_URL"] 
+                ?? _configuration["EmailSettings__WebhookUrl"]
+                ?? Environment.GetEnvironmentVariable("EmailSettings__WebhookUrl")
+                ?? Environment.GetEnvironmentVariable("GMAIL_WEBHOOK_URL")
+                ?? Environment.GetEnvironmentVariable("EmailSettings:WebhookUrl");
+
+            if (!string.IsNullOrWhiteSpace(webhookUrl))
+            {
+                try
+                {
+                    using var httpClient = new HttpClient();
+                    var payload = new
+                    {
+                        to = toEmail.Trim(),
+                        subject = subject,
+                        html = body
+                    };
+
+                    var jsonContent = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+                    var httpResponse = await httpClient.PostAsync(webhookUrl.Trim(), jsonContent);
+
+                    if (httpResponse.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine($"[EmailService] Gmail Webhook SUCCESS: E-posta başarıyla iletildi: {toEmail}");
+                        return;
+                    }
+                    else
+                    {
+                        var errorBody = await httpResponse.Content.ReadAsStringAsync();
+                        Console.WriteLine($"[EmailService] Gmail Webhook Hatası ({httpResponse.StatusCode}): {errorBody}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[EmailService] Gmail Webhook Exception: {ex.Message}");
+                }
+            }
+
+            // 1. Brevo HTTPS API (Port 443)
             var brevoApiKey = _configuration["EmailSettings:BrevoApiKey"] 
                 ?? _configuration["BREVO_API_KEY"] 
                 ?? _configuration["EmailSettings__BrevoApiKey"]
@@ -49,9 +90,8 @@ namespace RestaurantSuggestionApp.Business.Services
 
             var senderName = _configuration["EmailSettings:SenderName"] ?? "Akıllı Restoran Sistemi";
 
-            Console.WriteLine($"[EmailService] Gönderim başlıyor -> Alıcı: {toEmail}, BrevoKey: {!string.IsNullOrWhiteSpace(brevoApiKey)}, ResendKey: {!string.IsNullOrWhiteSpace(resendApiKey)}, Gönderici: {senderEmail}");
+            Console.WriteLine($"[EmailService] Gönderim başlıyor -> Alıcı: {toEmail}, WebhookPresent: {!string.IsNullOrWhiteSpace(webhookUrl)}, BrevoKey: {!string.IsNullOrWhiteSpace(brevoApiKey)}, ResendKey: {!string.IsNullOrWhiteSpace(resendApiKey)}, Gönderici: {senderEmail}");
 
-            // 1. Brevo HTTPS API (Port 443)
             if (!string.IsNullOrWhiteSpace(brevoApiKey))
             {
                 try
