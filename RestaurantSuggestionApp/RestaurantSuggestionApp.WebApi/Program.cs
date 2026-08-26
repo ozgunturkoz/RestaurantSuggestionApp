@@ -269,8 +269,9 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Canlılık ve Sağlık Kontrolü Uç Noktaları (Render Health Check)
-app.MapGet("/health", () => Results.Ok(new { status = "Healthy", timestamp = DateTime.UtcNow }));
-app.MapGet("/", () => Results.Ok(new { message = "RestaurantSuggestionApp API is running", status = "Healthy" }));
+// Canlılık ve Sağlık Kontrolü Uç Noktaları (Render & UptimeRobot Health Check)
+app.MapMethods("/health", new[] { "GET", "HEAD" }, () => Results.Ok(new { status = "Healthy", timestamp = DateTime.UtcNow })).DisableRateLimiting();
+app.MapMethods("/healthz", new[] { "GET", "HEAD" }, () => Results.Ok(new { status = "Healthy", timestamp = DateTime.UtcNow })).DisableRateLimiting();
+app.MapMethods("/", new[] { "GET", "HEAD" }, () => Results.Ok(new { message = "RestaurantSuggestionApp API is running", status = "Healthy" })).DisableRateLimiting();
 
 app.Run();

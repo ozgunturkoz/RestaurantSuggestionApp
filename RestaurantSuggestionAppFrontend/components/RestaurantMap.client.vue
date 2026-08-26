@@ -90,7 +90,7 @@ onMounted(async () => {
   mapInstance = map;
 
   // Koyu temalı modern harita katmanını (CARTO Dark Matter) yüklüyoruz
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
     maxZoom: 19,
     subdomains: 'abcd',
     attribution: '&copy; OpenStreetMap &copy; CARTO'
@@ -326,3 +326,22 @@ onBeforeUnmount(() => {
   }
 })
 </script>
+
+<style>
+.leaflet-container {
+  height: 100% !important;
+  width: 100% !important;
+  background: #17120F !important;
+  font-family: 'Manrope', sans-serif !important;
+}
+
+.leaflet-tile {
+  max-width: none !important;
+  max-height: none !important;
+}
+
+.leaflet-tile-container img {
+  max-width: none !important;
+  max-height: none !important;
+}
+</style>
