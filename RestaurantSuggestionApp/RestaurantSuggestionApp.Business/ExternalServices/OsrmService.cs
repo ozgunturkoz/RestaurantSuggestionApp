@@ -53,6 +53,11 @@ namespace RestaurantSuggestionApp.Business.ExternalServices
             var resultList = new List<RestaurantDistance>();
             try
             {
+                if (!_httpClient.DefaultRequestHeaders.Contains("User-Agent"))
+                {
+                    _httpClient.DefaultRequestHeaders.Add("User-Agent", "RestaurantSuggestionApp/1.0 (contact: support@restaurantapp.com)");
+                }
+
                 // Harita sunucusu için istek adresini oluşturuyoruz
                 var url = BuildOsrmUrl(nearbyCandidates, userLat, userLng);
 

@@ -219,6 +219,22 @@ using (var scope = app.Services.CreateScope())
             dbContext.LocalizationResources.AddRange(missingResources);
             dbContext.SaveChanges();
         }
+
+        // Otomatik Restoranları Eşitleme (Eksik Restoran Kayıtlarını Veritabanına Yükle)
+        var existingRestaurantNames = dbContext.Restaurants
+            .Select(r => r.Name.ToLower())
+            .ToHashSet();
+
+        var missingRestaurants = DbContextSeed.GetDefaultRestaurants()
+            .Where(r => !existingRestaurantNames.Contains(r.Name.ToLower()))
+            .Select(r => new Restaurant(0, r.Name, r.Category, r.Latitude, r.Longitude, r.AveragePrice))
+            .ToList();
+
+        if (missingRestaurants.Count > 0)
+        {
+            dbContext.Restaurants.AddRange(missingRestaurants);
+            dbContext.SaveChanges();
+        }
     }
     catch
     {

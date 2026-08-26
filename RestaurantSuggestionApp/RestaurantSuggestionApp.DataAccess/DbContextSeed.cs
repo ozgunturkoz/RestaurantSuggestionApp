@@ -29,10 +29,41 @@ namespace RestaurantSuggestionApp.DataAccess
             };
             modelBuilder.Entity<User>().HasData(users);
 
-            // 2. ADIM: İSTANBUL'DAKİ GERÇEK VE POPÜLER RESTORANLAR EKLENİYOR
-            // Kullanıcılara konumlarına göre doğru ve akıllı öneriler yapabilmek için gerçek enlem, boylam ve ortalama fiyatlar tanımlıyoruz.
-            var restaurants = new List<Restaurant>();
+            var restaurants = GetDefaultRestaurants();
+            modelBuilder.Entity<Restaurant>().HasData(restaurants);
 
+            // 3. ADIM: ÖRNEK KULLANICI HARCAMALARI EKLENİYOR
+            // Kullanıcıların profilindeki harcama analiz grafikleri ve istatistiklerin dolu görünmesi için örnek kayıtlar.
+            var expenditures = new List<UserExpenditure>
+            {
+                new UserExpenditure(1, 1, 1, 350.00m, new DateTime(2026, 1, 15)),
+                new UserExpenditure(2, 1, 3, 280.00m, new DateTime(2026, 1, 18)),
+                new UserExpenditure(3, 1, 4, 200.00m, new DateTime(2026, 1, 20)),
+                new UserExpenditure(4, 1, 5, 220.00m, new DateTime(2026, 1, 22)),
+                new UserExpenditure(5, 1, 8, 190.00m, new DateTime(2026, 1, 25)),
+                new UserExpenditure(6, 2, 2, 300.00m, new DateTime(2026, 1, 10)),
+                new UserExpenditure(7, 2, 6, 650.00m, new DateTime(2026, 1, 12)),
+                new UserExpenditure(8, 2, 7, 240.00m, new DateTime(2026, 1, 14)),
+                new UserExpenditure(9, 2, 10, 380.00m, new DateTime(2026, 1, 16)),
+                new UserExpenditure(10, 2, 11, 850.00m, new DateTime(2026, 1, 28)),
+                new UserExpenditure(11, 3, 12, 820.00m, new DateTime(2026, 1, 5)),
+                new UserExpenditure(12, 3, 13, 800.00m, new DateTime(2026, 1, 8)),
+                new UserExpenditure(13, 3, 14, 850.00m, new DateTime(2026, 1, 11)),
+                new UserExpenditure(14, 3, 15, 750.00m, new DateTime(2026, 1, 19)),
+                new UserExpenditure(15, 3, 16, 150.00m, new DateTime(2026, 1, 27))
+            };
+            modelBuilder.Entity<UserExpenditure>().HasData(expenditures);
+
+            var locResources = GetDefaultLocalizationResources();
+            modelBuilder.Entity<LocalizationResource>().HasData(locResources);
+        }
+
+        // -------------------------------------------------------------------------------------
+        // Varsayılan Restoranlar Listesi (İstanbul Geneli):
+        // Kadıköy, Beşiktaş, Şişli, Beyoğlu, Fatih, Bakırköy, Bahçelievler, Güngören, Merter, Zeytinburnu, Florya, Başakşehir
+        // -------------------------------------------------------------------------------------
+        public static List<Restaurant> GetDefaultRestaurants()
+        {
             var realRestaurantData = new (string Name, string Category, decimal Lat, decimal Lng, int AvgPrice)[]
             {
                 // Kadıköy Bölgesi
@@ -95,9 +126,37 @@ namespace RestaurantSuggestionApp.DataAccess
                 ("Tarihi Çınaraltı Çay Bahçesi Çengelköy", "Cafe & Dessert", 41.0515m, 29.0520m, 180),
                 ("Pita Kuzguncuk", "Cafe & Dessert", 41.0360m, 29.0288m, 210),
                 ("Metet Döner Kuzguncuk", "Kebab & Grill", 41.0355m, 29.0285m, 310),
-                ("Tatar Salim Döner Ataşehir", "Kebab & Grill", 40.9930m, 29.1120m, 330)
+                ("Tatar Salim Döner Ataşehir", "Kebab & Grill", 40.9930m, 29.1120m, 330),
+
+                // Bakırköy & Florya & Ataköy & Yeşilköy Bölgesi
+                ("Beyti Restoran Florya", "Kebab & Grill", 40.9752m, 28.7994m, 750),
+                ("Kaşıbeyaz Florya", "Kebab & Grill", 40.9701m, 28.8021m, 700),
+                ("Gelik Restoran Ataköy", "Kebab & Grill", 40.9765m, 28.8720m, 450),
+                ("Develi Florya", "Kebab & Grill", 40.9734m, 28.7981m, 680),
+                ("Sahan Kebap Bakırköy", "Kebab & Grill", 40.9772m, 28.8741m, 380),
+                ("Tarihi Dikilitaş Köftecisi Bakırköy", "Home Cooking", 40.9789m, 28.8715m, 220),
+                ("Sütiş Florya", "Cafe & Dessert", 40.9723m, 28.8012m, 280),
+
+                // Bahçelievler & Güngören & Merter & Zeytinburnu Bölgesi
+                ("Öz Kilis Kebap & Lahmacun Merter", "Kebab & Grill", 41.0135m, 28.8920m, 260),
+                ("Hacı Sayid Bahçelievler", "Cafe & Dessert", 41.0021m, 28.8614m, 220),
+                ("Nizam Pide Merter", "Home Cooking", 41.0122m, 28.8945m, 240),
+                ("Köfteci Yusuf Güngören", "Kebab & Grill", 41.0185m, 28.8872m, 250),
+                ("Kardeşler Döner Zeytinburnu", "Kebab & Grill", 41.0012m, 28.9034m, 200),
+                ("Sarayçiftliği Restoran Güngören", "Home Cooking", 41.0150m, 28.8830m, 210),
+                ("Şirinevler Köftecisi", "Kebab & Grill", 41.0034m, 28.8472m, 210),
+                ("Urfa Kebapçısı Bahçelievler", "Kebab & Grill", 40.9995m, 28.8628m, 290),
+                ("Mado Bahçelievler Yayla", "Cafe & Dessert", 40.9982m, 28.8645m, 240),
+
+                // Küçükçekmece & Avcılar & Başakşehir Bölgesi
+                ("Gülhane İskender Küçükçekmece", "Kebab & Grill", 40.9942m, 28.7756m, 320),
+                ("Hacıbozanoğulları Başakşehir", "Kebab & Grill", 41.0882m, 28.7994m, 400),
+                ("Saray Muhallebicisi Mall of Istanbul", "Cafe & Dessert", 41.0628m, 28.8078m, 230),
+                ("Big Chefs Mall of Istanbul", "World Cuisine", 41.0631m, 28.8082m, 480),
+                ("Midpoint Mall of Istanbul", "World Cuisine", 41.0635m, 28.8075m, 520)
             };
 
+            var restaurants = new List<Restaurant>();
             int restaurantId = 1;
             foreach (var item in realRestaurantData)
             {
@@ -111,34 +170,7 @@ namespace RestaurantSuggestionApp.DataAccess
                 ));
                 restaurantId++;
             }
-            modelBuilder.Entity<Restaurant>().HasData(restaurants);
-
-            // 3. ADIM: ÖRNEK KULLANICI HARCAMALARI EKLENİYOR
-            // Kullanıcıların profilindeki harcama analiz grafikleri ve istatistiklerin dolu görünmesi için örnek kayıtlar.
-            var expenditures = new List<UserExpenditure>
-            {
-                new UserExpenditure(1, 1, 1, 350.00m, new DateTime(2026, 1, 15)),
-                new UserExpenditure(2, 1, 3, 280.00m, new DateTime(2026, 1, 18)),
-                new UserExpenditure(3, 1, 4, 200.00m, new DateTime(2026, 1, 20)),
-                new UserExpenditure(4, 1, 5, 220.00m, new DateTime(2026, 1, 22)),
-                new UserExpenditure(5, 1, 8, 190.00m, new DateTime(2026, 1, 25)),
-                new UserExpenditure(6, 2, 2, 300.00m, new DateTime(2026, 1, 10)),
-                new UserExpenditure(7, 2, 6, 650.00m, new DateTime(2026, 1, 12)),
-                new UserExpenditure(8, 2, 7, 240.00m, new DateTime(2026, 1, 14)),
-                new UserExpenditure(9, 2, 10, 380.00m, new DateTime(2026, 1, 16)),
-                new UserExpenditure(10, 2, 11, 850.00m, new DateTime(2026, 1, 28)),
-                new UserExpenditure(11, 3, 12, 820.00m, new DateTime(2026, 1, 5)),
-                new UserExpenditure(12, 3, 13, 800.00m, new DateTime(2026, 1, 8)),
-                new UserExpenditure(13, 3, 14, 850.00m, new DateTime(2026, 1, 11)),
-                new UserExpenditure(14, 3, 15, 750.00m, new DateTime(2026, 1, 19)),
-                new UserExpenditure(15, 3, 16, 150.00m, new DateTime(2026, 1, 27))
-            };
-            modelBuilder.Entity<UserExpenditure>().HasData(expenditures);
-
-            // 4. ADIM: TÜM DİL VE ÇEVİRİ KAYNAKLARI (LOCALIZATION)
-            // Sistemde hiçbir düz yazı kalmaması için hem Türkçe hem İngilizce tüm arayüz metinleri veritabanına eklenir.
-            var locResources = GetDefaultLocalizationResources();
-            modelBuilder.Entity<LocalizationResource>().HasData(locResources);
+            return restaurants;
         }
 
         // -------------------------------------------------------------------------------------

@@ -102,6 +102,13 @@ onMounted(async () => {
   });
   resizeObserver.observe(mapContainer.value);
 
+  setTimeout(() => {
+    if (mapInstance) mapInstance.invalidateSize();
+  }, 200);
+  setTimeout(() => {
+    if (mapInstance) mapInstance.invalidateSize();
+  }, 600);
+
   const markerGroup = L.layerGroup().addTo(map);
   let boundaryCircle = null;
 
