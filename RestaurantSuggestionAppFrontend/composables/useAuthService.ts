@@ -29,9 +29,10 @@ export const useAuthService = () => {
       return api.post('/api/Auth/verify-register', data)
     },
 
-    // Şifremi unuttum kod isteme isteği gönderir (E-posta)
-    forgotPassword(data: { email: string }) {
-      return api.post('/api/Auth/forgot-password', data)
+    // Şifremi unuttum kod isteme isteği gönderir (E-posta adresi veya nesne olarak)
+    forgotPassword(dataOrEmail: string | { email: string }) {
+      const body = typeof dataOrEmail === 'string' ? { email: dataOrEmail } : dataOrEmail
+      return api.post('/api/Auth/forgot-password', body)
     },
 
     // Yeni şifreyi ve doğrulama kodunu onaylatır

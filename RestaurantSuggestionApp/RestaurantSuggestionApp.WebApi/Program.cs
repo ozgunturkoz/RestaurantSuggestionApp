@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text;
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
@@ -65,21 +66,35 @@ builder.Services.AddControllers();
 builder.Services.AddHttpClient();
 builder.Services.AddMemoryCache(); 
 
+// Forwarded Headers: Render / Bulut sunuculardaki proxy arkasında gerçek istemci IP adresini alır
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
+
 // 4. ADIM: GÜVENLİK VE SALDIRI KORUMASI (RATE LIMITING)
-// Kötü niyetli kişilerin giriş ekranına saniyede yüzlerce şifre denemesi yapmasını engeller (Dakikada en fazla 5 deneme).
+// Kötü niyetli kişilerin giriş ekranına saniyede yüzlerce şifre denemesi yapmasını engeller (İstemci başına dakikada 15 deneme).
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
 
     options.AddPolicy("AuthRateLimit", httpContext =>
-        RateLimitPartition.GetFixedWindowLimiter(
-            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown_ip",
+    {
+        var clientIp = httpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault()?.Split(',')[0].Trim()
+                       ?? httpContext.Connection.RemoteIpAddress?.ToString()
+                       ?? "unknown_ip";
+
+        return RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: clientIp,
             factory: _ => new FixedWindowRateLimiterOptions
             {
                 AutoReplenishment = true,
-                PermitLimit = 5,                 
+                PermitLimit = 15,                 
                 Window = TimeSpan.FromMinutes(1) 
-            }));
+            });
+    });
 });
 
 // 5. ADIM: KİMLİK DOĞRULAMA (JWT BEARER AUTHENTICATION)
@@ -210,6 +225,9 @@ using (var scope = app.Services.CreateScope())
         // Migrasyon ve eşitleme hatası durumunda uygulama çökmeden güvenle devam eder
     }
 }
+
+// Bulut sunucu (Render vb.) proxy başlıklarını uygular
+app.UseForwardedHeaders();
 
 // Swagger Güvenlik ve Arayüzü
 app.UseMiddleware<SwaggerBasicAuthMiddleware>();

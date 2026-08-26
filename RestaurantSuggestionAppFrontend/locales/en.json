@@ -211,6 +211,9 @@
     "error": "An error occurred.",
     "sessionExpired": "Your session has expired. Please log in again.",
     "sessionExpiredTitle": "Session Expired",
+    "rateLimitTitle": "Rate Limit Exceeded",
+    "rateLimitError": "Too many requests. Please wait 1 minute before trying again.",
+    "serverError": "Server is currently unreachable. Please try again in a few moments.",
     "connectionError": "An error occurred while communicating with the server.",
     "connectionErrorTitle": "Connection/Server Error",
     "close": "Close"

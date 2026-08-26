@@ -5,8 +5,8 @@ import { useI18n } from '~/composables/useI18n'
 // BU COMPOSABLE NE İŞE YARAR? (KODLAMA BİLMEYENLER İÇİN ANLATIM)
 // Frontend'in backend ile konuşurken kullandığı "Genel Posta / Kargo Görevlisidir".
 // Her istek atıldığında kullanıcının dil tercihini (TR / EN) ve giriş anahtarını (JWT Token)
-// başlığa otomatik ekler. Sunucu bir hata verirse (örneğin oturum süresi dolduysa)
-// kullanıcıyı uyarır ve güvenle giriş sayfasına yönlendirir.
+// başlığa otomatik ekler. Sunucu bir hata verirse (örneğin oturum süresi dolduysa veya rate limit aşıldıysa)
+// kullanıcıyı uyarır ve güvenle yönetir.
 // =========================================================================================
 
 export const useApi = () => {
@@ -43,12 +43,27 @@ export const useApi = () => {
         const authStore = useAuthStore()
         toast.showError(t('common.sessionExpired'), t('common.sessionExpiredTitle'))
         authStore.logout()
-        throw err
+        throw new Error(t('common.sessionExpired'))
       }
 
-      const errorMsg = err?.data?.message || err?.data?.errorMessage || err?.message || t('common.connectionError')
-      toast.showError(errorMsg, t('common.connectionErrorTitle'))
-      throw err
+      // 429 Too Many Requests: Rate Limiting (Çok fazla deneme)
+      if (status === 429) {
+        const rateLimitMsg = t('common.rateLimitError')
+        toast.showWarning(rateLimitMsg, t('common.rateLimitTitle'))
+        const customErr = new Error(rateLimitMsg) as any
+        customErr.customMessage = rateLimitMsg
+        throw customErr
+      }
+
+      // Sunucu veya Bağlantı Hatası (500, 502, 503 vb.)
+      const backendMsg = err?.data?.message || err?.data?.errorMessage
+      const errorMsg = backendMsg || (status >= 500 ? t('common.serverError') : t('common.connectionError'))
+      const errorTitle = t('common.connectionErrorTitle')
+      
+      toast.showError(errorMsg, errorTitle)
+      const customErr = new Error(errorMsg) as any
+      customErr.customMessage = errorMsg
+      throw customErr
     }
   }
 

@@ -286,13 +286,15 @@ const handleRequestForgotCode = async () => {
 
   loading.value = true
   try {
-    const res = await authService.forgotPassword(forgotEmail.value.trim())
+    const res = await authStore.forgotPassword(forgotEmail.value.trim())
     if (res.success) {
       toast.showSuccess(t('forgot.codeSentToast'))
       step.value = 4
     } else {
       errorMsg.value = res.error || t('forgot.codeSendError')
     }
+  } catch (err) {
+    errorMsg.value = err?.customMessage || err?.message || t('forgot.codeSendError')
   } finally {
     loading.value = false
   }
@@ -321,7 +323,7 @@ const handleResetPassword = async () => {
 
   loading.value = true
   try {
-    const res = await authService.resetPassword(
+    const res = await authStore.resetPassword(
       forgotEmail.value.trim(),
       forgotCode.value.trim(),
       forgotNewPassword.value,
@@ -336,6 +338,8 @@ const handleResetPassword = async () => {
     } else {
       errorMsg.value = res.error || t('profile.passwordChangeFailed')
     }
+  } catch (err) {
+    errorMsg.value = err?.customMessage || err?.message || t('profile.passwordChangeFailed')
   } finally {
     loading.value = false
   }

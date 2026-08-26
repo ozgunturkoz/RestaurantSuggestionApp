@@ -211,6 +211,9 @@
     "error": "Bir hata oluştu.",
     "sessionExpired": "Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın.",
     "sessionExpiredTitle": "Oturum Süresi Doldu",
+    "rateLimitTitle": "İşlem Sınırı Aşıldı",
+    "rateLimitError": "Çok fazla deneme yaptınız. Lütfen 1 dakika bekleyip tekrar deneyiniz.",
+    "serverError": "Sunucuya şu anda ulaşılamıyor. Lütfen biraz sonra tekrar deneyiniz.",
     "connectionError": "Sunucu ile iletişim kurulurken bir hata oluştu.",
     "connectionErrorTitle": "Bağlantı/Sunucu Hatası",
     "close": "Kapat"
