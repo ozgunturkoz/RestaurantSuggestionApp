@@ -36,27 +36,27 @@ onMounted(() => {
 
 <style>
 /* =========================================================================================
-   GENEL WEB SİTESİ STİLLERİ (GLOBAL CSS)
-   Tüm sayfalarda geçerli olan arka plan rengi, yazı tipleri ve sıfırlamalar.
+   GENEL WEB SİTESİ STİLLERİ (GLOBAL CSS RESET)
+   Tüm sayfalarda beyaz kenarlığı, varsayılan tarayıcı boşluklarını ve sınırları sıfırlar.
    ========================================================================================= */
-html, body {
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #__nuxt, #__layout, .app-root {
   margin: 0 !important;
   padding: 0 !important;
-  background-color: #201A16 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: #17120F !important;
+  background-color: #17120F !important;
   color: #F3E9DE;
   font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  overflow-x: hidden;
-  width: 100%;
-  min-height: 100vh;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-.app-root {
-  min-height: 100vh;
-  background-color: #201A16;
-  color: #F3E9DE;
+  width: 100% !important;
+  min-height: 100vh !important;
+  overflow-x: hidden !important;
 }
 </style>

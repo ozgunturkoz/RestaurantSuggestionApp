@@ -62,11 +62,17 @@ export default defineNuxtConfig({
     '~/assets/auth.css'
   ],
   
-  // HTML Başlık ve Google Fonts bağlantıları
+  // HTML Başlık ve Google Fonts bağlantıları + Beyaz Çerçeve Sıfırlaması
   app: {
     head: {
+      meta: [
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' }
+      ],
       link: [
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap' }
+      ],
+      style: [
+        { children: 'html,body,#__nuxt{margin:0!important;padding:0!important;border:none!important;outline:none!important;background:#17120F!important;background-color:#17120F!important;width:100%!important;min-height:100vh!important;overflow-x:hidden!important;}' }
       ]
     }
   },
