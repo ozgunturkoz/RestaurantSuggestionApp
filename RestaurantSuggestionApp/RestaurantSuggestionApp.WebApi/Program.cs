@@ -253,4 +253,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Canlılık ve Sağlık Kontrolü Uç Noktaları (Render Health Check)
+app.MapGet("/health", () => Results.Ok(new { status = "Healthy", timestamp = DateTime.UtcNow }));
+app.MapGet("/", () => Results.Ok(new { message = "RestaurantSuggestionApp API is running", status = "Healthy" }));
+
 app.Run();

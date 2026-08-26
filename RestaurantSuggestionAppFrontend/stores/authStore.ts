@@ -93,7 +93,7 @@ export const useAuthStore = defineStore('auth', {
         const data = response?.data
         
         if (response?.isSuccess && data?.requiresVerification) {
-          return { requiresVerification: true, email: data.email }
+          return { success: true, requiresVerification: true, email: data.email }
         }
         
         const token = data || response?.token || (typeof response === 'string' ? response : null)
@@ -104,12 +104,12 @@ export const useAuthStore = defineStore('auth', {
           this.isLoggedIn = true
           this.user = extractUserFromDecoded(decoded)
           useRestaurantStore().resetState()
-          return { requiresVerification: false, success: true }
+          return { success: true, requiresVerification: false }
         }
 
-        return { requiresVerification: false, success: false, error: response?.message || '' }
+        return { success: false, requiresVerification: false, error: response?.message || '' }
       } catch (error: any) {
-        return { requiresVerification: false, success: false, error: error?.data?.message || '' }
+        return { success: false, requiresVerification: false, error: error?.customMessage || error?.data?.message || error?.message || '' }
       }
     },
 
@@ -132,7 +132,7 @@ export const useAuthStore = defineStore('auth', {
         }
         return { success: false, error: response?.message || '' }
       } catch (error: any) {
-        return { success: false, error: error?.data?.message || '' }
+        return { success: false, error: error?.customMessage || error?.data?.message || error?.message || '' }
       }
     },
 
@@ -145,7 +145,7 @@ export const useAuthStore = defineStore('auth', {
         const data = response?.data
         
         if (response?.isSuccess && data?.requiresVerification) {
-          return { requiresVerification: true, email: data.email }
+          return { success: true, requiresVerification: true, email: data.email }
         }
 
         const token = data || response?.token || (typeof response === 'string' ? response : null)
@@ -159,9 +159,9 @@ export const useAuthStore = defineStore('auth', {
           return { requiresVerification: false, success: true }
         }
 
-        return { requiresVerification: false, success: false, error: response?.message || '' }
+        return { success: false, requiresVerification: false, error: response?.message || '' }
       } catch (error: any) {
-        return { requiresVerification: false, success: false, error: error?.data?.message || '' }
+        return { success: false, requiresVerification: false, error: error?.customMessage || error?.data?.message || error?.message || '' }
       }
     },
 
@@ -184,7 +184,7 @@ export const useAuthStore = defineStore('auth', {
         }
         return { success: false, error: response?.message || '' }
       } catch (error: any) {
-        return { success: false, error: error?.data?.message || '' }
+        return { success: false, error: error?.customMessage || error?.data?.message || error?.message || '' }
       }
     },
 
@@ -198,7 +198,7 @@ export const useAuthStore = defineStore('auth', {
         }
         return { success: false, error: response?.message || '' }
       } catch (error: any) {
-        return { success: false, error: error?.data?.message || '' }
+        return { success: false, error: error?.customMessage || error?.data?.message || error?.message || '' }
       }
     },
 
@@ -212,7 +212,7 @@ export const useAuthStore = defineStore('auth', {
         }
         return { success: false, error: response?.message || '' }
       } catch (error: any) {
-        return { success: false, error: error?.data?.message || '' }
+        return { success: false, error: error?.customMessage || error?.data?.message || error?.message || '' }
       }
     },
 
