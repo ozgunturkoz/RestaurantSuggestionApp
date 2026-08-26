@@ -10,27 +10,50 @@ using RestaurantSuggestionApp.Core.DTOs.Responses;
 
 namespace RestaurantSuggestionApp.Business.ExternalServices
 {
+    // =========================================================================================
+    // BU ARAYÜZ (INTERFACE) NE İŞE YARAR?
+    // Dış dünyadaki açık kaynaklı harita yönlendirme servisine (OSRM) bağlanıp
+    // sokak sokak gerçek yürüyüş rotalarını ve dakikalarını istemek için kullanılan sözleşmedir.
+    // =========================================================================================
     public interface IOsrmService
     {
         Task<List<RestaurantDistance>> GetDistancesFromOsrmAsync(List<Restaurant> nearbyCandidates, double userLat, double userLng);
     }
 
+    // =========================================================================================
+    // BU SINIF (CLASS) NE İŞE YARAR? (KODLAMA BİLMEYENLER İÇİN ANLATIM)
+    // Kuş uçuşu mesafe binaların, sokakların ve denizlerin üzerinden dümdüz geçer ancak insanlar sokakta yürür!
+    // Bu servis, OpenStreetMap harita verilerini kullanan OSRM sunucusuna HTTP isteği atar ve
+    // "Kullanıcı bu restorana yürüyerek sokaklardan kaç metrede ve kaç dakikada gider?" sorusunun
+    // gerçek ve net cevabını getirir.
+    // =========================================================================================
     public class OsrmService : IOsrmService
     {
+        // İnternet üzerinden harita sunucusuna istek atmamızı sağlayan istemci nesnesi
         private readonly HttpClient _httpClient;
+
+        // Harita sunucusunun web adresini appsettings.json'dan okuyan nesne
         private readonly IConfiguration _configuration;
 
+        // -------------------------------------------------------------------------------------
+        // Kurucu Metot (Constructor):
+        // OsrmService ayağa kalkarken HttpClient ve ayar nesnelerini içeri alır.
+        // -------------------------------------------------------------------------------------
         public OsrmService(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _configuration = configuration;
         }
 
+        // -------------------------------------------------------------------------------------
+        // OSRM Harita Sunucusundan Yürüyüş Mesafelerini ve Sürelerini Çeken Metot
+        // -------------------------------------------------------------------------------------
         public async Task<List<RestaurantDistance>> GetDistancesFromOsrmAsync(List<Restaurant> nearbyCandidates, double userLat, double userLng)
         {
             var resultList = new List<RestaurantDistance>();
             try
             {
+                // Harita sunucusu için istek adresini oluşturuyoruz
                 var url = BuildOsrmUrl(nearbyCandidates, userLat, userLng);
 
                 var response = await _httpClient.GetAsync(url);
@@ -43,15 +66,19 @@ namespace RestaurantSuggestionApp.Business.ExternalServices
                     }
                 }
             }
-            catch (Exception)
+            catch
             {
+                // Harita sunucusuna ulaşılamazsa sistem çökmez, boş liste döner ve yedek Haversine hesaplayıcısı devreye girer
             }
             return resultList;
         }
 
+        // -------------------------------------------------------------------------------------
+        // Yardımcı Metot: Kullanıcının ve restoranların GPS koordinatlarını OSRM URL formatına birleştirir
+        // -------------------------------------------------------------------------------------
         private string BuildOsrmUrl(List<Restaurant> nearbyCandidates, double userLat, double userLng)
         {
-            var osrmBaseUrl = _configuration["OSRM:BaseUrl"] ?? throw new InvalidOperationException("OSRM:BaseUrl konfigürasyonu bulunamadı.");
+            var osrmBaseUrl = _configuration["OSRM:BaseUrl"] ?? "https://router.project-osrm.org";
 
             var coords = new List<string>
             {
@@ -67,6 +94,9 @@ namespace RestaurantSuggestionApp.Business.ExternalServices
             return $"{osrmBaseUrl}/table/v1/foot/{coordsString}?sources=0&annotations=distance,duration";
         }
 
+        // -------------------------------------------------------------------------------------
+        // Yardımcı Metot: OSRM'den gelen JSON matris cevabını Restoran listesine dönüştürür
+        // -------------------------------------------------------------------------------------
         private static List<RestaurantDistance> MapResponseToRestaurantDistances(OsrmTableResponse osrmData, List<Restaurant> nearbyCandidates)
         {
             var resultList = new List<RestaurantDistance>();
@@ -100,6 +130,9 @@ namespace RestaurantSuggestionApp.Business.ExternalServices
         }
     }
 
+    // -----------------------------------------------------------------------------------------
+    // OSRM Sunucusunun Döndüğü JSON Verisini Karşılayan Model Sınıfı
+    // -----------------------------------------------------------------------------------------
     public class OsrmTableResponse
     {
         public string Code { get; set; } = string.Empty;

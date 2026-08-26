@@ -1,4 +1,9 @@
 <template>
+  <!-- =========================================================================================
+       BU BİLEŞEN NE İŞE YARAR? (KODLAMA BİLMEYENLER İÇİN ANLATIM)
+       Ekranın sağ üst köşesinde asılı duran ve `useToast` ile tetiklenen bildirim kutularını
+       (Başarılı, Hata, Uyarı) şık bir tasarım ve animasyonla ekranda çizen bileşendir.
+       ========================================================================================= -->
   <div class="toast-container">
     <TransitionGroup name="toast-fade">
       <div 
@@ -18,7 +23,7 @@
           <p class="toast-message">{{ toast.message }}</p>
         </div>
 
-        <button class="toast-close-btn" @click="removeToast(toast.id)" aria-label="Kapat">
+        <button class="toast-close-btn" @click="removeToast(toast.id)" :aria-label="t('common.close')">
           ✕
         </button>
       </div>
@@ -28,8 +33,11 @@
 
 <script setup lang="ts">
 import { useToast } from '~/composables/useToast'
+import { useI18n } from '~/composables/useI18n'
 
+// Bildirim listesini ve kapatma fonksiyonunu çağırıyoruz
 const { toasts, removeToast } = useToast()
+const { t } = useI18n()
 </script>
 
 <style scoped>
@@ -103,38 +111,39 @@ const { toasts, removeToast } = useToast()
 .toast-message {
   margin: 0;
   font-size: 0.875rem;
-  line-height: 1.4;
   color: #d1d5db;
+  line-height: 1.4;
   word-break: break-word;
 }
 
 .toast-close-btn {
-  background: none;
+  background: transparent;
   border: none;
   color: #9ca3af;
-  font-size: 1.1rem;
   cursor: pointer;
-  padding: 0 4px;
-  line-height: 1;
-  transition: color 0.2s ease;
+  padding: 2px 6px;
+  font-size: 14px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
 .toast-close-btn:hover {
   color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .toast-fade-enter-active,
 .toast-fade-leave-active {
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s ease;
 }
 
 .toast-fade-enter-from {
   opacity: 0;
-  transform: translateX(40px) scale(0.95);
+  transform: translateX(30px) scale(0.9);
 }
 
 .toast-fade-leave-to {
   opacity: 0;
-  transform: translateY(-20px) scale(0.95);
+  transform: translateX(30px) scale(0.9);
 }
 </style>

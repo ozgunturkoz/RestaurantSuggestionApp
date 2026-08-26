@@ -1,9 +1,15 @@
 <template>
+  <!-- =========================================================================================
+       RESTORAN DETAY AÇILIR PENCERESİ (MODAL) (KODLAMA BİLMEYENLER İÇİN ANLATIM)
+       Kullanıcı listeden veya haritadan bir restorana tıkladığında ekranın ortasında beliren
+       detay penceresidir. Restoranın ortalama fiyatını, yürüme mesafesini/süresini, akıllı öneri
+       uyum puanını, mekanın mini haritasını ve kullanıcının özel notlarını barındırır.
+       ========================================================================================= -->
   <Teleport to="body">
     <Transition name="modal">
       <div v-if="restaurant" class="modal-overlay" @click.self="$emit('close')">
         <div class="modal-card">
-          <!-- Header -->
+          <!-- Başlık Alanı -->
           <div class="modal-header">
             <div class="modal-header-info">
               <span class="modal-category-chip">{{ restaurant.category }}</span>
@@ -12,9 +18,9 @@
             <button class="modal-close" @click="$emit('close')" :title="t('detail.close')">✕</button>
           </div>
 
-          <!-- Body -->
+          <!-- Gövde Alanı -->
           <div class="modal-body">
-            <!-- Stats Grid -->
+            <!-- 4'lü İstatistik Kartları Grid Yapısı -->
             <div class="stats-grid">
               <div class="stat-card">
                 <div class="stat-info">
@@ -45,7 +51,7 @@
               </div>
             </div>
 
-            <!-- Score Breakdown -->
+            <!-- Konum ve Bütçe Skor Ayrıştırma Çubukları -->
             <div v-if="restaurant.locationScore != null || restaurant.budgetScore != null" class="score-breakdown">
               <div class="score-row" v-if="restaurant.locationScore != null">
                 <span class="score-label">{{ t('detail.locationScore') }}</span>
@@ -63,14 +69,14 @@
               </div>
             </div>
 
-            <!-- Map Preview -->
+            <!-- Mini Harita Önizleme Alanı -->
             <div v-if="restaurant.latitude && restaurant.longitude" class="mini-map-section">
               <ClientOnly>
                 <div ref="miniMapEl" class="mini-map"></div>
               </ClientOnly>
             </div>
 
-            <!-- Favorite Section -->
+            <!-- Favoriye Ekleme ve Kişisel Hatırlatıcı Not Alanı -->
             <div class="favorite-section">
               <div class="fav-toggle-row">
                 <button 
@@ -107,23 +113,31 @@
 </template>
 
 <script setup>
+// =========================================================================================
+// RESTORAN DETAY PENCERESİ KODLARI (JAVASCRIPT / VUE COMPOSITION API)
+// =========================================================================================
 import { ref, watch, nextTick, onBeforeUnmount } from 'vue'
 
+// Dışarıdan gelen parametreler (Props)
 const props = defineProps({
   restaurant: { type: Object, default: null },
   isFavorite: { type: Boolean, default: false },
   favoriteNote: { type: String, default: '' }
 })
 
+// Üst bileşene haber veren olaylar (Emits)
 const emit = defineEmits(['close', 'toggle-favorite', 'save-note'])
 
-const { t } = useI18n()
+// Çoklu dil aracı
+const { t, locale } = useI18n()
 
+// Not kutusu ve harita değişkenleri
 const noteText = ref('')
 const savingNote = ref(false)
 const miniMapEl = ref(null)
 let miniMapInstance = null
 
+// Mini harita nesnesini temizleyen yardımcı fonksiyon
 const destroyMiniMap = () => {
   if (miniMapInstance) {
     miniMapInstance.remove()
@@ -131,6 +145,7 @@ const destroyMiniMap = () => {
   }
 }
 
+// Mini haritayı oluşturan fonksiyon
 const initMiniMap = async () => {
   await nextTick()
   if (!miniMapEl.value || !props.restaurant) return
@@ -175,11 +190,12 @@ const initMiniMap = async () => {
     setTimeout(() => {
       if (miniMapInstance) miniMapInstance.invalidateSize()
     }, 200)
-  } catch (e) {
-    console.warn('Mini harita yüklenirken hata:', e)
+  } catch {
+    // Harita yükleme hatasında sessizce devam edilir
   }
 }
 
+// Seçilen restoran değiştiğinde haritayı ve notu tazeleyen izleyici
 watch(() => props.restaurant, (newVal) => {
   if (newVal) {
     noteText.value = props.favoriteNote || ''
@@ -201,25 +217,30 @@ watch(() => props.favoriteNote, (newNote) => {
   noteText.value = newNote || ''
 })
 
+// Favori durumunu değiştiren fonksiyon
 const handleFavoriteToggle = () => {
   emit('toggle-favorite', props.restaurant.id)
 }
 
+// Favori notunu kaydeden fonksiyon
 const handleSaveNote = async () => {
   savingNote.value = true
   emit('save-note', { restaurantId: props.restaurant.id, note: noteText.value })
   setTimeout(() => { savingNote.value = false }, 600)
 }
 
+// Mesafeyi biçimlendiren fonksiyon
 const formatDistance = (meters) => {
   if (meters == null) return ''
   if (meters < 1000) return `${Math.round(meters)} m`
   return `${(meters / 1000).toFixed(1)} km`
 }
 
+// Süreyi seçili dile göre dakika olarak biçimlendiren fonksiyon
 const formatDuration = (seconds) => {
   if (seconds == null) return ''
-  return `${Math.round(seconds / 60)} dk`
+  const unit = locale.value === 'en' ? 'min' : 'dk'
+  return `${Math.round(seconds / 60)} ${unit}`
 }
 
 onBeforeUnmount(() => {
@@ -231,7 +252,9 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-/* Transition */
+/* =========================================================================================
+   AÇILIR PENCERE (MODAL) STİLLERİ
+   ========================================================================================= */
 .modal-enter-active { transition: opacity .25s ease; }
 .modal-enter-active .modal-card { transition: transform .3s cubic-bezier(.34,1.56,.64,1), opacity .25s ease; }
 .modal-leave-active { transition: opacity .2s ease; }
@@ -241,7 +264,6 @@ onBeforeUnmount(() => {
 .modal-leave-to { opacity: 0; }
 .modal-leave-to .modal-card { transform: translateY(20px) scale(0.97); opacity: 0; }
 
-/* Overlay */
 .modal-overlay {
   position: fixed;
   inset: 0;
@@ -254,7 +276,6 @@ onBeforeUnmount(() => {
   padding: 20px;
 }
 
-/* Card */
 .modal-card {
   background: #2B231D;
   border: 1px solid #40342A;
@@ -272,7 +293,6 @@ onBeforeUnmount(() => {
 .modal-card::-webkit-scrollbar-track { background: transparent; }
 .modal-card::-webkit-scrollbar-thumb { background: #40342A; border-radius: 3px; }
 
-/* Header */
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -323,10 +343,8 @@ onBeforeUnmount(() => {
 }
 .modal-close:hover { background: #40342A; color: #F3E9DE; }
 
-/* Body */
 .modal-body { padding: 20px 24px 24px; }
 
-/* Stats Grid */
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -349,13 +367,10 @@ onBeforeUnmount(() => {
   background: rgba(224, 164, 88, 0.06);
 }
 
-.stat-icon { font-size: 20px; flex-shrink: 0; }
-
 .stat-info { display: flex; flex-direction: column; min-width: 0; }
 .stat-info small { font-size: 10px; color: #8A745E; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
 .stat-info b { font-size: 15px; color: #F3E9DE; }
 
-/* Score Breakdown */
 .score-breakdown {
   background: #201A16;
   border: 1px solid #33291F;
@@ -396,7 +411,6 @@ onBeforeUnmount(() => {
 
 .score-value { font-size: 12px; color: #F3E9DE; font-weight: 700; width: 36px; text-align: right; }
 
-/* Mini Map */
 .mini-map-section { margin-bottom: 18px; }
 .mini-map {
   width: 100%;
@@ -406,15 +420,12 @@ onBeforeUnmount(() => {
   border: 1px solid #33291F;
 }
 
-/* Favorite Section */
 .favorite-section {
   background: #201A16;
   border: 1px solid #33291F;
   border-radius: 14px;
   padding: 16px;
 }
-
-.fav-toggle-row { margin-bottom: 0; }
 
 .fav-action-btn {
   width: 100%;
@@ -499,7 +510,6 @@ onBeforeUnmount(() => {
 .save-note-btn:hover { opacity: 0.85; }
 .save-note-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* Mobile */
 @media (max-width: 520px) {
   .modal-overlay { padding: 0; align-items: flex-end; }
   .modal-card {

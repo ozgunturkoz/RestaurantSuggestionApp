@@ -1,5 +1,14 @@
 import { defineStore } from 'pinia'
 
+// =========================================================================================
+// BU STORE (HAFIZA YÖNETİCİSİ) NE İŞE YARAR? (KODLAMA BİLMEYENLER İÇİN ANLATIM)
+// Bu dosya, web sitesinin "Kısa Süreli Beynidir".
+// Kullanıcı sisteme giriş yaptığında oturum anahtarını (JWT Token), kullanıcının adını,
+// e-postasını ve giriş yapıp yapmadığını tüm sayfalarda ortaklaşa kullanmak üzere hafızasında tutar.
+// Kullanıcı sayfayı yenilese bile çerezler (Cookie) sayesinde oturumunu açık tutar.
+// =========================================================================================
+
+// Şifrelenmiş JWT Token içerisindeki kullanıcı bilgilerini çözen yardımcı fonksiyon
 function parseJwt(token: string) {
   try {
     const base64Url = token.split('.')[1]
@@ -22,11 +31,12 @@ function parseJwt(token: string) {
         .join('')
     )
     return JSON.parse(jsonPayload)
-  } catch (e) {
+  } catch {
     return null;
   }
 }
 
+// Çözülen token verisinden kullanıcı alanlarını çıkartan yardımcı fonksiyon
 function extractUserFromDecoded(decoded: any) {
   if (!decoded) return null
   return {
@@ -38,6 +48,9 @@ function extractUserFromDecoded(decoded: any) {
 }
 
 export const useAuthStore = defineStore('auth', {
+  // -------------------------------------------------------------------------------------
+  // State: Hafızada tutulan değişkenler
+  // -------------------------------------------------------------------------------------
   state: () => {
     if (process.server) {
       return {
@@ -46,6 +59,7 @@ export const useAuthStore = defineStore('auth', {
       }
     }
 
+    // Tarayıcıdaki oturum çerezini (Cookie) kontrol ediyoruz
     const token = useCookie('auth_token', { path: '/' })
     const rawToken = token.value
 
@@ -65,7 +79,12 @@ export const useAuthStore = defineStore('auth', {
       user: null as any
     }
   },
+
+  // -------------------------------------------------------------------------------------
+  // Actions: Giriş yapma, çıkış yapma gibi eylemleri gerçekleştiren fonksiyonlar
+  // -------------------------------------------------------------------------------------
   actions: {
+    // 1. Giriş Yapma Eylemi
     async login(email: string, password: string) {
       const authService = useAuthService()
 
@@ -88,13 +107,13 @@ export const useAuthStore = defineStore('auth', {
           return { requiresVerification: false, success: true }
         }
 
-        return { requiresVerification: false, success: false, error: response?.message || 'Giriş başarısız' }
+        return { requiresVerification: false, success: false, error: response?.message || '' }
       } catch (error: any) {
-        console.error('Giriş başarısız:', error)
-        return { requiresVerification: false, success: false, error: error?.data?.message || 'Giriş işlemi başarısız.' }
+        return { requiresVerification: false, success: false, error: error?.data?.message || '' }
       }
     },
 
+    // 2. Giriş Kodunu Doğrulama Eylemi
     async verifyLogin(email: string, code: string) {
       const authService = useAuthService()
       const tokenCookie = useCookie('auth_token', { path: '/', maxAge: 60 * 60 })
@@ -111,13 +130,13 @@ export const useAuthStore = defineStore('auth', {
           useRestaurantStore().resetState()
           return { success: true }
         }
-        return { success: false, error: response?.message || 'Doğrulama başarısız.' }
+        return { success: false, error: response?.message || '' }
       } catch (error: any) {
-        console.error('Doğrulama başarısız:', error)
-        return { success: false, error: error?.data?.message || 'Doğrulama işlemi başarısız.' }
+        return { success: false, error: error?.data?.message || '' }
       }
     },
 
+    // 3. Kayıt Olma Eylemi
     async register(name: string, email: string, password: string, confirmPassword: string) {
       const authService = useAuthService()
 
@@ -140,13 +159,13 @@ export const useAuthStore = defineStore('auth', {
           return { requiresVerification: false, success: true }
         }
 
-        return { requiresVerification: false, success: false, error: response?.message || 'Kayıt işlemi başarısız.' }
+        return { requiresVerification: false, success: false, error: response?.message || '' }
       } catch (error: any) {
-        console.error('Kayıt başarısız:', error)
-        return { requiresVerification: false, success: false, error: error?.data?.message || 'Kayıt işlemi başarısız.' }
+        return { requiresVerification: false, success: false, error: error?.data?.message || '' }
       }
     },
 
+    // 4. Kayıt Doğrulama Eylemi
     async verifyRegister(email: string, code: string) {
       const authService = useAuthService()
       const tokenCookie = useCookie('auth_token', { path: '/', maxAge: 60 * 60 })
@@ -163,13 +182,41 @@ export const useAuthStore = defineStore('auth', {
           useRestaurantStore().resetState()
           return { success: true }
         }
-        return { success: false, error: response?.message || 'Doğrulama başarısız.' }
+        return { success: false, error: response?.message || '' }
       } catch (error: any) {
-        console.error('Doğrulama başarısız:', error)
-        return { success: false, error: error?.data?.message || 'Doğrulama işlemi başarısız.' }
+        return { success: false, error: error?.data?.message || '' }
       }
     },
 
+    // 5. Şifremi Unuttum Eylemi
+    async forgotPassword(email: string) {
+      const authService = useAuthService()
+      try {
+        const response = await authService.forgotPassword({ email }) as any
+        if (response?.isSuccess) {
+          return { success: true, message: response.message }
+        }
+        return { success: false, error: response?.message || '' }
+      } catch (error: any) {
+        return { success: false, error: error?.data?.message || '' }
+      }
+    },
+
+    // 6. Şifreyi Sıfırlama Eylemi
+    async resetPassword(email: string, code: string, newPassword: string, confirmPassword: string) {
+      const authService = useAuthService()
+      try {
+        const response = await authService.resetPassword({ email, code, newPassword, confirmPassword }) as any
+        if (response?.isSuccess) {
+          return { success: true, message: response.message }
+        }
+        return { success: false, error: response?.message || '' }
+      } catch (error: any) {
+        return { success: false, error: error?.data?.message || '' }
+      }
+    },
+
+    // 7. Çıkış Yapma Eylemi
     logout() {
       const tokenCookie = useCookie('auth_token', { path: '/' })
       tokenCookie.value = undefined
@@ -184,10 +231,11 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    // 8. Kullanıcının Adını Güncelleme Eylemi
     updateUserName(newName: string) {
       if (this.user) {
         this.user.name = newName
       }
     }
   }
-})
+})

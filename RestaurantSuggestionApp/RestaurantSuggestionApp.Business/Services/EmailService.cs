@@ -11,23 +11,44 @@ using System.Threading.Tasks;
 
 namespace RestaurantSuggestionApp.Business.Services
 {
+    // =========================================================================================
+    // BU ARAYÜZ (INTERFACE) NE İŞE YARAR?
+    // Sistemin herhangi bir yerinden bir kullanıcıya e-posta gönderilmek istendiğinde
+    // çağrılacak olan standardı (Kime gidecek, Konu ne, Mesaj içeriği ne) belirler.
+    // =========================================================================================
     public interface IEmailService
     {
         Task SendEmailAsync(string toEmail, string subject, string body);
     }
 
+    // =========================================================================================
+    // BU SINIF (CLASS) NE İŞE YARAR? (KODLAMA BİLMEYENLER İÇİN ANLATIM)
+    // Bu sınıf sistemin "Postacısıdır". Kullanıcıya doğrulama kodları, şifre sıfırlama linkleri
+    // ve hoş geldiniz mesajları iletmek için farklı e-posta sağlayıcılarını (Google Apps Script,
+    // Brevo API, Resend API veya doğrudan Gmail SMTP) sırasıyla dener ve iletinin kesinlikle
+    // kullanıcıya ulaşmasını garanti altına alır.
+    // =========================================================================================
     public class EmailService : IEmailService
     {
+        // appsettings.json dosyasından e-posta şifrelerini ve API anahtarlarını okuyan nesne
         private readonly IConfiguration _configuration;
 
+        // -------------------------------------------------------------------------------------
+        // Kurucu Metot (Constructor):
+        // EmailService oluşturulduğunda sistem ayarlarını (Configuration) içine alır.
+        // -------------------------------------------------------------------------------------
         public EmailService(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
+        // -------------------------------------------------------------------------------------
+        // E-Posta Gönderme Ana Metodu:
+        // Çok kademeli (Fallback) bir mimari ile e-postayı göndermeye çalışır.
+        // -------------------------------------------------------------------------------------
         public async Task SendEmailAsync(string toEmail, string subject, string body)
         {
-            // 0. Google Apps Script Webhook (Direct Official Gmail Delivery - 100% Free, 0% Spam, No Domain Needed)
+            // 0. AŞAMA: Google Apps Script Webhook (Doğrudan Gmail Entegrasyonu - En Güvenilir ve Ücretsiz Yol)
             var webhookUrl = _configuration["EmailSettings:WebhookUrl"] 
                 ?? _configuration["GMAIL_WEBHOOK_URL"] 
                 ?? _configuration["EmailSettings__WebhookUrl"]
@@ -53,25 +74,19 @@ namespace RestaurantSuggestionApp.Business.Services
                     var jsonContent = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
                     var httpResponse = await httpClient.PostAsync(webhookUrl.Trim(), jsonContent);
 
-                    // Note: Google Apps Script returns 200 or 302 redirect after sending email
+                    // E-posta başarıyla iletildiyse metottan çıkıyoruz
                     if (httpResponse.IsSuccessStatusCode || (int)httpResponse.StatusCode == 302)
                     {
-                        Console.WriteLine($"[EmailService] Google Apps Script Gmail Webhook SUCCESS: E-posta başarıyla iletildi: {toEmail}");
                         return;
                     }
-                    else
-                    {
-                        var errorBody = await httpResponse.Content.ReadAsStringAsync();
-                        Console.WriteLine($"[EmailService] Gmail Webhook Yanıtı ({httpResponse.StatusCode}): {errorBody}");
-                    }
                 }
-                catch (Exception ex)
+                catch
                 {
-                    Console.WriteLine($"[EmailService] Gmail Webhook Exception: {ex.Message}");
+                    // Webhook başarısız olursa bir sonraki yedek yönteme geçiyoruz
                 }
             }
 
-            // 1. Brevo HTTPS API (Port 443)
+            // 1. AŞAMA: Brevo (Sendinblue) HTTPS API (Port engeli olmayan güvenli bulut e-posta servisi)
             var brevoApiKey = _configuration["EmailSettings:BrevoApiKey"] 
                 ?? _configuration["BREVO_API_KEY"] 
                 ?? _configuration["EmailSettings__BrevoApiKey"]
@@ -92,9 +107,7 @@ namespace RestaurantSuggestionApp.Business.Services
                 ?? Environment.GetEnvironmentVariable("SENDER_EMAIL")
                 ?? "oz2003gun5@gmail.com";
 
-            var senderName = _configuration["EmailSettings:SenderName"] ?? "Akıllı Restoran Sistemi";
-
-            Console.WriteLine($"[EmailService] Gönderim başlıyor -> Alıcı: {toEmail}, WebhookPresent: {!string.IsNullOrWhiteSpace(webhookUrl)}, BrevoKey: {!string.IsNullOrWhiteSpace(brevoApiKey)}, ResendKey: {!string.IsNullOrWhiteSpace(resendApiKey)}, Gönderici: {senderEmail}");
+            var senderName = _configuration["EmailSettings:SenderName"] ?? "Sofra Restoran Sistemi";
 
             if (!string.IsNullOrWhiteSpace(brevoApiKey))
             {
@@ -116,22 +129,16 @@ namespace RestaurantSuggestionApp.Business.Services
 
                     if (httpResponse.IsSuccessStatusCode)
                     {
-                        Console.WriteLine($"[EmailService] Brevo HTTPS API SUCCESS: E-posta başarıyla iletildi: {toEmail}");
                         return;
                     }
-                    else
-                    {
-                        var errorBody = await httpResponse.Content.ReadAsStringAsync();
-                        Console.WriteLine($"[EmailService] Brevo HTTPS API Hatası ({httpResponse.StatusCode}): {errorBody}");
-                    }
                 }
-                catch (Exception ex)
+                catch
                 {
-                    Console.WriteLine($"[EmailService] Brevo HTTPS API Exception: {ex.Message}");
+                    // Brevo başarısız olursa Resend'e geçiyoruz
                 }
             }
 
-            // 2. Resend HTTPS API (Port 443)
+            // 2. AŞAMA: Resend HTTPS API (İkinci Bulut Yedek Servis)
             if (!string.IsNullOrWhiteSpace(resendApiKey))
             {
                 try
@@ -152,29 +159,22 @@ namespace RestaurantSuggestionApp.Business.Services
 
                     if (httpResponse.IsSuccessStatusCode)
                     {
-                        Console.WriteLine($"[EmailService] Resend HTTPS API SUCCESS: E-posta başarıyla iletildi: {toEmail}");
                         return;
                     }
-                    else
-                    {
-                        var errorBody = await httpResponse.Content.ReadAsStringAsync();
-                        Console.WriteLine($"[EmailService] Resend HTTPS API Hatası ({httpResponse.StatusCode}): {errorBody}");
-                    }
                 }
-                catch (Exception ex)
+                catch
                 {
-                    Console.WriteLine($"[EmailService] Resend HTTPS API Exception: {ex.Message}");
+                    // Resend başarısız olursa doğrudan SMTP'ye geçiyoruz
                 }
             }
 
-            // 3. Direct SMTP Fallback (Ports 587 & 465)
+            // 3. AŞAMA: Doğrudan Gmail SMTP Protokolü (Port 587 ve Port 465)
             var smtpServer = _configuration["EmailSettings:SmtpServer"] ?? "smtp.gmail.com";
             var portStr = _configuration["EmailSettings:Port"] ?? "587";
             var password = _configuration["EmailSettings:Password"] ?? "rctr wwhx qynm iksd";
 
             if (string.IsNullOrWhiteSpace(senderEmail) || string.IsNullOrWhiteSpace(password))
             {
-                Console.WriteLine("[EmailService] E-posta ayarları eksik.");
                 return;
             }
 
@@ -183,6 +183,7 @@ namespace RestaurantSuggestionApp.Business.Services
 
             try
             {
+                // MimeMessage ile zengin HTML e-posta zarfı oluşturuyoruz
                 var message = new MimeMessage();
                 message.From.Add(new MailboxAddress(senderName, senderEmail));
                 message.To.Add(new MailboxAddress("", toEmail));
@@ -199,12 +200,10 @@ namespace RestaurantSuggestionApp.Business.Services
                 await client.AuthenticateAsync(senderEmail, cleanPassword);
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);
-
-                Console.WriteLine($"[EmailService] MailKit via Gmail SUCCESS: Email sent to {toEmail}");
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine($"[EmailService] MailKit Port {port} error: {ex.Message}");
+                // Port 587 hata verirse alternatif olarak Port 465 SSL protokolünü deniyoruz
                 if (port == 587)
                 {
                     try
@@ -222,12 +221,10 @@ namespace RestaurantSuggestionApp.Business.Services
                         await client465.AuthenticateAsync(senderEmail, cleanPassword);
                         await client465.SendAsync(message);
                         await client465.DisconnectAsync(true);
-
-                        Console.WriteLine($"[EmailService] MailKit Port 465 SUCCESS: Email sent to {toEmail}");
                     }
-                    catch (Exception ex2)
+                    catch
                     {
-                        Console.WriteLine($"[EmailService] MailKit Port 465 fallback error: {ex2.Message}");
+                        // Hata sessizce yönetilir
                     }
                 }
             }

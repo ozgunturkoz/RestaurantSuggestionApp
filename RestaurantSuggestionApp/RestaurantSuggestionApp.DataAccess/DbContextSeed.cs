@@ -1,13 +1,26 @@
 using Microsoft.EntityFrameworkCore;
 using RestaurantSuggestionApp.Core.Entities;
+using System;
+using System.Collections.Generic;
 
 namespace RestaurantSuggestionApp.DataAccess
 {
+    // =========================================================================================
+    // BU SINIF NE İŞE YARAR? (KODLAMA BİLMEYENLER İÇİN AÇIKLAMA)
+    // Bir binanın temeli atılırken ilk tuğlaların konulması gibi, veritabanı ilk kurulduğunda
+    // sistemin bomboş kalmaması için içine "varsayılan başlangıç verilerini" yükleyen sınıftır.
+    // Örneğin: Örnek kullanıcılar, İstanbul'daki gerçek restoranlar, örnek harcama hareketleri
+    // ve sistemin hem Türkçe hem İngilizce konuşabilmesi için gereken tüm çeviri kelimeleri burada tanımlanır.
+    // =========================================================================================
     public static class DbContextSeed
     {
+        // -------------------------------------------------------------------------------------
+        // SeedData Metodu: Veritabanı tabloları oluşurken içine başlangıç verilerini doldurur.
+        // -------------------------------------------------------------------------------------
         public static void SeedData(this ModelBuilder modelBuilder)
         {
-            
+            // 1. ADIM: BAŞLANGIÇ KULLANICILARI OLUŞTURULUYOR
+            // Test yapabilmek ve sistemi hemen kullanabilmek için 3 adet örnek kullanıcı ekliyoruz.
             var users = new List<User>
             {
                 new User(1, "Ozgur",  "ozgur@email.com",  "hashed_password_1"),
@@ -16,12 +29,13 @@ namespace RestaurantSuggestionApp.DataAccess
             };
             modelBuilder.Entity<User>().HasData(users);
 
-            
+            // 2. ADIM: İSTANBUL'DAKİ GERÇEK VE POPÜLER RESTORANLAR EKLENİYOR
+            // Kullanıcılara konumlarına göre doğru ve akıllı öneriler yapabilmek için gerçek enlem, boylam ve ortalama fiyatlar tanımlıyoruz.
             var restaurants = new List<Restaurant>();
 
             var realRestaurantData = new (string Name, string Category, decimal Lat, decimal Lng, int AvgPrice)[]
             {
-                // Kadıköy
+                // Kadıköy Bölgesi
                 ("Çiya Sofrası", "Home Cooking", 40.9898m, 29.0286m, 350),
                 ("Yanyalı Fehmi Lokantası", "Home Cooking", 40.9906m, 29.0238m, 300),
                 ("Basta! Street Food", "World Cuisine", 40.9882m, 29.0270m, 280),
@@ -33,7 +47,7 @@ namespace RestaurantSuggestionApp.DataAccess
                 ("Koço Restoran (Moda)", "Seafood", 40.9785m, 29.0232m, 750),
                 ("Çiya Kebap", "Kebab & Grill", 40.9894m, 29.0282m, 380),
 
-                // Beşiktaş & Bebek & Ortaköy & Etiler
+                // Beşiktaş & Bebek & Ortaköy & Etiler Bölgesi
                 ("Tuğra Restaurant (Çırağan Palace)", "World Cuisine", 41.0441m, 29.0163m, 850),
                 ("Sunset Grill & Bar", "World Cuisine", 41.0664m, 29.0289m, 820),
                 ("Ulus 29", "World Cuisine", 41.0645m, 29.0272m, 800),
@@ -45,7 +59,7 @@ namespace RestaurantSuggestionApp.DataAccess
                 ("Mangerie Bebek", "Cafe & Dessert", 41.0772m, 29.0435m, 420),
                 ("Lucca Bebek", "Cafe & Dessert", 41.0765m, 29.0438m, 600),
 
-                // Şişli & Nişantaşı & Bomonti
+                // Şişli & Nişantaşı & Bomonti Bölgesi
                 ("Turk Fatih Tutak", "World Cuisine", 41.0573m, 28.9814m, 850),
                 ("Hünkar Restoran Nişantaşı", "Home Cooking", 41.0505m, 28.9932m, 450),
                 ("Nusr-Et Burger Nişantaşı", "World Cuisine", 41.0492m, 28.9941m, 400),
@@ -55,7 +69,7 @@ namespace RestaurantSuggestionApp.DataAccess
                 ("Konyalı Lokantası Kanyon", "Home Cooking", 41.0782m, 29.0112m, 380),
                 ("Saray Muhallebicisi Nişantaşı", "Cafe & Dessert", 41.0498m, 28.9920m, 220),
 
-                // Beyoğlu & Karaköy & Pera
+                // Beyoğlu & Karaköy & Pera Bölgesi
                 ("Mikla Restaurant", "World Cuisine", 41.0315m, 28.9752m, 850),
                 ("Karaköy Lokantası", "Seafood", 41.0232m, 28.9754m, 650),
                 ("Zübeyir Ocakbaşı Beyoğlu", "Kebab & Grill", 41.0360m, 28.9828m, 450),
@@ -65,7 +79,7 @@ namespace RestaurantSuggestionApp.DataAccess
                 ("Meze By Lemon Tree", "Home Cooking", 41.0312m, 28.9748m, 420),
                 ("Karaköy Güllüoğlu", "Cafe & Dessert", 41.0240m, 28.9780m, 250),
 
-                // Fatih & Sultanahmet & Sirkeci
+                // Fatih & Sultanahmet & Sirkeci Bölgesi
                 ("Tarihi Sultanahmet Köftecisi Selim Usta", "Kebab & Grill", 41.0071m, 28.9765m, 280),
                 ("Asitane Restaurant", "Home Cooking", 41.0300m, 28.9392m, 620),
                 ("Siirt Şeref Büryan Kebap Salonu", "Kebab & Grill", 41.0162m, 28.9555m, 350),
@@ -75,7 +89,7 @@ namespace RestaurantSuggestionApp.DataAccess
                 ("Roof Mezze 360", "World Cuisine", 41.0135m, 28.9770m, 640),
                 ("Bitlisli Restoran Sirkeci", "Kebab & Grill", 41.0128m, 28.9768m, 320),
 
-                // Üsküdar & Kuzguncuk & Çengelköy & Ataşehir
+                // Üsküdar & Kuzguncuk & Çengelköy & Ataşehir Bölgesi
                 ("Kanaat Lokantası Üsküdar", "Home Cooking", 41.0256m, 29.0158m, 290),
                 ("İsmet Baba Balıkçısı Kuzguncuk", "Seafood", 41.0368m, 29.0298m, 680),
                 ("Tarihi Çınaraltı Çay Bahçesi Çengelköy", "Cafe & Dessert", 41.0515m, 29.0520m, 180),
@@ -99,6 +113,8 @@ namespace RestaurantSuggestionApp.DataAccess
             }
             modelBuilder.Entity<Restaurant>().HasData(restaurants);
 
+            // 3. ADIM: ÖRNEK KULLANICI HARCAMALARI EKLENİYOR
+            // Kullanıcıların profilindeki harcama analiz grafikleri ve istatistiklerin dolu görünmesi için örnek kayıtlar.
             var expenditures = new List<UserExpenditure>
             {
                 new UserExpenditure(1, 1, 1, 350.00m, new DateTime(2026, 1, 15)),
@@ -119,8 +135,22 @@ namespace RestaurantSuggestionApp.DataAccess
             };
             modelBuilder.Entity<UserExpenditure>().HasData(expenditures);
 
-            var locResources = new List<LocalizationResource>
+            // 4. ADIM: TÜM DİL VE ÇEVİRİ KAYNAKLARI (LOCALIZATION)
+            // Sistemde hiçbir düz yazı kalmaması için hem Türkçe hem İngilizce tüm arayüz metinleri veritabanına eklenir.
+            var locResources = GetDefaultLocalizationResources();
+            modelBuilder.Entity<LocalizationResource>().HasData(locResources);
+        }
+
+        // -------------------------------------------------------------------------------------
+        // Varsayılan Tüm Çeviri Kaynakları Listesi:
+        // Hem veritabanı başlangıç kurulumunda (Migration) hem de sunucu ayağa kalkarken
+        // eksik çevirilerin anında veritabanına aktarılması için ortak kaynak olarak kullanılır.
+        // -------------------------------------------------------------------------------------
+        public static List<LocalizationResource> GetDefaultLocalizationResources()
+        {
+            return new List<LocalizationResource>
             {
+                // --- TÜRKÇE (TR) ÇEVİRİLER ---
                 new LocalizationResource(1, "tr", "UserNotFound", "Kullanıcı bulunamadı."),
                 new LocalizationResource(2, "tr", "InvalidPassword", "E-posta veya şifre hatalı!"),
                 new LocalizationResource(3, "tr", "InvalidInput", "E-posta ve şifre boş bırakılamaz."),
@@ -248,6 +278,8 @@ namespace RestaurantSuggestionApp.DataAccess
                 new LocalizationResource(125, "tr", "register.hasAccount", "Zaten hesabın var mı?"),
                 new LocalizationResource(126, "tr", "register.loginLink", "Giriş yap"),
                 new LocalizationResource(127, "tr", "register.errorMsg", "Kayıt işlemi başarısız. Lütfen bilgilerinizi kontrol edin."),
+
+                // --- İNGİLİZCE (EN) ÇEVİRİLER ---
                 new LocalizationResource(128, "en", "UserNotFound", "User not found."),
                 new LocalizationResource(129, "en", "InvalidPassword", "Invalid email or password!"),
                 new LocalizationResource(130, "en", "InvalidInput", "Email and password cannot be empty."),
@@ -375,6 +407,8 @@ namespace RestaurantSuggestionApp.DataAccess
                 new LocalizationResource(252, "en", "register.hasAccount", "Already have an account?"),
                 new LocalizationResource(253, "en", "register.loginLink", "Sign in"),
                 new LocalizationResource(254, "en", "register.errorMsg", "Registration failed. Please check your information."),
+
+                // --- E-POSTA ŞABLONLARI VE HATA KONTROLLERİ ---
                 new LocalizationResource(255, "tr", "LoginVerificationEmailSubject", "Giriş Doğrulama Kodunuz - Sofra Restoran"),
                 new LocalizationResource(256, "tr", "LoginVerificationEmailBody", "<h3>Merhaba {0},</h3><p>Giriş yapabilmek için doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>Bu kod 10 dakika süreyle geçerlidir.</p>"),
                 new LocalizationResource(257, "tr", "WelcomeEmailSubject", "Sofra Restoran'a Hoş Geldiniz!"),
@@ -390,9 +424,28 @@ namespace RestaurantSuggestionApp.DataAccess
                 new LocalizationResource(267, "tr", "InvalidEmailFormat", "Lütfen geçerli bir e-posta adresi giriniz."),
                 new LocalizationResource(268, "en", "InvalidEmailFormat", "Please enter a valid email address."),
                 new LocalizationResource(269, "tr", "PasswordsDoNotMatch", "Girdiğiniz şifreler birbiriyle eşleşmiyor."),
-                new LocalizationResource(270, "en", "PasswordsDoNotMatch", "Passwords do not match.")
+                new LocalizationResource(270, "en", "PasswordsDoNotMatch", "Passwords do not match."),
+
+                // --- ŞİFREMİ UNUTTUM & PROFİL YENİ ÇEVİRİLERİ (TR) ---
+                new LocalizationResource(271, "tr", "ForgotPasswordSuccess", "Şifre sıfırlama kodu e-posta adresinize gönderildi."),
+                new LocalizationResource(272, "tr", "PasswordResetSuccess", "Şifreniz başarıyla güncellendi. Yeni şifrenizle giriş yapabilirsiniz."),
+                new LocalizationResource(273, "tr", "ForgotPasswordEmailSubject", "Şifre Sıfırlama Kodunuz - Sofra Restoran"),
+                new LocalizationResource(274, "tr", "ForgotPasswordEmailBody", "<h3>Merhaba {0},</h3><p>Şifrenizi sıfırlamak için kullanabileceğiniz doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>Bu kod 10 dakika süreyle geçerlidir.</p>"),
+                new LocalizationResource(275, "tr", "PasswordChangeEmailSubject", "Şifre Değiştirme Kodunuz - Sofra Restoran"),
+                new LocalizationResource(276, "tr", "PasswordChangeEmailBody", "<h3>Merhaba {0},</h3><p>Şifrenizi değiştirmek için kullanabileceğiniz doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>Bu kod 5 dakika süreyle geçerlidir.</p>"),
+                new LocalizationResource(277, "tr", "EmailChangeEmailSubject", "Sofra - E-Posta Değişikliği Doğrulama Kodu"),
+                new LocalizationResource(278, "tr", "EmailChangeEmailBody", "<h3>Merhaba {0},</h3><p>Hesabınızın e-posta adresini <strong>{1}</strong> olarak değiştirmek üzeresiniz.</p><p>Doğrulama Kodunuz: <b style='font-size: 24px; color: #E0A458;'>{2}</b></p><p>Bu kod 5 dakika boyunca geçerlidir.</p>"),
+
+                // --- ŞİFREMİ UNUTTUM & PROFİL YENİ ÇEVİRİLERİ (EN) ---
+                new LocalizationResource(279, "en", "ForgotPasswordSuccess", "Password reset code has been sent to your email address."),
+                new LocalizationResource(280, "en", "PasswordResetSuccess", "Your password has been reset successfully. You can now log in."),
+                new LocalizationResource(281, "en", "ForgotPasswordEmailSubject", "Your Password Reset Code - Sofra Restaurant"),
+                new LocalizationResource(282, "en", "ForgotPasswordEmailBody", "<h3>Hello {0},</h3><p>Your verification code to reset your password is: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>This code is valid for 10 minutes.</p>"),
+                new LocalizationResource(283, "en", "PasswordChangeEmailSubject", "Your Password Change Code - Sofra Restaurant"),
+                new LocalizationResource(284, "en", "PasswordChangeEmailBody", "<h3>Hello {0},</h3><p>Your verification code to change your password is: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>This code is valid for 5 minutes.</p>"),
+                new LocalizationResource(285, "en", "EmailChangeEmailSubject", "Sofra - Email Change Verification Code"),
+                new LocalizationResource(286, "en", "EmailChangeEmailBody", "<h3>Hello {0},</h3><p>You are about to change your account email to <strong>{1}</strong>.</p><p>Verification Code: <b style='font-size: 24px; color: #E0A458;'>{2}</b></p><p>This code is valid for 5 minutes.</p>")
             };
-            modelBuilder.Entity<LocalizationResource>().HasData(locResources);
         }
     }
 }

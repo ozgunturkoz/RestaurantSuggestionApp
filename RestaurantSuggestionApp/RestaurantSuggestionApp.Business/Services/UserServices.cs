@@ -11,34 +11,81 @@ using System.Threading.Tasks;
 
 namespace RestaurantSuggestionApp.Business.Services
 {
+    // =========================================================================================
+    // BU ARAYÜZ (INTERFACE) NE İŞE YARAR?
+    // Kullanıcı yönetimi (profil güncelleme, harcamalar, favoriler, şifre ve e-posta değiştirme)
+    // işlemlerinin listesini ve imzasını barındıran sözleşmedir.
+    // =========================================================================================
     public interface IUserService
     {
+        // Tüm kullanıcıları listeler (Admin/Yönetim)
         BaseResponse<List<User>> GetAll();
+
+        // Tek bir kullanıcıyı ID numarasına göre getirir
         BaseResponse<User> GetById(int id);
+
+        // Yeni bir kullanıcı kaydeder
         BaseResponse<User> Add(User newUser);
+
+        // Var olan kullanıcı bilgilerini günceller
         BaseResponse<User> Update(int id, User updatedUser);
+
+        // Kullanıcıyı sistemden siler
         BaseResponse<bool> Delete(int id);
 
+        // Kullanıcının favoriye eklediği restoranları listeler
         BaseResponse<List<UserFavorite>> GetFavorites(int userId);
+
+        // Kullanıcının bir restoranı favorilerine eklemesini veya not yazmasını sağlar
         BaseResponse<UserFavorite> AddFavorite(int userId, int restaurantId, string? customNote);
+
+        // Bir restoranı kullanıcının favorilerinden çıkarır
         BaseResponse<bool> RemoveFavorite(int userId, int restaurantId);
 
+        // Kullanıcının geçmiş restoran harcamalarını listeler
         BaseResponse<List<UserExpenditureResponseDto>> GetExpenditures(int userId);
+
+        // Kullanıcıya yeni bir harcama kaydı ekler
         BaseResponse<UserExpenditureResponseDto> AddExpenditure(int userId, CreateExpenditureDto dto);
+
+        // Kullanıcının yanlış girdiği bir harcamayı siler
         BaseResponse<bool> DeleteExpenditure(int userId, int expenditureId);
+
+        // Kullanıcının profilindeki adını günceller
         BaseResponse<User> UpdateProfileName(int userId, string name);
+
+        // Giriş yapmış kullanıcının şifresini değiştirebilmesi için e-postasına onay kodu yollar
         Task<BaseResponse<bool>> SendPasswordResetCodeAsync(int userId);
+
+        // E-postaya gelen kod ile kullanıcının şifresini günceller
         BaseResponse<bool> ChangePasswordWithCode(int userId, string code, string newPassword);
+
+        // Kullanıcının yeni bir e-posta adresine geçebilmesi için yeni adrese onay kodu yollar
         Task<BaseResponse<bool>> SendEmailChangeCodeAsync(int userId, string newEmail);
+
+        // Yeni e-postaya gelen kod ve mevcut şifre ile e-posta adresini günceller
         BaseResponse<bool> ChangeEmailWithCode(int userId, string newEmail, string code, string currentPassword);
     }
 
+    // =========================================================================================
+    // BU SINIF (CLASS) NE İŞE YARAR?
+    // Kullanıcı işlemlerinin tüm iş kurallarını, veritabanı kayıtlarını ve güvenlik adımlarını yürütür.
+    // =========================================================================================
     public class UserService : IUserService
     {
+        // Veritabanı tablolarına erişim sağlayan DbContext nesnesi
         private readonly AppDbContext _context;
+
+        // Doğrulama e-postalarını kullanıcılara ileten e-posta servisi
         private readonly IEmailService _emailService;
+
+        // Mesajları kullanıcının dil tercihine göre (TR / EN) çeviren yerelleştirme nesnesi
         private readonly IStringLocalizer _localizer;
 
+        // -------------------------------------------------------------------------------------
+        // Kurucu Metot (Constructor):
+        // UserService nesnesi üretildiği anda gerekli veritabanı ve servis bağımlılıklarını bağlar.
+        // -------------------------------------------------------------------------------------
         public UserService(AppDbContext context, IEmailService emailService, IStringLocalizer localizer)
         {
             _context = context;
@@ -46,6 +93,9 @@ namespace RestaurantSuggestionApp.Business.Services
             _localizer = localizer;
         }
 
+        // -------------------------------------------------------------------------------------
+        // Tüm Kullanıcıları Getir
+        // -------------------------------------------------------------------------------------
         public BaseResponse<List<User>> GetAll()
         {
             try
@@ -59,6 +109,9 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
+        // -------------------------------------------------------------------------------------
+        // ID Numarasına Göre Tek Bir Kullanıcıyı Getir
+        // -------------------------------------------------------------------------------------
         public BaseResponse<User> GetById(int id)
         {
             try
@@ -76,6 +129,9 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
+        // -------------------------------------------------------------------------------------
+        // Yeni Kullanıcı Ekle
+        // -------------------------------------------------------------------------------------
         public BaseResponse<User> Add(User newUser)
         {
             try
@@ -90,6 +146,9 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
+        // -------------------------------------------------------------------------------------
+        // Kullanıcı Bilgilerini Güncelle
+        // -------------------------------------------------------------------------------------
         public BaseResponse<User> Update(int id, User updatedUser)
         {
             try
@@ -116,6 +175,9 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
+        // -------------------------------------------------------------------------------------
+        // Kullanıcıyı Sil
+        // -------------------------------------------------------------------------------------
         public BaseResponse<bool> Delete(int id)
         {
             try
@@ -136,6 +198,9 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
+        // -------------------------------------------------------------------------------------
+        // Kullanıcının Favori Restoranlarını Listele
+        // -------------------------------------------------------------------------------------
         public BaseResponse<List<UserFavorite>> GetFavorites(int userId)
         {
             try
@@ -154,33 +219,34 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
+        // -------------------------------------------------------------------------------------
+        // Restoranı Favorilere Ekle veya Favori Notunu Güncelle
+        // -------------------------------------------------------------------------------------
         public BaseResponse<UserFavorite> AddFavorite(int userId, int restaurantId, string? customNote)
         {
             try
             {
-                var existing = _context.UserFavorites
-                    .FirstOrDefault(f => f.UserId == userId && f.RestaurantId == restaurantId);
-
-                if (existing != null)
-                {
-                    existing.UpdateNote(customNote ?? existing.CustomNote);
-                    _context.SaveChanges();
-                    return BaseResponse<UserFavorite>.Success(existing);
-                }
-
-                var restaurant = _context.Restaurants.FirstOrDefault(r => r.Id == restaurantId);
+                var restaurant = _context.Restaurants.Find(restaurantId);
                 if (restaurant == null)
                 {
                     return BaseResponse<UserFavorite>.Fail(_localizer["FavoriteRestaurantNotFound"]);
                 }
 
-                var favorite = new UserFavorite(0, userId, restaurantId, customNote);
+                var existingFav = _context.UserFavorites
+                    .FirstOrDefault(f => f.UserId == userId && f.RestaurantId == restaurantId);
 
-                _context.UserFavorites.Add(favorite);
+                if (existingFav != null)
+                {
+                    existingFav.UpdateNote(customNote);
+                    _context.SaveChanges();
+                    return BaseResponse<UserFavorite>.Success(existingFav, _localizer["FavoriteNoteUpdated"]);
+                }
+
+                var newFav = new UserFavorite(userId, restaurantId, customNote);
+                _context.UserFavorites.Add(newFav);
                 _context.SaveChanges();
 
-                favorite.Restaurant = restaurant;
-                return BaseResponse<UserFavorite>.Success(favorite);
+                return BaseResponse<UserFavorite>.Success(newFav, _localizer["FavoriteAdded"]);
             }
             catch (Exception)
             {
@@ -188,21 +254,25 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
+        // -------------------------------------------------------------------------------------
+        // Restoranı Favorilerden Çıkar
+        // -------------------------------------------------------------------------------------
         public BaseResponse<bool> RemoveFavorite(int userId, int restaurantId)
         {
             try
             {
-                var favorite = _context.UserFavorites
+                var existingFav = _context.UserFavorites
                     .FirstOrDefault(f => f.UserId == userId && f.RestaurantId == restaurantId);
 
-                if (favorite == null)
+                if (existingFav == null)
                 {
                     return BaseResponse<bool>.Fail(_localizer["FavoriteNotFound"]);
                 }
 
-                _context.UserFavorites.Remove(favorite);
+                _context.UserFavorites.Remove(existingFav);
                 _context.SaveChanges();
-                return BaseResponse<bool>.Success(true);
+
+                return BaseResponse<bool>.Success(true, _localizer["FavoriteRemoved"]);
             }
             catch (Exception)
             {
@@ -210,11 +280,14 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
+        // -------------------------------------------------------------------------------------
+        // Kullanıcının Harcama Geçmişini Listele
+        // -------------------------------------------------------------------------------------
         public BaseResponse<List<UserExpenditureResponseDto>> GetExpenditures(int userId)
         {
             try
             {
-                var expenditures = _context.UserExpenditures
+                var list = _context.UserExpenditures
                     .Include(e => e.Restaurant)
                     .Where(e => e.UserId == userId)
                     .OrderByDescending(e => e.SpentAt)
@@ -223,14 +296,14 @@ namespace RestaurantSuggestionApp.Business.Services
                         Id = e.Id,
                         UserId = e.UserId,
                         RestaurantId = e.RestaurantId,
-                        RestaurantName = e.Restaurant != null ? e.Restaurant.Name : "Diğer Harcama",
-                        RestaurantCategory = e.Restaurant != null ? e.Restaurant.Category : "Genel",
+                        RestaurantName = e.Restaurant != null ? e.Restaurant.Name : null,
+                        RestaurantCategory = e.Restaurant != null ? e.Restaurant.Category : null,
                         Amount = e.Amount,
                         SpentAt = e.SpentAt
                     })
                     .ToList();
 
-                return BaseResponse<List<UserExpenditureResponseDto>>.Success(expenditures);
+                return BaseResponse<List<UserExpenditureResponseDto>>.Success(list);
             }
             catch (Exception)
             {
@@ -238,6 +311,9 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
+        // -------------------------------------------------------------------------------------
+        // Yeni Bir Harcama Kaydı Ekle
+        // -------------------------------------------------------------------------------------
         public BaseResponse<UserExpenditureResponseDto> AddExpenditure(int userId, CreateExpenditureDto dto)
         {
             try
@@ -247,41 +323,37 @@ namespace RestaurantSuggestionApp.Business.Services
                     return BaseResponse<UserExpenditureResponseDto>.Fail(_localizer["ExpenditureAmountInvalid"]);
                 }
 
-                var user = GetUserOrThrow(userId, _localizer["UserNotFound"]);
-
-                Restaurant? restaurant = null;
-                if (dto.RestaurantId.HasValue && dto.RestaurantId.Value > 0)
-                {
-                    restaurant = _context.Restaurants.FirstOrDefault(r => r.Id == dto.RestaurantId.Value);
-                }
-
                 var expenditure = new UserExpenditure(
-                    0,
-                    userId,
-                    dto.RestaurantId > 0 ? dto.RestaurantId : null,
-                    dto.Amount,
-                    dto.SpentAt ?? DateTime.UtcNow
+                    userId: userId,
+                    restaurantId: dto.RestaurantId,
+                    amount: dto.Amount,
+                    spentAt: dto.SpentAt ?? DateTime.UtcNow
                 );
 
                 _context.UserExpenditures.Add(expenditure);
                 _context.SaveChanges();
+
+                string? restName = null;
+                string? restCat = null;
+                if (dto.RestaurantId.HasValue)
+                {
+                    var r = _context.Restaurants.Find(dto.RestaurantId.Value);
+                    restName = r?.Name;
+                    restCat = r?.Category;
+                }
 
                 var responseDto = new UserExpenditureResponseDto
                 {
                     Id = expenditure.Id,
                     UserId = expenditure.UserId,
                     RestaurantId = expenditure.RestaurantId,
-                    RestaurantName = restaurant != null ? restaurant.Name : "Diğer Harcama",
-                    RestaurantCategory = restaurant != null ? restaurant.Category : "Genel",
+                    RestaurantName = restName,
+                    RestaurantCategory = restCat,
                     Amount = expenditure.Amount,
                     SpentAt = expenditure.SpentAt
                 };
 
-                return BaseResponse<UserExpenditureResponseDto>.Success(responseDto);
-            }
-            catch (ArgumentException ex)
-            {
-                return BaseResponse<UserExpenditureResponseDto>.Fail(ex.Message);
+                return BaseResponse<UserExpenditureResponseDto>.Success(responseDto, _localizer["ExpenditureAdded"]);
             }
             catch (Exception)
             {
@@ -289,6 +361,9 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
+        // -------------------------------------------------------------------------------------
+        // Harcama Kaydını Sil
+        // -------------------------------------------------------------------------------------
         public BaseResponse<bool> DeleteExpenditure(int userId, int expenditureId)
         {
             try
@@ -303,6 +378,7 @@ namespace RestaurantSuggestionApp.Business.Services
 
                 _context.UserExpenditures.Remove(expenditure);
                 _context.SaveChanges();
+
                 return BaseResponse<bool>.Success(true);
             }
             catch (Exception)
@@ -311,13 +387,18 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
+        // -------------------------------------------------------------------------------------
+        // Profil Adını Güncelle
+        // -------------------------------------------------------------------------------------
         public BaseResponse<User> UpdateProfileName(int userId, string name)
         {
             try
             {
                 var user = GetUserOrThrow(userId, _localizer["UserNotFound"]);
-                user.UpdateProfile(name, user.Email);
+
+                user.UpdateProfile(name.Trim(), user.Email);
                 _context.SaveChanges();
+
                 return BaseResponse<User>.Success(user);
             }
             catch (ArgumentException ex)
@@ -330,6 +411,9 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
+        // -------------------------------------------------------------------------------------
+        // Profil İçinden Şifre Değiştirmek İçin E-Postaya Doğrulama Kodu Gönder
+        // -------------------------------------------------------------------------------------
         public async Task<BaseResponse<bool>> SendPasswordResetCodeAsync(int userId)
         {
             try
@@ -340,11 +424,10 @@ namespace RestaurantSuggestionApp.Business.Services
                 user.SetVerificationCode(randomCode, expireMinutes: 5);
                 _context.SaveChanges();
 
-                await _emailService.SendEmailAsync(
-                    user.Email,
-                    "Şifre Değiştirme Kodunuz - Sofra Restoran",
-                    $"<h3>Merhaba {user.Name},</h3><p>Şifrenizi değiştirmek için kullanabileceğiniz doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{randomCode}</b></p><p>Bu kod 5 dakika süreyle geçerlidir.</p>"
-                );
+                var subject = _localizer["PasswordChangeEmailSubject"].Value;
+                var body = _localizer["PasswordChangeEmailBody", user.Name, randomCode].Value;
+
+                await _emailService.SendEmailAsync(user.Email, subject, body);
 
                 return BaseResponse<bool>.Success(true);
             }
@@ -358,6 +441,9 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
+        // -------------------------------------------------------------------------------------
+        // Kod İle Şifre Değiştir
+        // -------------------------------------------------------------------------------------
         public BaseResponse<bool> ChangePasswordWithCode(int userId, string code, string newPassword)
         {
             try
@@ -374,7 +460,7 @@ namespace RestaurantSuggestionApp.Business.Services
 
                 var user = GetUserOrThrow(userId, _localizer["UserNotFound"]);
 
-                if (string.IsNullOrEmpty(user.VerificationCode) || user.VerificationCode != code)
+                if (string.IsNullOrEmpty(user.VerificationCode) || user.VerificationCode != code.Trim())
                 {
                     return BaseResponse<bool>.Fail(_localizer["InvalidCode"]);
                 }
@@ -401,6 +487,9 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
+        // -------------------------------------------------------------------------------------
+        // Yeni E-Posta Adresine Doğrulama Kodu Gönder
+        // -------------------------------------------------------------------------------------
         public async Task<BaseResponse<bool>> SendEmailChangeCodeAsync(int userId, string newEmail)
         {
             try
@@ -426,13 +515,10 @@ namespace RestaurantSuggestionApp.Business.Services
                 user.SetVerificationCode(code, 5);
                 _context.SaveChanges();
 
-                var emailBody = $@"
-                    <h2>Sofra - E-Posta Adresi Değişikliği</h2>
-                    <p>Hesabınızın e-posta adresini <strong>{formattedNewEmail}</strong> olarak değiştirmek üzeresiniz.</p>
-                    <p>Doğrulama Kodunuz: <strong style='font-size:18px;color:#E0A458;'>{code}</strong></p>
-                    <p>Bu kod 5 dakika boyunca geçerlidir.</p>";
+                var subject = _localizer["EmailChangeEmailSubject"].Value;
+                var body = _localizer["EmailChangeEmailBody", user.Name, formattedNewEmail, code].Value;
 
-                await _emailService.SendEmailAsync(formattedNewEmail, "Sofra - E-Posta Değişikliği Doğrulama Kodu", emailBody);
+                await _emailService.SendEmailAsync(formattedNewEmail, subject, body);
 
                 return BaseResponse<bool>.Success(true);
             }
@@ -446,6 +532,9 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
+        // -------------------------------------------------------------------------------------
+        // Kod ve Mevcut Şifre İle E-Posta Değişikliğini Onayla
+        // -------------------------------------------------------------------------------------
         public BaseResponse<bool> ChangeEmailWithCode(int userId, string newEmail, string code, string currentPassword)
         {
             try
@@ -457,15 +546,8 @@ namespace RestaurantSuggestionApp.Business.Services
 
                 var formattedNewEmail = newEmail.Trim().ToLower();
 
-                var existingUserWithEmail = _context.Users.Any(u => u.Email == formattedNewEmail && u.Id != userId);
-                if (existingUserWithEmail)
-                {
-                    return BaseResponse<bool>.Fail(_localizer["EmailAlreadyExists"]);
-                }
-
                 var user = GetUserOrThrow(userId, _localizer["UserNotFound"]);
 
-                // Doğrulama kodu kontrolü
                 if (string.IsNullOrEmpty(user.VerificationCode) || user.VerificationCode != code.Trim())
                 {
                     return BaseResponse<bool>.Fail(_localizer["InvalidCode"]);
@@ -476,13 +558,18 @@ namespace RestaurantSuggestionApp.Business.Services
                     return BaseResponse<bool>.Fail(_localizer["CodeExpired"]);
                 }
 
-                // Şifre kontrolü
                 if (!BCrypt.Net.BCrypt.Verify(currentPassword, user.PasswordHash))
                 {
                     return BaseResponse<bool>.Fail(_localizer["CurrentPasswordIncorrect"]);
                 }
 
-                user.UpdateEmail(formattedNewEmail);
+                var existingUserWithEmail = _context.Users.Any(u => u.Email == formattedNewEmail && u.Id != userId);
+                if (existingUserWithEmail)
+                {
+                    return BaseResponse<bool>.Fail(_localizer["EmailAlreadyExists"]);
+                }
+
+                user.UpdateProfile(user.Name, formattedNewEmail);
                 user.ClearVerificationCode();
                 _context.SaveChanges();
 
@@ -498,9 +585,12 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
+        // -------------------------------------------------------------------------------------
+        // Yardımcı Metot: Kullanıcıyı ID ile bulur, yoksa hata fırlatır
+        // -------------------------------------------------------------------------------------
         private User GetUserOrThrow(int id, string errorMessage)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == id);
+            var user = _context.Users.Find(id);
             if (user == null)
             {
                 throw new ArgumentException(errorMessage);
@@ -509,5 +599,3 @@ namespace RestaurantSuggestionApp.Business.Services
         }
     }
 }
-
-

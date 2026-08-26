@@ -1,12 +1,25 @@
 <template>
+  <!-- =========================================================================================
+       İNTERAKTİF HARİTA BİLEŞENİ (LEAFLET / OPENSTREETMAP) (KODLAMA BİLMEYENLER İÇİN ANLATIM)
+       Bu bileşen, web sayfasının ortasında Leaflet kütüphanesini kullanarak interaktif bir
+       dünya haritası çizer.
+       1. Kullanıcının haritadaki yerini mavi bir nokta ile işaretler.
+       2. Seçilen yarıçapı (örn: 5 KM) şık bir daire olarak çizer.
+       3. Yakındaki restoranları harita üzerine sarı/yeşil pinlerle yerleştirir.
+       4. Kullanıcı haritada herhangi bir yere tıkladığında orayı yeni merkez kabul eder.
+       ========================================================================================= -->
   <div ref="mapContainer" style="height: 100%; width: 100%; z-index: 0;"></div>
 </template>
 
 <script setup>
+// =========================================================================================
+// HARİTA KODLARI (JAVASCRIPT / LEAFLET)
+// =========================================================================================
 import { ref, onMounted, watch, nextTick, onBeforeUnmount } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
+// Üst bileşenden gelen seçili restoran parametresi
 const props = defineProps({
   selectedRestaurantId: {
     type: Number,
@@ -14,10 +27,14 @@ const props = defineProps({
   }
 })
 
+// Haritada bir restorana tıklandığında dışarıya haber veren olay
 const emit = defineEmits(['select-restaurant'])
 
+// Çoklu dil ve restoran deposu
 const { t, locale } = useI18n()
 const store = useRestaurantStore()
+
+// Haritanın çizileceği HTML kutusu referansı
 const mapContainer = ref(null)
 
 const isLocationLoaded = ref(false)
@@ -27,6 +44,9 @@ let mapInstance = null
 let handleResize = null
 const markerMap = new Map()
 
+// -----------------------------------------------------------------------------------------
+// Haritadaki Restoran İğneleri (Marker Icon) İçin Özel HTML Tasarımı Üreten Fonksiyon
+// -----------------------------------------------------------------------------------------
 const createCustomIcon = (color, isSelected = false) => {
   const size = isSelected ? 22 : 16;
   const borderWidth = isSelected ? '3px' : '2px';
@@ -54,23 +74,29 @@ const createCustomIcon = (color, isSelected = false) => {
   });
 };
 
+// -----------------------------------------------------------------------------------------
+// Haritanın Ekrana İlk Yüklendiği An (onMounted Lifecycle)
+// -----------------------------------------------------------------------------------------
 onMounted(async () => {
   await nextTick()
   if (!mapContainer.value) {
-    console.warn("Harita kapsayıcısı (DOM) henüz hazır değil.");
     return;
   }
+
+  // Hafızada kayıtlı son konum yoksa İstanbul Kadıköy varsayılan alınır
   const savedLat = parseFloat(localStorage.getItem('saved_user_lat') || '40.9901')
   const savedLng = parseFloat(localStorage.getItem('saved_user_lng') || '29.0256')
   const map = L.map(mapContainer.value).setView([savedLat, savedLng], 13)
   mapInstance = map;
 
+  // Koyu temalı modern harita katmanını (CARTO Dark Matter) yüklüyoruz
   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     maxZoom: 19,
     subdomains: 'abcd',
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    attribution: '&copy; OpenStreetMap &copy; CARTO'
   }).addTo(map)
 
+  // Ekran boyutu değiştiğinde haritayı yeniden hesaplayan izleyici
   resizeObserver = new ResizeObserver(() => {
     map.invalidateSize();
   });
@@ -79,6 +105,7 @@ onMounted(async () => {
   const markerGroup = L.layerGroup().addTo(map);
   let boundaryCircle = null;
 
+  // Seçili yarıçapı haritada daire olarak çizen fonksiyon
   const drawBoundaryCircle = (lat, lng, radiusInKm) => {
     if (boundaryCircle) {
       map.removeLayer(boundaryCircle);
@@ -100,9 +127,13 @@ onMounted(async () => {
 
   const formatDuration = (seconds) => {
     if (seconds === null || seconds === undefined) return '';
-    return `${Math.round(seconds / 60)} dk`;
+    const unit = locale.value === 'en' ? 'min' : 'dk';
+    return `${Math.round(seconds / 60)} ${unit}`;
   };
 
+  // ---------------------------------------------------------------------------------------
+  // Restoranları Haritada İğnelerle (Markers) Çizen Fonksiyon
+  // ---------------------------------------------------------------------------------------
   const renderMarkers = () => {
     markerGroup.clearLayers();
     markerMap.clear();
@@ -172,6 +203,7 @@ onMounted(async () => {
     });
   };
 
+  // Haritayı seçilen restorana yumuşakça kaydıran (FlyTo) fonksiyon
   const focusOnRestaurant = (id) => {
     if (!id || !markerMap.has(id)) return;
     const { marker, rest } = markerMap.get(id);
@@ -184,13 +216,14 @@ onMounted(async () => {
 
   let userMarkerLayer = null;
 
+  // Kullanıcının konumunu haritada güncelleyen fonksiyon
   const updateUserLocation = (lat, lng, isUserAction = false) => {
     userLocation.value = { lat, lng };
 
     try {
       localStorage.setItem('saved_user_lat', lat.toString());
       localStorage.setItem('saved_user_lng', lng.toString());
-    } catch (e) {}
+    } catch {}
     
     if (userMarkerLayer) {
       map.removeLayer(userMarkerLayer);
@@ -211,19 +244,14 @@ onMounted(async () => {
       isLocationLoaded.value = true;
       renderMarkers();
     });
-
-    if (isUserAction) {
-      try {
-        useToast().showSuccess('Konum haritadaki seçime göre güncellendi!')
-      } catch (e) {}
-    }
   };
 
+  // Haritaya tıklandığında orayı yeni merkez yapan olay dinleyici
   map.on('click', (e) => {
     updateUserLocation(e.latlng.lat, e.latlng.lng, true);
   });
 
-  const initializeWithLocation = (lat, lng, label) => {
+  const initializeWithLocation = (lat, lng) => {
     map.setView([lat, lng], 13);
     updateUserLocation(lat, lng, false);
   };
@@ -231,21 +259,22 @@ onMounted(async () => {
   const getSavedOrDefaultLat = () => parseFloat(localStorage.getItem('saved_user_lat') || '41.0082');
   const getSavedOrDefaultLng = () => parseFloat(localStorage.getItem('saved_user_lng') || '28.9784');
 
+  // Tarayıcının GPS Geolocation desteği varsa gerçek konumu alır
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        initializeWithLocation(position.coords.latitude, position.coords.longitude, t('map.userMarker'));
+        initializeWithLocation(position.coords.latitude, position.coords.longitude);
       },
-      (error) => {
-        console.warn("Gerçek konum alınamadı, kayıtlı/varsayılan konuma geçiliyor:", error);
-        initializeWithLocation(getSavedOrDefaultLat(), getSavedOrDefaultLng(), t('map.userMarker'));
+      () => {
+        initializeWithLocation(getSavedOrDefaultLat(), getSavedOrDefaultLng());
       },
       { timeout: 8000, maximumAge: 30000, enableHighAccuracy: true }
     );
   } else {
-    initializeWithLocation(getSavedOrDefaultLat(), getSavedOrDefaultLng(), t('map.userMarker'));
+    initializeWithLocation(getSavedOrDefaultLat(), getSavedOrDefaultLng());
   }
 
+  // Yarıçap değiştiğinde haritayı tazeleyen izleyici
   watch(() => store.radius, (newRadius) => {
     if (userLocation.value) {
       drawBoundaryCircle(userLocation.value.lat, userLocation.value.lng, newRadius);
@@ -255,10 +284,12 @@ onMounted(async () => {
     }
   });
 
+  // Dil değiştiğinde haritadaki popup metinlerini tazeleyen izleyici
   watch(() => locale.value, () => {
     renderMarkers();
   });
 
+  // Seçili restoran değiştiğinde oraya odaklanan izleyici
   watch(() => props.selectedRestaurantId, (newId) => {
     renderMarkers();
     if (newId) {

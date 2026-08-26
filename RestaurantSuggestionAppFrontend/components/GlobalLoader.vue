@@ -1,16 +1,25 @@
 <template>
+  <!-- =========================================================================================
+       BU BİLEŞEN NE İŞE YARAR? (KODLAMA BİLMEYENLER İÇİN ANLATIM)
+       Sayfada büyük bir işlem yapılırken ekranı şık bir karartmayla kaplayıp ortasında
+       dönen Sofra yükleniyor animasyonu gösteren tam ekran yükleyicidir.
+       ========================================================================================= -->
   <Transition name="fade">
     <div v-if="show" class="global-loader-overlay">
       <div class="loader-content">
         <div class="logo-pulse">Sofra</div>
         <LoadingSpinner size="lg" />
-        <p v-if="text" class="loader-text">{{ text }}</p>
+        <p v-if="text" class="loader-text">{{ text || t('common.loading') }}</p>
       </div>
     </div>
   </Transition>
 </template>
 
 <script setup>
+import { useI18n } from '~/composables/useI18n'
+
+const { t } = useI18n()
+
 defineProps({
   show: {
     type: Boolean,
@@ -18,7 +27,7 @@ defineProps({
   },
   text: {
     type: String,
-    default: 'Yükleniyor...'
+    default: ''
   }
 })
 </script>

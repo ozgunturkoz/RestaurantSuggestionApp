@@ -1,17 +1,70 @@
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
 using RestaurantSuggestionApp.DataAccess;
 
 namespace RestaurantSuggestionApp.WebApi.Localizer;
 
+// =========================================================================================
+// BU SINIF (CLASS) NE İŞE YARAR? (KODLAMA BİLMEYENLER İÇİN ANLATIM)
+// Bu sınıf, sistemin "Çok Dilli Sözlük Motorudur".
+// Veritabanındaki `LocalizationResources` tablosundan TR ve EN dillerindeki kelimeleri okur.
+// Her kelime istendiğinde veritabanına tekrar tekrar gidip sistemi yavaşlatmamak için
+// kelimeleri bilgisayarın hızlı belleğinde (RAM - IMemoryCache) 24 saat saklar.
+// Ayrıca veritabanında henüz o kelime yoksa bile sistemin çökmesini veya ham anahtar
+// göndermesini önleyen dahili yedek sözlük (Static Fallback) mekanizmasına sahiptir.
+// =========================================================================================
 public class SqlStringLocalizer : IStringLocalizer
 {
+    // Veritabanına güvenle erişmek için kullanılan fabrika nesnesi
     private readonly IServiceScopeFactory _scopeFactory;
+
+    // Hızlı bellek (RAM) önbellek yönetim nesnesi
     private readonly IMemoryCache _cache;
+
+    // Belirli bir dil belirtilmişse (örneğin "tr" veya "en") o dil kodu
     private readonly string? _culture;
 
+    // -------------------------------------------------------------------------------------
+    // DAHİLİ YEDEK ÇEVİRİ SÖZLÜĞÜ:
+    // Veritabanında bir kayıt henüz eklenmemişse veya bağlantı gecikmesi yaşanırsa,
+    // e-posta şablonlarının ham metin ("ForgotPasswordEmailBody" gibi) yerine
+    // kusursuz HTML ve biçimlendirilmiş metin olarak gitmesini garanti eder.
+    // -------------------------------------------------------------------------------------
+    private static readonly Dictionary<string, (string Tr, string En)> StaticFallbacks = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["ForgotPasswordEmailSubject"] = ("Şifre Sıfırlama Kodunuz - Sofra Restoran", "Your Password Reset Code - Sofra Restaurant"),
+        ["ForgotPasswordEmailBody"] = ("<h3>Merhaba {0},</h3><p>Şifrenizi sıfırlamak için kullanabileceğiniz doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>Bu kod 10 dakika süreyle geçerlidir.</p>", "<h3>Hello {0},</h3><p>Your verification code to reset your password is: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>This code is valid for 10 minutes.</p>"),
+        ["ForgotPasswordSuccess"] = ("Şifre sıfırlama kodu e-posta adresinize gönderildi.", "Password reset code has been sent to your email address."),
+        ["PasswordResetSuccess"] = ("Şifreniz başarıyla güncellendi. Yeni şifrenizle giriş yapabilirsiniz.", "Your password has been reset successfully. You can now log in."),
+        ["LoginVerificationEmailSubject"] = ("Giriş Doğrulama Kodunuz - Sofra Restoran", "Your Login Verification Code - Sofra Restaurant"),
+        ["LoginVerificationEmailBody"] = ("<h3>Merhaba {0},</h3><p>Giriş yapabilmek için doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>Bu kod 10 dakika süreyle geçerlidir.</p>", "<h3>Hello {0},</h3><p>Your verification code to sign in is: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>This code is valid for 10 minutes.</p>"),
+        ["WelcomeEmailSubject"] = ("Sofra Restoran'a Hoş Geldiniz!", "Welcome to Sofra Restaurant!"),
+        ["WelcomeEmailBody"] = ("<h3>Merhaba {0},</h3><p>E-posta adresiniz başarıyla doğrulandı. Hesabınız aktif edildi!</p><p>Sofra Restoran Akıllı Öneri Sistemini keyifle kullanabilirsiniz.</p>", "<h3>Hello {0},</h3><p>Your email address has been verified successfully. Your account is activated!</p><p>Enjoy using the Sofra Restaurant Smart Recommendation System.</p>"),
+        ["RegisterVerificationEmailSubject"] = ("Sofra Restoran - Hesabınızı Doğrulayın", "Sofra Restaurant - Verify Your Account"),
+        ["RegisterVerificationEmailBody"] = ("<h3>Aramıza Hoş Geldiniz {0}!</h3><p>Kayıt işleminizi tamamlamak için doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>Bu kod 10 dakika süreyle geçerlidir.</p>", "<h3>Welcome Aboard {0}!</h3><p>Your verification code to complete registration is: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>This code is valid for 10 minutes.</p>"),
+        ["PasswordChangeEmailSubject"] = ("Şifre Değiştirme Kodunuz - Sofra Restoran", "Your Password Change Code - Sofra Restaurant"),
+        ["PasswordChangeEmailBody"] = ("<h3>Merhaba {0},</h3><p>Şifrenizi değiştirmek için kullanabileceğiniz doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>Bu kod 5 dakika süreyle geçerlidir.</p>", "<h3>Hello {0},</h3><p>Your verification code to change your password is: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>This code is valid for 5 minutes.</p>"),
+        ["EmailChangeEmailSubject"] = ("Sofra - E-Posta Değişikliği Doğrulama Kodu", "Sofra - Email Change Verification Code"),
+        ["EmailChangeEmailBody"] = ("<h3>Merhaba {0},</h3><p>Hesabınızın e-posta adresini <strong>{1}</strong> olarak değiştirmek üzeresiniz.</p><p>Doğrulama Kodunuz: <b style='font-size: 24px; color: #E0A458;'>{2}</b></p><p>Bu kod 5 dakika boyunca geçerlidir.</p>", "<h3>Hello {0},</h3><p>You are about to change your account email to <strong>{1}</strong>.</p><p>Verification Code: <b style='font-size: 24px; color: #E0A458;'>{2}</b></p><p>This code is valid for 5 minutes.</p>"),
+        ["InvalidEmailFormat"] = ("Lütfen geçerli bir e-posta adresi giriniz.", "Please enter a valid email address."),
+        ["PasswordsDoNotMatch"] = ("Girdiğiniz şifreler birbiriyle eşleşmiyor.", "Passwords do not match."),
+        ["UserNotFound"] = ("Kullanıcı bulunamadı.", "User not found."),
+        ["PasswordResetCodeSendError"] = ("Şifre sıfırlama kodu gönderilirken hata oluştu.", "An error occurred while sending the password reset code."),
+        ["InvalidVerificationCode"] = ("Geçersiz veya süresi dolmuş doğrulama kodu!", "Invalid or expired verification code!"),
+        ["InvalidPassword"] = ("E-posta veya şifre hatalı!", "Invalid email or password!"),
+        ["InvalidInput"] = ("E-posta ve şifre boş bırakılamaz.", "Email and password cannot be empty.")
+    };
+
+    // -------------------------------------------------------------------------------------
+    // Kurucu Metot (Constructor):
+    // SqlStringLocalizer üretildiği anda bellek önbelleği ve veritabanı fabrikasını içeri alır.
+    // -------------------------------------------------------------------------------------
     public SqlStringLocalizer(IServiceScopeFactory scopeFactory, IMemoryCache cache, string? culture = null)
     {
         _scopeFactory = scopeFactory;
@@ -19,6 +72,9 @@ public class SqlStringLocalizer : IStringLocalizer
         _culture = culture;
     }
 
+    // -------------------------------------------------------------------------------------
+    // İndeksleyici (Indexer): _localizer["Key"] şeklinde kelime çağırmamızı sağlar
+    // -------------------------------------------------------------------------------------
     public LocalizedString this[string name]
     {
         get
@@ -28,6 +84,9 @@ public class SqlStringLocalizer : IStringLocalizer
         }
     }
 
+    // -------------------------------------------------------------------------------------
+    // Parametreli İndeksleyici: _localizer["HelloUser", "Ozgur"] gibi dinamik metin oluşturur
+    // -------------------------------------------------------------------------------------
     public LocalizedString this[string name, params object[] arguments]
     {
         get
@@ -49,12 +108,18 @@ public class SqlStringLocalizer : IStringLocalizer
         }
     }
 
+    // -------------------------------------------------------------------------------------
+    // Aktif dile ait tüm kelime çiftlerini döndürür
+    // -------------------------------------------------------------------------------------
     public IEnumerable<LocalizedString> GetAllStrings(bool includeParentCultures)
     {
         var dict = GetDictionary();
         return dict.Select(kv => new LocalizedString(kv.Key, kv.Value, resourceNotFound: false));
     }
 
+    // -------------------------------------------------------------------------------------
+    // Sözlüğü Getir: Önce RAM'e (Önbelleğe) bakar, bulamazsa veritabanından çekip RAM'e yazar
+    // -------------------------------------------------------------------------------------
     public Dictionary<string, string> GetDictionary(string? cultureName = null)
     {
         var culture = cultureName ?? _culture ?? CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToLowerInvariant();
@@ -62,16 +127,16 @@ public class SqlStringLocalizer : IStringLocalizer
 
         var cacheKey = $"localization_dict_{culture}";
 
-        // 1. Check IMemoryCache (Instant O(1) Memory Lookup)
+        // 1. Aşama: RAM'deki IMemoryCache kontrol edilir (Milisaniyenin altında anında yanıt)
         if (_cache.TryGetValue(cacheKey, out Dictionary<string, string>? cachedDict) && cachedDict != null)
         {
             return cachedDict;
         }
 
-        // 2. Cache Miss: Query Database via AppDbContext Scope
+        // 2. Aşama: Bellekte yoksa veritabanından okunur
         var dictionary = LoadFromDatabase(culture);
 
-        // 3. Populate MemoryCache (Keep in RAM for 24 hours)
+        // 3. Aşama: 24 saat boyunca RAM'de saklanmak üzere kaydedilir
         var cacheOptions = new MemoryCacheEntryOptions()
             .SetSlidingExpiration(TimeSpan.FromHours(24));
 
@@ -80,6 +145,9 @@ public class SqlStringLocalizer : IStringLocalizer
         return dictionary;
     }
 
+    // -------------------------------------------------------------------------------------
+    // Bellekteki önbelleği temizler (Yönetici yeni çeviri eklediğinde kullanılır)
+    // -------------------------------------------------------------------------------------
     public void ClearCache(string? cultureName = null)
     {
         if (!string.IsNullOrWhiteSpace(cultureName))
@@ -93,24 +161,40 @@ public class SqlStringLocalizer : IStringLocalizer
         }
     }
 
+    // -------------------------------------------------------------------------------------
+    // Yardımcı Metot: Tek bir kelime anahtarının çevirisini bulur, yoksa Türkçe yedeğine
+    // ve ardından statik dahili sözlüğe bakar.
+    // -------------------------------------------------------------------------------------
     private string? GetString(string key)
     {
-        var dict = GetDictionary();
-        if (dict.TryGetValue(key, out var val))
+        var activeCulture = (_culture ?? CultureInfo.CurrentUICulture.TwoLetterISOLanguageName).ToLowerInvariant();
+        var shortCulture = activeCulture.Split('-')[0];
+
+        var dict = GetDictionary(shortCulture);
+        if (dict.TryGetValue(key, out var val) && !string.IsNullOrWhiteSpace(val))
         {
             return val;
         }
 
-        // Fallback to "tr" culture if current culture doesn't have the key
+        // Seçilen dilde anahtar bulunamazsa Türkçe (tr) veritabanı yedeğine bakar
         var trDict = GetDictionary("tr");
-        if (trDict.TryGetValue(key, out var trVal))
+        if (trDict.TryGetValue(key, out var trVal) && !string.IsNullOrWhiteSpace(trVal))
         {
             return trVal;
+        }
+
+        // Veritabanında yoksa statik dahili sözlükten alır
+        if (StaticFallbacks.TryGetValue(key, out var fallback))
+        {
+            return shortCulture == "en" ? fallback.En : fallback.Tr;
         }
 
         return null;
     }
 
+    // -------------------------------------------------------------------------------------
+    // Veritabanından İlgili Dildeki Kayıtları Çeken Metot
+    // -------------------------------------------------------------------------------------
     private Dictionary<string, string> LoadFromDatabase(string culture)
     {
         using var scope = _scopeFactory.CreateScope();
@@ -132,7 +216,7 @@ public class SqlStringLocalizer : IStringLocalizer
             }
         }
 
-        // Fallback to "tr" if empty
+        // Eğer o dilde hiç kayıt yoksa Türkçe yedeği yükler
         if (dict.Count == 0 && shortCulture != "tr")
         {
             var fallbackRecords = context.LocalizationResources

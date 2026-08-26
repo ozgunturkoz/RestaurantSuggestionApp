@@ -1,122 +1,138 @@
 <template>
+  <!-- =========================================================================================
+       PROFİL SAYFASI ŞABLONU (KODLAMA BİLMEYENLER İÇİN ANLATIM)
+       Bu sayfa kullanıcının kendi hesabını yönettiği "Kullanıcı Kontrol Paneli"dir.
+       İçerisinde 5 ana sekme bulunur:
+       1. Harcamalarım & Analiz (Grafikler, istatistikler ve harcama dökümü)
+       2. Profil Bilgileri (Ad Soyad güncelleme)
+       3. E-Posta Değiştirme (Yeni adrese doğrulama kodu göndererek güvenli geçiş)
+       4. Şifre Değiştirme (E-postaya gelen 6 haneli kod ile şifre yenileme)
+       5. Favorilerim (Kaydedilen mekanlar)
+       ========================================================================================= -->
   <div class="sofra-profile-page">
-    <!-- Header -->
+    <!-- Üst Gezinme Çubuğu (Header) -->
     <header class="header">
       <div class="hbar">
         <div class="header-left">
           <NuxtLink to="/" class="logo">Sofra</NuxtLink>
           <nav>
+            <!-- Keşfet Harita Sayfasına Dönüş Linki -->
             <NuxtLink to="/" class="nav-link" :class="{ on: $route.path === '/' }">{{ t('nav.discover') }}</NuxtLink>
+            <!-- Profil Sayfası Aktif Sekme Linki -->
             <NuxtLink to="/profile" class="nav-link" :class="{ on: $route.path === '/profile' }">{{ t('profile.myProfile') }}</NuxtLink>
           </nav>
         </div>
 
         <div class="header-right">
+          <!-- Türkçe / İngilizce Dil Değiştirme Butonları -->
           <div class="lang-switch">
             <button :class="{ active: locale === 'tr' }" @click="setLocale('tr')">TR</button>
             <span>|</span>
             <button :class="{ active: locale === 'en' }" @click="setLocale('en')">EN</button>
           </div>
+          <!-- Güvenli Çıkış Yapma Butonu -->
           <button class="logout-btn" @click="handleLogout">{{ t('nav.logout') }}</button>
         </div>
       </div>
     </header>
 
-    <!-- Main Container -->
+    <!-- Ana Profil İçerik Alanı -->
     <main class="profile-container">
-      <!-- Profile Header Banner -->
+      <!-- Kullanıcı Karşılama ve Bilgi Kartı (Banner) -->
       <div class="profile-banner-card">
         <div class="user-avatar">
           {{ userInitials }}
         </div>
         <div class="user-details">
           <div class="user-name-row">
-            <h1>{{ authStore.user?.name || 'Kullanıcı' }}</h1>
-            <span class="user-badge">Doğrulanmış Hesabı</span>
+            <h1>{{ authStore.user?.name || t('profile.defaultUser') }}</h1>
+            <span class="user-badge">{{ t('profile.verifiedAccount') }}</span>
           </div>
           <p class="user-email">{{ authStore.user?.email || '' }}</p>
         </div>
       </div>
 
-      <!-- Navigation Tabs -->
+      <!-- Sekmeler Arası Geçiş Menüsü -->
       <div class="profile-tabs">
         <button
           class="tab-btn"
           :class="{ active: activeTab === 'expenditures' }"
           @click="activeTab = 'expenditures'"
         >
-          Harcamalarım & Analiz
+          {{ t('profile.tabExpenditures') }}
         </button>
         <button
           class="tab-btn"
           :class="{ active: activeTab === 'info' }"
           @click="activeTab = 'info'"
         >
-          Profil Bilgileri
+          {{ t('profile.tabInfo') }}
         </button>
         <button
           class="tab-btn"
           :class="{ active: activeTab === 'email-change' }"
           @click="activeTab = 'email-change'"
         >
-          E-Posta Değiştirme
+          {{ t('profile.tabEmailChange') }}
         </button>
         <button
           class="tab-btn"
           :class="{ active: activeTab === 'security' }"
           @click="activeTab = 'security'"
         >
-          Şifre Değiştirme
+          {{ t('profile.tabSecurity') }}
         </button>
         <button
           class="tab-btn"
           :class="{ active: activeTab === 'favorites' }"
           @click="activeTab = 'favorites'"
         >
-          Favorilerim
+          {{ t('profile.tabFavorites') }}
         </button>
       </div>
 
-      <!-- TAB 1: HARCAMALARIM VE GRAFİKLER -->
+      <!-- =====================================================================================
+           SEKME 1: HARCAMALARIM, GRAFİKLER VE DÖKÜM
+           ===================================================================================== -->
       <div v-if="activeTab === 'expenditures'" class="tab-content">
-        <!-- İstatistik Özet Kartları -->
+        <!-- 4 Adet Özet İstatistik Kartı -->
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-info">
-              <span class="stat-label">Toplam Harcama</span>
+              <span class="stat-label">{{ t('profile.totalSpent') }}</span>
               <strong class="stat-value">₺{{ totalSpent.toFixed(2) }}</strong>
             </div>
           </div>
 
           <div class="stat-card">
             <div class="stat-info">
-              <span class="stat-label">Son 30 Gün Harcaması</span>
+              <span class="stat-label">{{ t('profile.last30DaysSpent') }}</span>
               <strong class="stat-value">₺{{ last30DaysSpent.toFixed(2) }}</strong>
             </div>
           </div>
 
           <div class="stat-card">
             <div class="stat-info">
-              <span class="stat-label">Ortalama Öğün Harcaması</span>
+              <span class="stat-label">{{ t('profile.avgSpent') }}</span>
               <strong class="stat-value">₺{{ avgSpent.toFixed(2) }}</strong>
             </div>
           </div>
 
           <div class="stat-card">
             <div class="stat-info">
-              <span class="stat-label">En Çok Harcanan Kategori</span>
+              <span class="stat-label">{{ t('profile.topCategory') }}</span>
               <strong class="stat-value highlight-text">{{ topCategory }}</strong>
             </div>
           </div>
         </div>
 
-        <!-- HARCAMA GRAFİKLERİ VE ANALİZ -->
+        <!-- Görsel Harcama Grafikleri -->
         <div class="analytics-grid" v-if="expenditures.length > 0">
-          <!-- Aylık / Zaman Çizelgesi Harcama Grafiği -->
+          <!-- Aylık Çubuk Grafik -->
           <div class="chart-card">
             <div class="chart-header">
-              <h3>Aylık Harcama Detayı</h3>
-              <span class="chart-sub">Dönem bazlı harcama dağılımı</span>
+              <h3>{{ t('profile.monthlyDetail') }}</h3>
+              <span class="chart-sub">{{ t('profile.monthlyDetailSub') }}</span>
             </div>
             <div class="bar-chart-container">
               <div
@@ -137,11 +153,11 @@
             </div>
           </div>
 
-          <!-- Kategori Bazlı Dağılım -->
+          <!-- Kategori İlerleme Çubukları Grafiği -->
           <div class="chart-card">
             <div class="chart-header">
-              <h3>Kategori Dağılımı</h3>
-              <span class="chart-sub">Harcanan bütçenin restoran türlerine göre oranı</span>
+              <h3>{{ t('profile.categoryDistribution') }}</h3>
+              <span class="chart-sub">{{ t('profile.categoryDistributionSub') }}</span>
             </div>
             <div class="category-distribution-list">
               <div
@@ -164,25 +180,28 @@
           </div>
         </div>
 
-        <!-- Harcama Geçmişi Listesi (Okuma Modu) -->
+        <!-- Harcama Geçmişi Satırları -->
         <div class="section-card">
           <div class="section-header">
             <div>
-              <h2>Harcama Geçmişim</h2>
-              <p class="section-sub">Sistemde kayıtlı otomatik hesap hareketleriniz ve dökümünüz</p>
+              <h2>{{ t('profile.expendituresHistory') }}</h2>
+              <p class="section-sub">{{ t('profile.expendituresHistorySub') }}</p>
             </div>
           </div>
 
+          <!-- Yükleniyor Durumu -->
           <div v-if="isLoadingExpenditures" class="loading-state">
             <LoadingSpinner size="md" />
-            <p>Harcama dökümü yükleniyor...</p>
+            <p>{{ t('profile.loadingExpenditures') }}</p>
           </div>
 
+          <!-- Hiç Harcama Yoksa Gösterilen Boş Durum -->
           <div v-else-if="expenditures.length === 0" class="empty-state">
-            <h3>Henüz Kayıtlı Harcamanız Bulunmamaktadır</h3>
-            <p>Sistem üzerinden yaptığınız restoran işlemleri burada otomatik olarak listelenir ve analiz edilir.</p>
+            <h3>{{ t('profile.noExpenditures') }}</h3>
+            <p>{{ t('profile.noExpendituresSub') }}</p>
           </div>
 
+          <!-- Harcama Satırları Listesi -->
           <div v-else class="expenditures-list">
             <div
               v-for="item in expenditures"
@@ -190,9 +209,9 @@
               class="expenditure-row"
             >
               <div class="expenditure-details">
-                <strong class="exp-name">{{ item.restaurantName || 'Restoran Harcaması' }}</strong>
+                <strong class="exp-name">{{ item.restaurantName || t('profile.defaultExpenditureName') }}</strong>
                 <div class="exp-meta">
-                  <span class="category-chip">{{ item.restaurantCategory || 'Genel' }}</span>
+                  <span class="category-chip">{{ item.restaurantCategory || t('profile.defaultCategory') }}</span>
                   <span class="exp-date">{{ formatDate(item.spentAt) }}</span>
                 </div>
               </div>
@@ -204,61 +223,63 @@
         </div>
       </div>
 
-      <!-- TAB 2: PROFİL BİLGİLERİ -->
+      <!-- =====================================================================================
+           SEKME 2: PROFİL BİLGİLERİ (İSİM GÜNCELLEME)
+           ===================================================================================== -->
       <div v-if="activeTab === 'info'" class="tab-content">
         <div class="section-card max-w-xl">
-          <h2>Profil Bilgilerini Güncelle</h2>
-          <p class="section-sub">Hesabınızda görünen ad ve soyadı güncelleyebilirsiniz.</p>
+          <h2>{{ t('profile.updateProfileTitle') }}</h2>
+          <p class="section-sub">{{ t('profile.updateProfileSub') }}</p>
 
           <form class="profile-form" @submit.prevent="handleUpdateProfile">
             <div class="form-group">
-              <label for="profile-name">Ad Soyad</label>
+              <label for="profile-name">{{ t('profile.fullName') }}</label>
               <input
                 id="profile-name"
                 v-model="profileForm.name"
                 type="text"
                 class="form-input"
-                placeholder="Adınız Soyadınız"
+                :placeholder="t('profile.fullNamePlaceholder')"
                 required
               />
             </div>
 
             <div class="form-group">
-              <label>Mevcut E-posta Adresi</label>
+              <label>{{ t('profile.currentEmail') }}</label>
               <input
                 type="email"
                 :value="authStore.user?.email"
                 class="form-input readonly-input"
                 disabled
               />
-              <small class="field-hint">E-posta adresinizi değiştirmek için "E-Posta Değiştirme" sekmesini kullanabilirsiniz.</small>
+              <small class="field-hint">{{ t('profile.emailHint') }}</small>
             </div>
 
             <button type="submit" class="primary-btn" :disabled="isUpdatingProfile">
-              {{ isUpdatingProfile ? 'Kaydediliyor...' : 'Değişiklikleri Kaydet' }}
+              {{ isUpdatingProfile ? t('profile.saving') : t('profile.saveChanges') }}
             </button>
           </form>
         </div>
       </div>
 
-      <!-- TAB 3: E-POSTA DEĞİŞTİRME (KOD + ŞİFRE ONAYLI + TEKRAR GİRİŞ) -->
+      <!-- =====================================================================================
+           SEKME 3: GÜVENLİ E-POSTA DEĞİŞTİRME (KOD + ŞİFRE ONAYLI)
+           ===================================================================================== -->
       <div v-if="activeTab === 'email-change'" class="tab-content">
         <div class="section-card max-w-xl">
-          <h2>Güvenli E-Posta Değişikliği</h2>
-          <p class="section-sub">
-            E-posta adresinizi değiştirmek için yeni adresinize gönderilecek doğrulama kodunu ve mevcut şifrenizi girmeniz gerekmektedir. Değişiklik sonrası hesabınıza tekrar giriş yapmanız istenecektir.
-          </p>
+          <h2>{{ t('profile.emailChangeTitle') }}</h2>
+          <p class="section-sub">{{ t('profile.emailChangeSub') }}</p>
 
-          <!-- Step 1: Yeni E-Posta Gir ve Kod İste -->
+          <!-- 1. Adım: Yeni E-Posta Adresini Yaz ve Doğrulama Kodu İste -->
           <div v-if="!emailChangeStepCodeSent" class="security-step-box">
             <div class="form-group">
-              <label for="new-email-input">Yeni E-Posta Adresi</label>
+              <label for="new-email-input">{{ t('profile.newEmailLabel') }}</label>
               <input
                 id="new-email-input"
                 v-model="emailChangeForm.newEmail"
                 type="email"
                 class="form-input"
-                placeholder="yeni.eposta@ornek.com"
+                :placeholder="t('profile.newEmailPlaceholder')"
                 required
               />
             </div>
@@ -268,18 +289,18 @@
               :disabled="isSendingEmailCode"
               @click="handleSendEmailChangeCode"
             >
-              {{ isSendingEmailCode ? 'Doğrulama Kodu Gönderiliyor...' : 'Yeni E-Postaya Doğrulama Kodu Gönder' }}
+              {{ isSendingEmailCode ? t('profile.sendingCode') : t('profile.sendCodeToNewEmail') }}
             </button>
           </div>
 
-          <!-- Step 2: Kod + Mevcut Şifre Gir ve Onayla -->
+          <!-- 2. Adım: Gelen Doğrulama Kodunu ve Mevcut Şifreyi Yazıp Onayla -->
           <form v-else class="profile-form" @submit.prevent="handleChangeEmailSubmit">
             <div class="info-alert">
-              <p>Doğrulama kodu <strong>{{ emailChangeForm.newEmail }}</strong> adresine gönderildi.</p>
+              <p>{{ t('profile.codeSentToNewEmail', { email: emailChangeForm.newEmail }) }}</p>
             </div>
 
             <div class="form-group">
-              <label for="email-code-input">6 Haneli Doğrulama Kodu</label>
+              <label for="email-code-input">{{ t('profile.sixDigitCode') }}</label>
               <input
                 id="email-code-input"
                 v-model="emailChangeForm.code"
@@ -292,13 +313,13 @@
             </div>
 
             <div class="form-group">
-              <label for="current-password-email-confirm">Güvenlik Doğrulaması İçin Mevcut Şifreniz</label>
+              <label for="current-password-email-confirm">{{ t('profile.currentPasswordForSecurity') }}</label>
               <input
                 id="current-password-email-confirm"
                 v-model="emailChangeForm.currentPassword"
                 type="password"
                 class="form-input"
-                placeholder="Mevcut hesabınızın şifresi"
+                :placeholder="t('profile.currentPasswordPlaceholder')"
                 required
               />
             </div>
@@ -309,81 +330,81 @@
                 class="secondary-btn"
                 @click="emailChangeStepCodeSent = false"
               >
-                Geri
+                {{ t('profile.back') }}
               </button>
               <button
                 type="submit"
                 class="primary-btn"
                 :disabled="isChangingEmail"
               >
-                {{ isChangingEmail ? 'E-Posta Güncelleniyor...' : 'E-Postayı Değiştir ve Yeniden Giriş Yap' }}
+                {{ isChangingEmail ? t('profile.updatingEmail') : t('profile.submitEmailChange') }}
               </button>
             </div>
           </form>
         </div>
       </div>
 
-      <!-- TAB 4: ŞİFRE DEĞİŞTİRME (MAIL KONTROLÜ İLE) -->
+      <!-- =====================================================================================
+           SEKME 4: ŞİFRE DEĞİŞTİRME (E-POSTA KOD DOĞRULAMALI)
+           ===================================================================================== -->
       <div v-if="activeTab === 'security'" class="tab-content">
         <div class="section-card max-w-xl">
-          <h2>E-Posta Onaylı Şifre Değiştirme</h2>
-          <p class="section-sub">
-            Hesap güvenliğiniz için şifre değiştirmeden önce kayıtlı e-posta adresinize 6 haneli doğrulama kodu gönderilir.
-          </p>
+          <h2>{{ t('profile.securityTitle') }}</h2>
+          <p class="section-sub">{{ t('profile.securitySub') }}</p>
 
-          <!-- Step 1: Kodu Gönder -->
+          <!-- 1. Adım: Kayıtlı E-Postaya Kod İste -->
           <div v-if="!passwordStepCodeSent" class="security-step-box">
             <div class="info-alert">
-              <p>Kayıtlı e-posta adresiniz: <strong>{{ authStore.user?.email }}</strong></p>
+              <p>{{ t('profile.registeredEmail', { email: authStore.user?.email }) }}</p>
             </div>
             <button
               class="primary-btn wide-btn"
               :disabled="isSendingPasswordCode"
               @click="handleSendPasswordCode"
             >
-              {{ isSendingPasswordCode ? 'Doğrulama Kodu Gönderiliyor...' : 'E-Posta Doğrulama Kodu Gönder' }}
+              {{ isSendingPasswordCode ? t('profile.sendingCode') : t('profile.sendPasswordCodeBtn') }}
             </button>
           </div>
 
-          <!-- Step 2: Kodu ve Yeni Şifreyi Gir -->
+          <!-- 2. Adım: Kodu ve Yeni Şifreyi Yazıp Kaydet -->
           <form v-else class="profile-form" @submit.prevent="handleChangePassword">
             <div class="success-alert">
-              <p>Doğrulama kodu <strong>{{ authStore.user?.email }}</strong> adresine gönderildi. Lütfen e-postanızı kontrol edin.</p>
+              <p>{{ t('profile.passwordCodeSentAlert', { email: authStore.user?.email }) }}</p>
             </div>
 
             <div class="form-group">
-              <label for="password-code">6 Haneli E-Posta Doğrulama Kodu</label>
+              <label for="password-code">{{ t('profile.sixDigitCode') }}</label>
               <input
                 id="password-code"
                 v-model="passwordForm.code"
                 type="text"
                 class="form-input code-input"
-                placeholder="Örn: 123456"
+                placeholder="123456"
                 maxlength="6"
                 required
               />
             </div>
 
             <div class="form-group">
-              <label for="new-password">Yeni Şifre</label>
+              <label for="new-password">{{ t('profile.newPassword') }}</label>
               <input
                 id="new-password"
                 v-model="passwordForm.newPassword"
                 type="password"
                 class="form-input"
-                placeholder="En az 6 karakter"
+                :placeholder="t('profile.passwordMinHint')"
                 required
               />
             </div>
 
             <div class="form-group">
-              <label for="confirm-password">Yeni Şifre (Tekrar)</label>
+              <label for="confirm-password">{{ t('profile.confirmNewPassword') }}</label>
               <input
                 id="confirm-password"
                 v-model="passwordForm.confirmPassword"
                 type="password"
                 class="form-input"
-                placeholder="Şifrenizi tekrar giriniz"
+                :placeholder="t('profile.confirmPasswordPlaceholder')"
                 required
               />
             </div>
@@ -394,36 +415,41 @@
                 class="secondary-btn"
                 @click="passwordStepCodeSent = false"
               >
-                Geri
+                {{ t('profile.back') }}
               </button>
               <button
                 type="submit"
                 class="primary-btn"
                 :disabled="isChangingPassword"
               >
-                {{ isChangingPassword ? 'Şifre Güncelleniyor...' : 'Şifreyi Güncelle' }}
+                {{ isChangingPassword ? t('profile.updatingPassword') : t('profile.updatePasswordBtn') }}
               </button>
             </div>
           </form>
         </div>
       </div>
 
-      <!-- TAB 5: FAVORİLERİM (RESTO'YA TIKLAYINCA KEŞFET'E GİT) -->
+      <!-- =====================================================================================
+           SEKME 5: FAVORİ RESTORANLARIM
+           ===================================================================================== -->
       <div v-if="activeTab === 'favorites'" class="tab-content">
         <div class="section-card">
-          <h2>Favori Restoranlarım</h2>
-          <p class="section-sub">Kaydettiğiniz mekanlar. Tıklayarak Keşfet haritasında görüntüleyebilirsiniz.</p>
+          <h2>{{ t('profile.favoritesTitle') }}</h2>
+          <p class="section-sub">{{ t('profile.favoritesSub') }}</p>
 
+          <!-- Yükleniyor Durumu -->
           <div v-if="isLoadingFavorites" class="loading-state">
             <LoadingSpinner size="md" />
-            <p>Favoriler yükleniyor...</p>
+            <p>{{ t('profile.loadingFavorites') }}</p>
           </div>
 
+          <!-- Hiç Favori Yoksa Gösterilen Boş Durum -->
           <div v-else-if="favorites.length === 0" class="empty-state">
-            <h3>Henüz Favori Restoranınız Yok</h3>
-            <p>Keşfet sayfasından beğendiğiniz restoranları favorilerinize ekleyebilirsiniz.</p>
+            <h3>{{ t('profile.noFavorites') }}</h3>
+            <p>{{ t('profile.noFavoritesSub') }}</p>
           </div>
 
+          <!-- Favori Restoran Kartları Grid Yapısı -->
           <div v-else class="favorites-grid">
             <div
               v-for="fav in favorites"
@@ -432,8 +458,8 @@
               @click="goToDiscoverWithRestaurant(fav.restaurantId)"
             >
               <div class="fav-card-header">
-                <h3>{{ fav.restaurant?.name || 'Restoran' }}</h3>
-                <span class="category-chip">{{ fav.restaurant?.category || 'Genel' }}</span>
+                <h3>{{ fav.restaurant?.name || t('profile.defaultRestaurantName') }}</h3>
+                <span class="category-chip">{{ fav.restaurant?.category || t('profile.defaultCategory') }}</span>
               </div>
               <p v-if="fav.customNote" class="fav-note">"{{ fav.customNote }}"</p>
               <div class="fav-card-footer">
@@ -443,13 +469,13 @@
                     class="view-discover-btn"
                     @click.stop="goToDiscoverWithRestaurant(fav.restaurantId)"
                   >
-                    Keşfet'te Gör
+                    {{ t('profile.viewOnDiscover') }}
                   </button>
                   <button
                     class="remove-fav-btn"
                     @click.stop="handleRemoveFavorite(fav.restaurantId)"
                   >
-                    Çıkar
+                    {{ t('profile.removeFav') }}
                   </button>
                 </div>
               </div>
@@ -462,32 +488,49 @@
 </template>
 
 <script setup lang="ts">
+// =========================================================================================
+// PROFİL SAYFASI KODLARI (JAVASCRIPT / TYPESCRIPT)
+// =========================================================================================
 import { ref, computed, onMounted } from 'vue'
 import { useUserService } from '~/composables/useUserService'
 import { useI18n } from '~/composables/useI18n'
 import { useToast } from '~/composables/useToast'
 import { navigateTo } from '#app'
 
+// Oturum bilgilerini tutan store
 const authStore = useAuthStore()
+
+// Profil ve harcama API isteklerini yapan servis
 const userService = useUserService()
+
+// Çoklu dil çeviri fonksiyonumuz
 const { t, locale, setLocale } = useI18n()
+
+// Renkli bildirim baloncukları göstermemizi sağlayan araç
 const toast = useToast()
 
+// Sayfada o an hangi sekmenin açık olduğunu belirleyen durum
 const activeTab = ref<'expenditures' | 'info' | 'email-change' | 'security' | 'favorites'>('expenditures')
 
-// State
+// -----------------------------------------------------------------------------------------
+// Harcamalar ve Favoriler Durum Değişkenleri
+// -----------------------------------------------------------------------------------------
 const expenditures = ref<any[]>([])
 const favorites = ref<any[]>([])
 const isLoadingExpenditures = ref(false)
 const isLoadingFavorites = ref(false)
 
-// Profile Form State
+// -----------------------------------------------------------------------------------------
+// Profil Adını Güncelleme Form Durumu
+// -----------------------------------------------------------------------------------------
 const isUpdatingProfile = ref(false)
 const profileForm = ref({
   name: authStore.user?.name || ''
 })
 
-// Email Change State
+// -----------------------------------------------------------------------------------------
+// E-Posta Değiştirme Form Durumu
+// -----------------------------------------------------------------------------------------
 const isSendingEmailCode = ref(false)
 const isChangingEmail = ref(false)
 const emailChangeStepCodeSent = ref(false)
@@ -497,7 +540,9 @@ const emailChangeForm = ref({
   currentPassword: ''
 })
 
-// Password Form State
+// -----------------------------------------------------------------------------------------
+// Şifre Değiştirme Form Durumu
+// -----------------------------------------------------------------------------------------
 const isSendingPasswordCode = ref(false)
 const isChangingPassword = ref(false)
 const passwordStepCodeSent = ref(false)
@@ -507,23 +552,30 @@ const passwordForm = ref({
   confirmPassword: ''
 })
 
-// User Initials
+// -----------------------------------------------------------------------------------------
+// Kullanıcının İsminin Baş Harflerini (Örn: "Özgür Türköz" -> "ÖT") Üreten Hesaplama
+// -----------------------------------------------------------------------------------------
 const userInitials = computed(() => {
-  const name = authStore.user?.name || 'K'
+  const name = authStore.user?.name || 'U'
   return name
     .split(' ')
     .filter(Boolean)
     .map(n => n[0])
     .join('')
     .toUpperCase()
-    .substring(0, 2) || 'K'
+    .substring(0, 2) || 'U'
 })
 
-// Stat computations
+// -----------------------------------------------------------------------------------------
+// Toplam Harcanan Para Tutarını Hesaplayan Fonksiyon
+// -----------------------------------------------------------------------------------------
 const totalSpent = computed(() => {
   return expenditures.value.reduce((sum, item) => sum + (item.amount || 0), 0)
 })
 
+// -----------------------------------------------------------------------------------------
+// Son 30 Günde Yapılan Harcamaları Toplayan Hesaplama
+// -----------------------------------------------------------------------------------------
 const last30DaysSpent = computed(() => {
   const thirtyDaysAgo = new Date()
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
@@ -533,16 +585,22 @@ const last30DaysSpent = computed(() => {
     .reduce((sum, item) => sum + (item.amount || 0), 0)
 })
 
+// -----------------------------------------------------------------------------------------
+// Ortalama Öğün Başı Harcamayı Bulan Hesaplama
+// -----------------------------------------------------------------------------------------
 const avgSpent = computed(() => {
   if (expenditures.value.length === 0) return 0
   return totalSpent.value / expenditures.value.length
 })
 
+// -----------------------------------------------------------------------------------------
+// En Çok Tercih Edilen Restoran Kategorisini Bulan Hesaplama
+// -----------------------------------------------------------------------------------------
 const topCategory = computed(() => {
   if (expenditures.value.length === 0) return '-'
   const counts: Record<string, number> = {}
   expenditures.value.forEach(item => {
-    const cat = item.restaurantCategory || 'Genel'
+    const cat = item.restaurantCategory || t('profile.defaultCategory')
     counts[cat] = (counts[cat] || 0) + item.amount
   })
 
@@ -557,14 +615,18 @@ const topCategory = computed(() => {
   return bestCat
 })
 
-// Visual Chart Computations
+// -----------------------------------------------------------------------------------------
+// Aylık Harcama Grafiği Verilerini Hazırlayan Hesaplama (Dile göre ay isimleri TR/EN değişir)
+// -----------------------------------------------------------------------------------------
 const monthlyChartData = computed(() => {
   if (expenditures.value.length === 0) return []
 
+  const dateLocale = locale.value === 'en' ? 'en-US' : 'tr-TR'
   const monthMap: Record<string, number> = {}
+
   expenditures.value.forEach(item => {
     const d = new Date(item.spentAt)
-    const monthKey = d.toLocaleDateString('tr-TR', { month: 'short', year: '2-digit' })
+    const monthKey = d.toLocaleDateString(dateLocale, { month: 'short', year: '2-digit' })
     monthMap[monthKey] = (monthMap[monthKey] || 0) + (item.amount || 0)
   })
 
@@ -580,12 +642,15 @@ const monthlyChartData = computed(() => {
   }))
 })
 
+// -----------------------------------------------------------------------------------------
+// Kategori Bazlı Harcama Dağılımını Yüzde Olarak Hesaplayan Fonksiyon
+// -----------------------------------------------------------------------------------------
 const categoryChartData = computed(() => {
   if (expenditures.value.length === 0 || totalSpent.value === 0) return []
 
   const catMap: Record<string, number> = {}
   expenditures.value.forEach(item => {
-    const cat = item.restaurantCategory || 'Genel'
+    const cat = item.restaurantCategory || t('profile.defaultCategory')
     catMap[cat] = (catMap[cat] || 0) + (item.amount || 0)
   })
 
@@ -598,13 +663,17 @@ const categoryChartData = computed(() => {
     .sort((a, b) => b.total - a.total)
 })
 
-// Lifecycle
+// -----------------------------------------------------------------------------------------
+// Sayfa Açıldığında (Lifecycle) Otomatik Olarak Harcamaları ve Favorileri Çek
+// -----------------------------------------------------------------------------------------
 onMounted(() => {
   fetchExpenditures()
   fetchFavorites()
 })
 
-// API Calls
+// -----------------------------------------------------------------------------------------
+// Backend'den Harcamaları Çeken Fonksiyon
+// -----------------------------------------------------------------------------------------
 async function fetchExpenditures() {
   isLoadingExpenditures.value = true
   try {
@@ -612,13 +681,16 @@ async function fetchExpenditures() {
     if (res?.isSuccess) {
       expenditures.value = res.data || []
     }
-  } catch (err: any) {
-    console.error('Harcamalar yüklenirken hata:', err)
+  } catch {
+    // Hata durumunda sessizce güvenle devam edilir
   } finally {
     isLoadingExpenditures.value = false
   }
 }
 
+// -----------------------------------------------------------------------------------------
+// Backend'den Favori Restoranları Çeken Fonksiyon
+// -----------------------------------------------------------------------------------------
 async function fetchFavorites() {
   isLoadingFavorites.value = true
   try {
@@ -626,20 +698,26 @@ async function fetchFavorites() {
     if (res?.isSuccess) {
       favorites.value = res.data || []
     }
-  } catch (err: any) {
-    console.error('Favoriler getirilemedi:', err)
+  } catch {
+    // Hata durumunda güvenle devam edilir
   } finally {
     isLoadingFavorites.value = false
   }
 }
 
+// -----------------------------------------------------------------------------------------
+// Favori Restorana Tıklandığında Haritada O Restoranı Açan Fonksiyon
+// -----------------------------------------------------------------------------------------
 function goToDiscoverWithRestaurant(restaurantId: number) {
   navigateTo(`/?restaurantId=${restaurantId}`)
 }
 
+// -----------------------------------------------------------------------------------------
+// Profil İsmini Güncelleyen Fonksiyon
+// -----------------------------------------------------------------------------------------
 async function handleUpdateProfile() {
   if (!profileForm.value.name || profileForm.value.name.trim().length < 3) {
-    toast.warning('İsim en az 3 karakter olmalıdır.')
+    toast.showWarning(t('profile.nameMinLength'))
     return
   }
 
@@ -648,20 +726,23 @@ async function handleUpdateProfile() {
     const res: any = await userService.updateProfile({ name: profileForm.value.name.trim() })
     if (res?.isSuccess) {
       authStore.updateUserName(profileForm.value.name.trim())
-      toast.success('Profil isminiz güncellendi.')
+      toast.showSuccess(t('profile.profileUpdated'))
     } else {
-      toast.error(res?.message || 'Profil güncellenemedi.')
+      toast.showError(res?.message || t('profile.profileUpdateFailed'))
     }
   } catch (err: any) {
-    toast.error(err?.data?.message || 'Profil güncellenirken hata oluştu.')
+    toast.showError(err?.data?.message || t('profile.profileUpdateFailed'))
   } finally {
     isUpdatingProfile.value = false
   }
 }
 
+// -----------------------------------------------------------------------------------------
+// Yeni E-Posta Adresine Doğrulama Kodu İsteyen Fonksiyon
+// -----------------------------------------------------------------------------------------
 async function handleSendEmailChangeCode() {
   if (!emailChangeForm.value.newEmail || !emailChangeForm.value.newEmail.includes('@')) {
-    toast.warning('Lütfen geçerli bir yeni e-posta adresi giriniz.')
+    toast.showWarning(t('profile.enterValidNewEmail'))
     return
   }
 
@@ -669,26 +750,29 @@ async function handleSendEmailChangeCode() {
   try {
     const res: any = await userService.sendEmailChangeCode({ newEmail: emailChangeForm.value.newEmail.trim() })
     if (res?.isSuccess) {
-      toast.success('Doğrulama kodu yeni e-posta adresinize gönderildi.')
+      toast.showSuccess(t('profile.codeSentSuccess'))
       emailChangeStepCodeSent.value = true
     } else {
-      toast.error(res?.message || 'Kod gönderilemedi.')
+      toast.showError(res?.message || t('profile.codeSendFailed'))
     }
   } catch (err: any) {
-    toast.error(err?.data?.message || 'Kod gönderilirken bir hata oluştu.')
+    toast.showError(err?.data?.message || t('profile.codeSendFailed'))
   } finally {
     isSendingEmailCode.value = false
   }
 }
 
+// -----------------------------------------------------------------------------------------
+// E-Posta Değişikliğini Kod ve Şifre ile Onaylayan Fonksiyon
+// -----------------------------------------------------------------------------------------
 async function handleChangeEmailSubmit() {
   if (!emailChangeForm.value.code || emailChangeForm.value.code.length < 6) {
-    toast.warning('Lütfen 6 haneli doğrulama kodunu giriniz.')
+    toast.showWarning(t('profile.enter6DigitCode'))
     return
   }
 
   if (!emailChangeForm.value.currentPassword) {
-    toast.warning('Lütfen mevcut şifrenizi giriniz.')
+    toast.showWarning(t('profile.enterCurrentPassword'))
     return
   }
 
@@ -701,43 +785,49 @@ async function handleChangeEmailSubmit() {
     })
 
     if (res?.isSuccess) {
-      toast.success('E-posta adresiniz güncellendi! Lütfen yeni e-posta adresinizle tekrar giriş yapın.')
+      toast.showSuccess(t('profile.emailChangedSuccess'))
       authStore.logout()
     } else {
-      toast.error(res?.message || 'E-posta adresi değiştirilemedi.')
+      toast.showError(res?.message || t('profile.emailChangeFailed'))
     }
   } catch (err: any) {
-    toast.error(err?.data?.message || 'E-posta değiştirilirken hata oluştu.')
+    toast.showError(err?.data?.message || t('profile.emailChangeFailed'))
   } finally {
     isChangingEmail.value = false
   }
 }
 
+// -----------------------------------------------------------------------------------------
+// Şifre Değiştirmek İçin E-Postaya Doğrulama Kodu İsteyen Fonksiyon
+// -----------------------------------------------------------------------------------------
 async function handleSendPasswordCode() {
   isSendingPasswordCode.value = true
   try {
     const res: any = await userService.sendPasswordCode()
     if (res?.isSuccess) {
-      toast.success('Doğrulama kodu e-postanıza gönderildi.')
+      toast.showSuccess(t('profile.passwordCodeSent'))
       passwordStepCodeSent.value = true
     } else {
-      toast.error(res?.message || 'Kod gönderilemedi.')
+      toast.showError(res?.message || t('profile.codeSendFailed'))
     }
   } catch (err: any) {
-    toast.error(err?.data?.message || 'Kod gönderilirken bir hata oluştu.')
+    toast.showError(err?.data?.message || t('profile.codeSendFailed'))
   } finally {
     isSendingPasswordCode.value = false
   }
 }
 
+// -----------------------------------------------------------------------------------------
+// Kod ve Yeni Şifre ile Şifreyi Sıfırlayan Fonksiyon
+// -----------------------------------------------------------------------------------------
 async function handleChangePassword() {
   if (passwordForm.value.newPassword.length < 6) {
-    toast.warning('Şifre en az 6 karakter olmalıdır.')
+    toast.showWarning(t('register.passwordTooShort'))
     return
   }
 
   if (passwordForm.value.newPassword !== passwordForm.value.confirmPassword) {
-    toast.warning('Girdiğiniz şifreler eşleşmiyor.')
+    toast.showWarning(t('register.passwordsDoNotMatch'))
     return
   }
 
@@ -749,49 +839,62 @@ async function handleChangePassword() {
     })
 
     if (res?.isSuccess) {
-      toast.success('Şifreniz başarıyla değiştirildi!')
+      toast.showSuccess(t('profile.passwordChangedSuccess'))
       passwordStepCodeSent.value = false
       passwordForm.value = { code: '', newPassword: '', confirmPassword: '' }
     } else {
-      toast.error(res?.message || 'Şifre değiştirilemedi.')
+      toast.showError(res?.message || t('profile.passwordChangeFailed'))
     }
   } catch (err: any) {
-    toast.error(err?.data?.message || 'Şifre değiştirilirken bir hata oluştu.')
+    toast.showError(err?.data?.message || t('profile.passwordChangeFailed'))
   } finally {
     isChangingPassword.value = false
   }
 }
 
+// -----------------------------------------------------------------------------------------
+// Restoranı Favorilerden Çıkaran Fonksiyon
+// -----------------------------------------------------------------------------------------
 async function handleRemoveFavorite(restaurantId: number) {
   try {
     const res: any = await userService.removeFavorite(restaurantId)
     if (res?.isSuccess) {
-      toast.success('Favorilerden çıkarıldı.')
+      toast.showSuccess(t('profile.favRemovedSuccess'))
       favorites.value = favorites.value.filter(f => f.restaurantId !== restaurantId)
     } else {
-      toast.error(res?.message || 'İşlem gerçekleştirilemedi.')
+      toast.showError(res?.message || t('profile.favActionFailed'))
     }
-  } catch (err: any) {
-    toast.error('Favori çıkarılırken hata oluştu.')
+  } catch {
+    toast.showError(t('profile.favRemoveError'))
   }
 }
 
+// -----------------------------------------------------------------------------------------
+// Tarihleri Kullanıcının Seçtiği Dile (TR / EN) Göre Biçimlendiren Fonksiyon
+// -----------------------------------------------------------------------------------------
 function formatDate(dateStr: string) {
   if (!dateStr) return '-'
   const date = new Date(dateStr)
-  return date.toLocaleDateString('tr-TR', {
+  const dateLocale = locale.value === 'en' ? 'en-US' : 'tr-TR'
+  return date.toLocaleDateString(dateLocale, {
     day: '2-digit',
     month: 'long',
     year: 'numeric'
   })
 }
 
+// -----------------------------------------------------------------------------------------
+// Çıkış Yapma Fonksiyonu
+// -----------------------------------------------------------------------------------------
 function handleLogout() {
   authStore.logout()
 }
 </script>
 
 <style scoped>
+/* =========================================================================================
+   SAYFA VE BİLEŞEN STİLLERİ (CSS)
+   ========================================================================================= */
 .sofra-profile-page {
   min-height: 100vh;
   background-color: #201a16;
