@@ -6,7 +6,7 @@
        en tepedeki altın sarısı yüklenme çizgisi, aktif sayfa ve bildirim kutucukları (Toast)
        bu çatı içinde görüntülenir.
        ========================================================================================= -->
-  <div>
+  <div class="app-root">
     <!-- Sayfa geçişlerinde ekranın en üstünde beliren altın sarısı ilerleme çubuğu -->
     <NuxtLoadingIndicator color="#E0A458" :height="3" />
 
@@ -33,3 +33,30 @@ onMounted(() => {
   initLocale()
 })
 </script>
+
+<style>
+/* =========================================================================================
+   GENEL WEB SİTESİ STİLLERİ (GLOBAL CSS)
+   Tüm sayfalarda geçerli olan arka plan rengi, yazı tipleri ve sıfırlamalar.
+   ========================================================================================= */
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #201A16 !important;
+  color: #F3E9DE;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.app-root {
+  min-height: 100vh;
+  background-color: #201A16;
+  color: #F3E9DE;
+}
+</style>

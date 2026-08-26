@@ -159,7 +159,7 @@
 
         <button class="primary" type="submit" :disabled="loading" style="display:flex;align-items:center;justify-content:center;gap:8px;">
           <LoadingSpinner v-if="loading" size="sm" inline />
-          <span>{{ loading ? t('forgot.resetting') : t('forgot.submitReset') }}</span>
+          <span>{{ loading ? t('forgot.resetting') : t('forgot.resetBtn') }}</span>
         </button>
 
         <button 
@@ -167,7 +167,7 @@
           class="back-step-btn" 
           @click="step = 3; errorMsg = ''"
         >
-          {{ t('login.backToLogin') }}
+          {{ t('forgot.backToEmailStep') }}
         </button>
       </form>
     </div>
@@ -176,19 +176,18 @@
 
 <script setup>
 // =========================================================================================
-// GİRİŞ VE ŞİFREMİ UNUTTUM KODLARI (JAVASCRIPT / VUE COMPOSITION API)
+// GİRİŞ SAYFASI KODLARI (JAVASCRIPT / VUE COMPOSITION API)
 // =========================================================================================
 import { ref } from 'vue'
 import { useRouter } from '#app'
-import '~/assets/auth.css'
 
 // Çoklu dil aracı
 const { locale, setLocale, t } = useI18n()
 
-// Sayfadaki form adımı (1: Giriş, 2: Doğrulama Kodu, 3: Şifremi Unuttum Mail, 4: Şifremi Unuttum Sıfırla)
+// Form adımı (1: Giriş, 2: 2FA Doğrulama, 3: Şifremi Unuttum Kod İste, 4: Şifre Sıfırla)
 const step = ref(1)
 
-// Normal Giriş Değişkenleri
+// Giriş Formu Değişkenleri
 const email = ref('')
 const password = ref('')
 const verificationCode = ref('')
@@ -199,47 +198,40 @@ const forgotCode = ref('')
 const forgotNewPassword = ref('')
 const forgotConfirmPassword = ref('')
 
-// Genel Hata ve Yükleniyor Durumları
+// Durum Değişkenleri
 const errorMsg = ref('')
 const loading = ref(false)
 
-// Kullanıcı oturum ve yönlendirme araçları
+// Servis ve Bildirim Havuzları
 const authStore = useAuthStore()
-const router = useRouter()
+const authService = useAuthService()
 const toast = useToast()
+const router = useRouter()
 
-// E-posta format kontrolü regex kuralı
+// E-posta regex doğrulaması
 const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
 
 // -----------------------------------------------------------------------------------------
-// Şifremi Unuttum Akışını Başlatan Fonksiyon
-// -----------------------------------------------------------------------------------------
-const startForgotPassword = () => {
-  errorMsg.value = ''
-  forgotEmail.value = email.value || ''
-  step.value = 3
-}
-
-// -----------------------------------------------------------------------------------------
-// 1. ADIM: Giriş Yap Butonuna Basıldığında Çalışan Fonksiyon
+// 1. ADIM: Normal Giriş Yap Butonuna Basıldığında Çalışan Fonksiyon
 // -----------------------------------------------------------------------------------------
 const handleLogin = async () => {
   errorMsg.value = ''
-
+  
   if (!emailRegex.test(email.value.trim())) {
     errorMsg.value = t('register.invalidEmail')
     return
   }
 
   loading.value = true
-  
   try {
-    const res = await authStore.login(email.value, password.value)
-    
-    if (res.requiresVerification) {
-      step.value = 2
-    } else if (res.success) {
-      router.push('/')
+    const res = await authStore.login(email.value.trim(), password.value)
+    if (res.success) {
+      if (res.requiresVerification) {
+        step.value = 2
+        toast.showInfo(t('login.verificationCodeSentToast'))
+      } else {
+        router.push('/')
+      }
     } else {
       errorMsg.value = res.error || t('login.errorMsg')
     }
@@ -249,18 +241,23 @@ const handleLogin = async () => {
 }
 
 // -----------------------------------------------------------------------------------------
-// 2. ADIM: E-postaya Gelen Giriş Onay Kodunu Doğrulayan Fonksiyon
+// 2. ADIM: 2FA Doğrulama Kodunu Onaylayan Fonksiyon
 // -----------------------------------------------------------------------------------------
 const handleVerify = async () => {
   errorMsg.value = ''
-  loading.value = true
   
+  if (!verificationCode.value || verificationCode.value.trim().length !== 6) {
+    errorMsg.value = t('login.enterSixDigitCode')
+    return
+  }
+
+  loading.value = true
   try {
-    const res = await authStore.verifyLogin(email.value, verificationCode.value)
+    const res = await authStore.verifyLogin(email.value.trim(), verificationCode.value.trim())
     if (res.success) {
       router.push('/')
     } else {
-      errorMsg.value = res.error || t('login.codeInvalidOrExpired')
+      errorMsg.value = res.error || t('login.invalidCode')
     }
   } finally {
     loading.value = false
@@ -268,11 +265,20 @@ const handleVerify = async () => {
 }
 
 // -----------------------------------------------------------------------------------------
-// 3. ADIM: Şifre Sıfırlama Kodu İsteyen Fonksiyon
+// 3. ADIM: Şifremi Unuttum Akışını Başlatan Fonksiyon
+// -----------------------------------------------------------------------------------------
+const startForgotPassword = () => {
+  errorMsg.value = ''
+  forgotEmail.value = email.value.trim()
+  step.value = 3
+}
+
+// -----------------------------------------------------------------------------------------
+// 4. ADIM: Şifre Sıfırlama Kodu İsteyen Fonksiyon
 // -----------------------------------------------------------------------------------------
 const handleRequestForgotCode = async () => {
   errorMsg.value = ''
-
+  
   if (!emailRegex.test(forgotEmail.value.trim())) {
     errorMsg.value = t('register.invalidEmail')
     return
@@ -280,12 +286,12 @@ const handleRequestForgotCode = async () => {
 
   loading.value = true
   try {
-    const res = await authStore.forgotPassword(forgotEmail.value.trim())
+    const res = await authService.forgotPassword(forgotEmail.value.trim())
     if (res.success) {
       toast.showSuccess(t('forgot.codeSentToast'))
       step.value = 4
     } else {
-      errorMsg.value = res.error || t('profile.codeSendFailed')
+      errorMsg.value = res.error || t('forgot.codeSendError')
     }
   } finally {
     loading.value = false
@@ -293,18 +299,18 @@ const handleRequestForgotCode = async () => {
 }
 
 // -----------------------------------------------------------------------------------------
-// 4. ADIM: Gelen Kod ile Yeni Şifreyi Kaydeden Fonksiyon
+// 5. ADIM: Kod ve Yeni Şifre ile Sıfırlamayı Tamamlayan Fonksiyon
 // -----------------------------------------------------------------------------------------
 const handleResetPassword = async () => {
   errorMsg.value = ''
 
-  if (!forgotCode.value || forgotCode.value.trim().length < 6) {
-    errorMsg.value = t('profile.enter6DigitCode')
+  if (!forgotCode.value || forgotCode.value.trim().length !== 6) {
+    errorMsg.value = t('login.enterSixDigitCode')
     return
   }
 
   if (forgotNewPassword.value.length < 6) {
-    errorMsg.value = t('register.passwordTooShort')
+    errorMsg.value = t('profile.passwordMinLength')
     return
   }
 
@@ -315,7 +321,7 @@ const handleResetPassword = async () => {
 
   loading.value = true
   try {
-    const res = await authStore.resetPassword(
+    const res = await authService.resetPassword(
       forgotEmail.value.trim(),
       forgotCode.value.trim(),
       forgotNewPassword.value,
@@ -337,6 +343,215 @@ const handleResetPassword = async () => {
 </script>
 
 <style scoped>
+/* =========================================================================================
+   GİRİŞ VE AUTH SAYFASI ÖZEL STİLLERİ (SCOPED CSS)
+   ========================================================================================= */
+.wrap {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  font-family: 'Manrope', sans-serif;
+  background: #17120F;
+  color: #F3E9DE;
+  position: relative;
+}
+
+.brand {
+  position: relative;
+  background: #17120F;
+  border-right: 1px solid #33291F;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 44px 48px;
+}
+
+.brand .bg {
+  position: absolute;
+  inset: 0;
+  background: #1C1611;
+}
+
+.brand .bg.stripe {
+  background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.035) 0 9px, rgba(255,255,255,0) 9px 18px);
+}
+
+.brand .road1 {
+  position: absolute;
+  left: -4%;
+  top: 40%;
+  width: 108%;
+  height: 14px;
+  background: #241E18;
+  transform: rotate(-6deg);
+}
+
+.brand .road2 {
+  position: absolute;
+  left: 44%;
+  top: -4%;
+  width: 11px;
+  height: 108%;
+  background: #241E18;
+  transform: rotate(4deg);
+}
+
+.pin {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 11px;
+  border-radius: 18px;
+  font-size: 12px;
+  font-weight: 800;
+  z-index: 2;
+}
+
+.pin.gold {
+  background: #E0A458;
+  color: #201A16;
+  box-shadow: 0 8px 20px -6px rgba(224,164,88,.5);
+}
+
+.pin.dark {
+  background: #2B231D;
+  color: #F3E9DE;
+  border: 1px solid #5A4526;
+}
+
+.logo {
+  font-family: 'Instrument Serif', serif;
+  font-size: 30px;
+  font-style: italic;
+  position: relative;
+  z-index: 2;
+}
+
+.sub {
+  font-size: 12px;
+  color: #A79483;
+  letter-spacing: .05em;
+  margin-top: 2px;
+  position: relative;
+  z-index: 2;
+}
+
+.tagline {
+  font-family: 'Instrument Serif', serif;
+  font-size: 30px;
+  line-height: 1.2;
+  position: relative;
+  z-index: 2;
+}
+
+.tagsub {
+  font-size: 13.5px;
+  color: #8A745E;
+  margin-top: 14px;
+  position: relative;
+  z-index: 2;
+}
+
+.pane {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background: #201A16;
+}
+
+.card {
+  width: 100%;
+  max-width: 380px;
+}
+
+h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 32px;
+  font-weight: 400;
+  margin: 0 0 6px;
+  color: #F3E9DE;
+}
+
+.lead {
+  font-size: 14px;
+  color: #A79483;
+  margin: 0 0 28px;
+}
+
+label {
+  display: block;
+  font-size: 12.5px;
+  color: #C9B9A8;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+input {
+  width: 100%;
+  background: #2B231D;
+  border: 1px solid #40342A;
+  border-radius: 12px;
+  padding: 13px 15px;
+  color: #F3E9DE;
+  font-size: 14px;
+  font-family: 'Manrope', sans-serif;
+  outline: none;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+input:focus {
+  border-color: #E0A458;
+}
+
+.primary {
+  width: 100%;
+  background: #E0A458;
+  color: #201A16;
+  border: none;
+  padding: 15px;
+  border-radius: 13px;
+  font-size: 15px;
+  font-weight: 800;
+  font-family: 'Manrope', sans-serif;
+  cursor: pointer;
+  transition: opacity .15s;
+}
+
+.primary:hover {
+  opacity: 0.9;
+}
+
+.primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #E0716A;
+  font-size: 13.5px;
+  margin: 0 0 15px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.foot {
+  text-align: center;
+  font-size: 13.5px;
+  color: #A79483;
+  margin-top: 26px;
+}
+
+.link {
+  color: #E0A458;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+
 .lang-switch-auth {
   position: absolute;
   top: 20px;
@@ -353,6 +568,7 @@ const handleResetPassword = async () => {
   border-radius: 10px;
   border: 1px solid #40342A;
 }
+
 .lang-switch-auth button {
   background: none;
   border: none;
@@ -364,10 +580,12 @@ const handleResetPassword = async () => {
   border-radius: 4px;
   transition: color .2s;
 }
+
 .lang-switch-auth button.active {
   color: #E0A458;
   background: rgba(224, 164, 88, 0.15);
 }
+
 .lang-switch-auth button:hover {
   color: #F3E9DE;
 }
@@ -408,5 +626,11 @@ const handleResetPassword = async () => {
 
 .back-step-btn:hover {
   color: #F3E9DE;
+}
+
+@media (max-width: 820px) {
+  .wrap { grid-template-columns: 1fr; }
+  .brand { display: none; }
+  .pane { padding: 32px 20px; }
 }
 </style>
