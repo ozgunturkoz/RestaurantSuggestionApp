@@ -59,4 +59,46 @@ html, body, #__nuxt, #__layout, .app-root {
   min-height: 100vh !important;
   overflow-x: hidden !important;
 }
+
+/* =========================================================================================
+   LEAFLET HARİTA KARELERİ (TILES) DÜZELTMESİ (KODLAMA BİLMEYENLER İÇİN ANLATIM)
+   Harita parçacıklarının (karelerin) birbiri üzerine binmesini veya yamulmasını engeller.
+   ========================================================================================= */
+.leaflet-container {
+  height: 100% !important;
+  width: 100% !important;
+  background: #17120F !important;
+  font-family: 'Manrope', sans-serif !important;
+  outline: none !important;
+}
+
+.leaflet-pane,
+.leaflet-tile-pane,
+.leaflet-map-pane,
+.leaflet-layer,
+.leaflet-tile-container {
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+}
+
+.leaflet-tile {
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  width: 256px !important;
+  height: 256px !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -webkit-user-drag: none !important;
+}
+
+.leaflet-tile-container img {
+  max-width: none !important;
+  max-height: none !important;
+  width: 256px !important;
+  height: 256px !important;
+}
 </style>
