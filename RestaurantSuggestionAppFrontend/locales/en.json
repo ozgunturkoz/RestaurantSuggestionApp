@@ -1,6 +1,7 @@
 {
   "nav": {
     "discover": "Discover",
+    "favorites": "Favorites",
     "hello": "HELLO",
     "logout": "Log Out"
   },
@@ -208,6 +209,31 @@
     "forgotLink": "Forgot password?",
     "codeSentToast": "Password reset code sent to your email.",
     "resetSuccessToast": "Your password has been successfully reset! You can now sign in."
+  },
+  "favorites": {
+    "title": "My Favorite Restaurants",
+    "subtitle": "Your saved and loved restaurants along with your personal notes",
+    "totalCount": "Total Favorites",
+    "avgPrice": "Average Price",
+    "categories": "Categories",
+    "searchPlaceholder": "Search by restaurant name or your notes...",
+    "allCategories": "All Categories",
+    "noFavorites": "No Favorite Restaurants Yet",
+    "noFavoritesSub": "Click the heart icon next to restaurants on the discover page to add them to your favorites.",
+    "exploreRestaurants": "Discover Restaurants",
+    "noSearchResults": "No Favorites Found Matching Your Search",
+    "noSearchResultsSub": "Try searching with different keywords or category filters.",
+    "viewOnDiscover": "View on Map / Discover",
+    "remove": "Remove from Favorites",
+    "editNote": "Edit Note",
+    "addNote": "+ Add Note",
+    "saveNote": "Save",
+    "cancel": "Cancel",
+    "notePlaceholder": "e.g. Great food, peaceful atmosphere...",
+    "outsideRadiusBadge": "Outside Radius",
+    "outsideRadiusDesc": "Outside of selected radius circle but visible on map.",
+    "favRemovedSuccess": "Restaurant removed from favorites.",
+    "favNoteSaved": "Custom note saved."
   },
   "common": {
     "loading": "Loading...",

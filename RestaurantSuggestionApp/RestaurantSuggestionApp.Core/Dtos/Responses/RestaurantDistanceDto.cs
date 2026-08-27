@@ -14,5 +14,8 @@ namespace RestaurantSuggestionApp.Core.DTOs.Responses
         public double? RecommendationScore { get; set; }
         public double? LocationScore { get; set; }
         public double? BudgetScore { get; set; }
+
+        public bool IsFavorite { get; set; }
+        public bool IsOutsideRadius { get; set; }
     }
 }

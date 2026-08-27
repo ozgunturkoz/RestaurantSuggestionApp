@@ -228,6 +228,25 @@ namespace RestaurantSuggestionApp.Tests.Services
             Assert.That(response.Data.Count, Is.EqualTo(0));
         }
 
+        [Test]
+        public async Task GetNearbyAsync_FavoriteOutsideRadius_IsIncludedAndMarked()
+        {
+            var user = TestDataHelper.SeedUser(_context, "Fav User", "fav@test.com", "hash123");
+            var farRest = TestDataHelper.SeedRestaurant(_context, "Uzak Favori", "Balık", 41.2000M, 29.2000M, 250.0M);
+            _context.UserFavorites.Add(new UserFavorite { UserId = user.Id, RestaurantId = farRest.Id });
+            _context.SaveChanges();
+
+            var response = await _restaurantService.GetNearbyAsync(41.0082M, 28.9784M, 2.0, user.Id);
+
+            Assert.That(response, Is.Not.Null);
+            Assert.That(response.IsSuccess, Is.True);
+            Assert.That(response.Data, Is.Not.Null);
+            var favItem = response.Data.FirstOrDefault(r => r.Id == farRest.Id);
+            Assert.That(favItem, Is.Not.Null);
+            Assert.That(favItem.IsFavorite, Is.True);
+            Assert.That(favItem.IsOutsideRadius, Is.True);
+        }
+
         #endregion
     }
 }

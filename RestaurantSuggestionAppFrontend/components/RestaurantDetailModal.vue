@@ -7,7 +7,12 @@
 
           <div class="modal-header">
             <div class="modal-header-info">
-              <span class="modal-category-chip">{{ restaurant.category }}</span>
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:4px;">
+                <span class="modal-category-chip">{{ restaurant.category }}</span>
+                <span v-if="restaurant.isOutsideRadius" class="outside-radius-chip">
+                  ❤️ {{ t('favorites.outsideRadiusBadge') }}
+                </span>
+              </div>
               <h2 class="modal-title">{{ restaurant.name }}</h2>
             </div>
             <button class="modal-close" @click="$emit('close')" :title="t('detail.close')">✕</button>
@@ -286,6 +291,17 @@ onBeforeUnmount(() => {
   color: #E0A458;
   background: rgba(224, 164, 88, 0.12);
   border: 1px solid rgba(224, 164, 88, 0.25);
+  padding: 3px 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.outside-radius-chip {
+  font-size: 11px;
+  font-weight: 700;
+  color: #E0A458;
+  background: rgba(224, 164, 88, 0.2);
+  border: 1px solid rgba(224, 164, 88, 0.4);
   padding: 3px 10px;
   border-radius: 6px;
   margin-bottom: 8px;

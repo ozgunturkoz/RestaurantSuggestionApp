@@ -12,6 +12,10 @@ const props = defineProps({
   selectedRestaurantId: {
     type: Number,
     default: null
+  },
+  favoriteIds: {
+    type: Object,
+    default: () => new Set()
   }
 })
 
@@ -29,25 +33,34 @@ let mapInstance = null
 let handleResize = null
 const markerMap = new Map()
 
-const createCustomIcon = (color, isSelected = false) => {
-  const size = isSelected ? 22 : 16;
+const createCustomIcon = (color, isSelected = false, isFavorite = false) => {
+  const size = isSelected ? 24 : (isFavorite ? 20 : 16);
   const borderWidth = isSelected ? '3px' : '2px';
-  const zIndex = isSelected ? 1000 : 1;
-  const shadow = isSelected ? '0 0 12px #E0A458, 0 2px 6px rgba(0,0,0,0.5)' : '0 2px 4px rgba(0,0,0,0.3)';
+  const zIndex = isSelected ? 1000 : (isFavorite ? 600 : 1);
+  const borderColor = isFavorite ? '#E0A458' : 'white';
+  const shadow = isSelected
+    ? '0 0 14px #E0A458, 0 2px 6px rgba(0,0,0,0.5)'
+    : (isFavorite ? '0 0 10px rgba(224, 164, 88, 0.8), 0 2px 5px rgba(0,0,0,0.4)' : '0 2px 4px rgba(0,0,0,0.3)');
+
+  const bg = isFavorite ? '#8B2635' : color;
+  const heartIcon = isFavorite ? `<span style="display:block; transform: rotate(45deg); font-size: 10px; line-height: 1; text-align: center;">❤️</span>` : '';
 
   return L.divIcon({
     html: `
       <div style="
-        background-color: ${color};
+        background-color: ${bg};
         width: ${size}px;
         height: ${size}px;
         border-radius: 50% 50% 50% 0;
         transform: rotate(-45deg);
-        border: ${borderWidth} solid white;
+        border: ${borderWidth} solid ${borderColor};
         box-shadow: ${shadow};
         z-index: ${zIndex};
         transition: all 0.2s ease;
-      "></div>
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      ">${heartIcon}</div>
     `,
     className: 'custom-marker',
     iconSize: [size, size],
@@ -119,8 +132,17 @@ onMounted(async () => {
 
     store.restaurants.forEach(rest => {
       if (rest.latitude && rest.longitude) {
-        const isSelected = props.selectedRestaurantId === rest.id;
+        const isFav = Boolean(rest.isFavorite || (props.favoriteIds && props.favoriteIds.has(rest.id)));
         const pinColor = isSelected ? '#8FBF7E' : '#E0A458';
+
+        let favBadge = '';
+        if (isFav) {
+          if (rest.isOutsideRadius) {
+            favBadge = `<div style="margin-bottom: 6px; display: inline-block; padding: 2px 8px; border-radius: 12px; background: rgba(224, 164, 88, 0.2); border: 1px solid #E0A458; color: #E0A458; font-size: 10.5px; font-weight: bold; font-family: 'Manrope', sans-serif;">❤️ ${t('favorites.outsideRadiusBadge')}</div><br>`;
+          } else {
+            favBadge = `<div style="margin-bottom: 6px; display: inline-block; padding: 2px 8px; border-radius: 12px; background: rgba(220, 53, 69, 0.15); border: 1px solid rgba(220, 53, 69, 0.35); color: #E08E58; font-size: 10.5px; font-weight: bold; font-family: 'Manrope', sans-serif;">❤️ ${t('nav.favorites')}</div><br>`;
+          }
+        }
 
         const walkInfo = rest.walkingDistanceInMeters !== null
           ? `<br>${t('map.walk')}: ${formatDistance(rest.walkingDistanceInMeters)} (${formatDuration(rest.walkingDurationInSeconds)})`
@@ -163,9 +185,10 @@ onMounted(async () => {
           `;
         }
 
-        const marker = L.marker([rest.latitude, rest.longitude], { icon: createCustomIcon(pinColor, isSelected) })
+        const marker = L.marker([rest.latitude, rest.longitude], { icon: createCustomIcon(pinColor, isSelected, isFav) })
           .addTo(markerGroup)
           .bindPopup(`
+            ${favBadge}
             <b style="font-family: 'Manrope', sans-serif; font-size: 13px; color: #33291F;">${rest.name}</b><br>
             <span style="font-family: 'Manrope', sans-serif; font-size: 11px; color: #666;">${t('map.category')}: ${rest.category}</span><br>
             <span style="font-family: 'Manrope', sans-serif; font-size: 11px; color: #666;">${t('map.price')}: ${rest.averagePrice}₺</span>
@@ -183,7 +206,19 @@ onMounted(async () => {
   };
 
   const focusOnRestaurant = (id) => {
-    if (!id || !markerMap.has(id)) return;
+    if (!id) return;
+    if (!markerMap.has(id)) {
+      setTimeout(() => {
+        if (markerMap.has(id)) {
+          const { marker, rest } = markerMap.get(id);
+          if (mapInstance && rest.latitude && rest.longitude) {
+            mapInstance.flyTo([rest.latitude, rest.longitude], 15, { duration: 0.8 });
+            marker.openPopup();
+          }
+        }
+      }, 350);
+      return;
+    }
     const { marker, rest } = markerMap.get(id);
 
     if (mapInstance && rest.latitude && rest.longitude) {
@@ -272,6 +307,10 @@ onMounted(async () => {
   watch(() => store.restaurants, () => {
     renderMarkers();
   });
+
+  watch(() => props.favoriteIds, () => {
+    renderMarkers();
+  }, { deep: true });
 
   handleResize = () => {
     if (mapInstance) {

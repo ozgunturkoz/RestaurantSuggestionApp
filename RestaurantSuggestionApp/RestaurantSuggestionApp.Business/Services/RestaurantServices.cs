@@ -136,6 +136,26 @@ namespace RestaurantSuggestionApp.Business.Services
                 double userLng = (double)longitude;
 
                 var nearbyCandidates = GetNearbyCandidates(userLat, userLng, radiusInKm);
+
+                var favoriteRestaurantIds = new HashSet<int>();
+                if (userId.HasValue)
+                {
+                    favoriteRestaurantIds = _context.UserFavorites
+                        .Where(f => f.UserId == userId.Value)
+                        .Select(f => f.RestaurantId)
+                        .ToHashSet();
+
+                    if (favoriteRestaurantIds.Any())
+                    {
+                        var candidateIds = nearbyCandidates.Select(r => r.Id).ToHashSet();
+                        var missingFavorites = _context.Restaurants
+                            .Where(r => favoriteRestaurantIds.Contains(r.Id) && !candidateIds.Contains(r.Id))
+                            .ToList();
+
+                        nearbyCandidates.AddRange(missingFavorites);
+                    }
+                }
+
                 if (!nearbyCandidates.Any())
                 {
                     return BaseResponse<List<RestaurantDistance>>.Success(new List<RestaurantDistance>());
@@ -143,12 +163,12 @@ namespace RestaurantSuggestionApp.Business.Services
 
                 var resultList = await _osrmService.GetDistancesFromOsrmAsync(nearbyCandidates, userLat, userLng);
 
-                if (!resultList.Any())
+                if (resultList == null || !resultList.Any())
                 {
                     resultList = CalculateFallbackDistances(nearbyCandidates, userLat, userLng);
                 }
 
-                ScoreRestaurants(resultList, userId, userLat, userLng);
+                ScoreRestaurants(resultList, userId, userLat, userLng, radiusInKm, favoriteRestaurantIds);
 
                 return BaseResponse<List<RestaurantDistance>>.Success(
                     resultList.OrderByDescending(r => r.RecommendationScore ?? 0).ToList()
@@ -219,7 +239,7 @@ namespace RestaurantSuggestionApp.Business.Services
             return fallbackList;
         }
 
-        private void ScoreRestaurants(List<RestaurantDistance> resultList, int? userId, double userLat, double userLng)
+        private void ScoreRestaurants(List<RestaurantDistance> resultList, int? userId, double userLat, double userLng, double radiusInKm, HashSet<int> favoriteRestaurantIds)
         {
             decimal userAverageExpenditure = 350.0m;
             if (userId.HasValue)
@@ -242,6 +262,10 @@ namespace RestaurantSuggestionApp.Business.Services
                 double distanceForScoring = item.WalkingDistanceInMeters ??
                     GeoHelper.CalculateHaversineDistance(userLat, userLng, (double)item.Latitude, (double)item.Longitude);
 
+                double distanceInKm = distanceForScoring / 1000.0;
+                item.IsFavorite = favoriteRestaurantIds.Contains(item.Id);
+                item.IsOutsideRadius = distanceInKm > radiusInKm;
+
                 double locationScore = 0;
                 if (distanceForScoring <= 500)
                 {
@@ -251,10 +275,18 @@ namespace RestaurantSuggestionApp.Business.Services
                 {
                     locationScore = 100.0 * (1.0 - (distanceForScoring - 500.0) / 4500.0);
                 }
+                else
+                {
+                    locationScore = Math.Max(0, 20.0 * (1.0 - (distanceForScoring - 5000.0) / 10000.0));
+                }
 
                 double budgetScore = BudgetHelper.CalculateProximityScore(userAverageExpenditure, item.AveragePrice);
 
                 double recommendationScore = (locationScore * 0.60) + (budgetScore * 0.40);
+                if (item.IsFavorite)
+                {
+                    recommendationScore = Math.Min(100.0, recommendationScore + 10.0);
+                }
 
                 item.LocationScore = Math.Round(locationScore, 1);
                 item.BudgetScore = Math.Round(budgetScore, 1);

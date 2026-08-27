@@ -1,6 +1,7 @@
 {
   "nav": {
     "discover": "Keşfet",
+    "favorites": "Favorilerim",
     "hello": "MERHABA",
     "logout": "Çıkış Yap"
   },
@@ -208,6 +209,31 @@
     "forgotLink": "Şifremi unuttum",
     "codeSentToast": "Şifre sıfırlama kodu e-postanıza gönderildi.",
     "resetSuccessToast": "Şifreniz başarıyla sıfırlandı! Şimdi giriş yapabilirsiniz."
+  },
+  "favorites": {
+    "title": "Favori Restoranlarım",
+    "subtitle": "Kaydettiğiniz ve beğendiğiniz restoranlar ile kişisel notlarınız",
+    "totalCount": "Toplam Favori",
+    "avgPrice": "Ortalama Fiyat",
+    "categories": "Kategori Sayısı",
+    "searchPlaceholder": "Favori restoran veya notlarında ara...",
+    "allCategories": "Tüm Kategoriler",
+    "noFavorites": "Henüz Favori Restoranınız Yok",
+    "noFavoritesSub": "Keşfet sayfasındaki restoranların yanındaki kalp simgesine tıklayarak favorilerinize ekleyebilirsiniz.",
+    "exploreRestaurants": "Restoranları Keşfet",
+    "noSearchResults": "Aramanızla Eşleşen Favori Bulunamadı",
+    "noSearchResultsSub": "Farklı bir arama terimi veya kategori filtresi deneyebilirsiniz.",
+    "viewOnDiscover": "Keşfette / Haritada Gör",
+    "remove": "Favorilerden Çıkar",
+    "editNote": "Notu Düzenle",
+    "addNote": "+ Özel Not Ekle",
+    "saveNote": "Kaydet",
+    "cancel": "İptal",
+    "notePlaceholder": "Örn: Lahmacunları harika, öğlen kalabalık oluyor...",
+    "outsideRadiusBadge": "Daire Dışı",
+    "outsideRadiusDesc": "Seçili yarıçap alanının dışında ancak haritada görüntülenebilir.",
+    "favRemovedSuccess": "Restoran favorilerinizden kaldırıldı.",
+    "favNoteSaved": "Özel notunuz kaydedildi."
   },
   "common": {
     "loading": "Yükleniyor...",

@@ -9,7 +9,7 @@
           <nav>
 
             <NuxtLink to="/" class="nav-link" :class="{ on: $route.path === '/' }">{{ t('nav.discover') }}</NuxtLink>
-
+            <NuxtLink to="/favorites" class="nav-link" :class="{ on: $route.path === '/favorites' }">{{ t('nav.favorites') }}</NuxtLink>
             <NuxtLink to="/profile" class="nav-link" :class="{ on: $route.path === '/profile' }">{{ t('profile.myProfile') }}</NuxtLink>
           </nav>
         </div>
@@ -73,10 +73,9 @@
         </button>
         <button
           class="tab-btn"
-          :class="{ active: activeTab === 'favorites' }"
-          @click="activeTab = 'favorites'"
+          @click="navigateTo('/favorites')"
         >
-          {{ t('profile.tabFavorites') }}
+          ❤️ {{ t('profile.tabFavorites') }} ↗
         </button>
       </div>
 

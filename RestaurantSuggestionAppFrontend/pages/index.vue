@@ -8,6 +8,7 @@
           <span class="logo">Sofra</span>
           <nav>
             <NuxtLink to="/" class="nav-link" :class="{ on: $route.path === '/' }">{{ t('nav.discover') }}</NuxtLink>
+            <NuxtLink to="/favorites" class="nav-link" :class="{ on: $route.path === '/favorites' }">{{ t('nav.favorites') }}</NuxtLink>
             <NuxtLink to="/profile" class="nav-link" :class="{ on: $route.path === '/profile' }">{{ t('profile.myProfile') }}</NuxtLink>
           </nav>
         </div>
@@ -74,10 +75,18 @@
           <div class="chip-scroll">
             <button
               class="chip"
-              :class="{ active: selectedCategories.size === 0 }"
-              @click="selectedCategories.clear(); triggerReactivity()"
+              :class="{ active: selectedCategories.size === 0 && !onlyFavorites }"
+              @click="selectedCategories.clear(); onlyFavorites = false; triggerReactivity()"
             >
               {{ t('filter.allCategories') }}
+            </button>
+            <button
+              v-if="favoriteIds.size > 0"
+              class="chip fav-chip"
+              :class="{ active: onlyFavorites }"
+              @click="onlyFavorites = !onlyFavorites; triggerReactivity()"
+            >
+              ❤️ {{ t('nav.favorites') }} ({{ favoriteIds.size }})
             </button>
             <button
               v-for="cat in availableCategories"
@@ -157,7 +166,12 @@
                   </span>
                 </div>
               </div>
-              <div class="imeta">{{ r.category }} · ₺{{ r.averagePrice }}</div>
+              <div class="imeta">
+                {{ r.category }} · ₺{{ r.averagePrice }}
+                <span v-if="r.isOutsideRadius" class="outside-chip">
+                  ❤️ {{ t('favorites.outsideRadiusBadge') }}
+                </span>
+              </div>
               <div v-if="r.walkingDistanceInMeters !== null" class="dist-meta">
                 {{ t('sidebar.distance') }}: {{ formatDistance(r.walkingDistanceInMeters) }}
               </div>
@@ -185,6 +199,7 @@
 
           <RestaurantMap
             :selected-restaurant-id="selectedRestaurantId"
+            :favorite-ids="favoriteIds"
             @select-restaurant="onSelectRestaurantFromMap"
           />
         </ClientOnly>
@@ -223,6 +238,7 @@ const detailRestaurant = ref(null)
 const searchQuery = ref('')
 const selectedCategories = ref(new Set())
 const selectedPriceRange = ref(null)
+const onlyFavorites = ref(false)
 const reactivityTrigger = ref(0)
 
 const priceRanges = [
@@ -241,6 +257,10 @@ const availableCategories = computed(() => {
 const filteredRestaurants = computed(() => {
   void reactivityTrigger.value
   let list = store.restaurants
+
+  if (onlyFavorites.value) {
+    list = list.filter(r => favoriteIds.value.has(r.id))
+  }
 
   if (searchQuery.value.trim()) {
     const q = searchQuery.value.trim().toLowerCase()
@@ -262,6 +282,7 @@ const filteredRestaurants = computed(() => {
 const activeFilterCount = computed(() => {
   void reactivityTrigger.value
   let count = 0
+  if (onlyFavorites.value) count++
   if (searchQuery.value.trim()) count++
   if (selectedCategories.value.size > 0) count++
   if (selectedPriceRange.value) count++
@@ -283,6 +304,7 @@ const clearAllFilters = () => {
   searchQuery.value = ''
   selectedCategories.value.clear()
   selectedPriceRange.value = null
+  onlyFavorites.value = false
   triggerReactivity()
 }
 
@@ -389,15 +411,38 @@ const getScoreStyle = (score) => {
 onMounted(() => {
   fetchFavorites()
 
-  const targetId = route.query.restaurantId ? parseInt(route.query.restaurantId) : null
+  const targetId = route.query.restaurantId ? parseInt(route.query.restaurantId as string) : null
   if (targetId) {
     selectedRestaurantId.value = targetId
     watch(() => store.restaurants, (list) => {
       const found = list.find(r => r.id === targetId)
       if (found) {
         openDetail(found)
+        nextTick(() => {
+          const cardEl = document.getElementById('rest-card-' + targetId)
+          if (cardEl) {
+            cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          }
+        })
       }
     }, { immediate: true })
+  }
+})
+
+watch(() => route.query.restaurantId, (newVal) => {
+  if (newVal) {
+    const id = parseInt(newVal as string)
+    selectedRestaurantId.value = id
+    const found = store.restaurants.find(r => r.id === id)
+    if (found) {
+      openDetail(found)
+      nextTick(() => {
+        const cardEl = document.getElementById('rest-card-' + id)
+        if (cardEl) {
+          cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
+      })
+    }
   }
 })
 
@@ -607,5 +652,29 @@ button {
   font-size: 13px;
   line-height: 1.5;
   margin: 0;
+}
+
+.outside-chip {
+  display: inline-block;
+  margin-left: 6px;
+  background: rgba(224, 164, 88, 0.18);
+  border: 1px solid rgba(224, 164, 88, 0.4);
+  color: #E0A458;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 8px;
+  vertical-align: middle;
+}
+
+.fav-chip {
+  border-color: rgba(224, 164, 88, 0.3) !important;
+}
+
+.fav-chip.active {
+  background: #8B2635 !important;
+  border-color: #E0A458 !important;
+  color: #F3E9DE !important;
+  font-weight: 700;
 }
 </style>
