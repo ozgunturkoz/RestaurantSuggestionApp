@@ -11,38 +11,21 @@ using System.Threading.Tasks;
 
 namespace RestaurantSuggestionApp.WebApi.Controllers
 {
-    // =========================================================================================
-    // BU CONTROLLER (KONTROLCÜ) NE İŞE YARAR?
-    // Giriş yapmış kullanıcının profil sayfasındaki tüm isteklerini (profil bilgilerini getirme,
-    // adını değiştirme, harcamalarını listeleme/ekleme/silme, favori mekanlarını yönetme,
-    // e-posta ve şifre değiştirme kodlarını alma) karşılayan güvenli uç noktadır.
-    // [Authorize] etiketi sayesinde sisteme giriş yapmamış yabancılar buraya erişemez.
-    // =========================================================================================
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class UserController : ControllerBase
     {
-        // Kullanıcı iş mantıklarını yürüten servisimiz
         private readonly IUserService _userService;
 
-        // Mesajları TR / EN çeviren dil desteğimiz
         private readonly IStringLocalizer _localizer;
 
-        // -------------------------------------------------------------------------------------
-        // Kurucu Metot (Constructor):
-        // Controller ayağa kalktığında servis ve dil yöneticisini içeri alır.
-        // -------------------------------------------------------------------------------------
         public UserController(IUserService userService, IStringLocalizer localizer)
         {
             _userService = userService;
             _localizer = localizer;
         }
 
-        // -------------------------------------------------------------------------------------
-        // 1. KENDİ PROFİL BİLGİLERİMİ GETİR: GET /api/User/me
-        // Giriş yapmış olan kullanıcının ID'sini dijital imzasından (Token) okur ve bilgilerini döner.
-        // -------------------------------------------------------------------------------------
         [HttpGet("me")]
         public IActionResult GetMe()
         {
@@ -61,9 +44,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // 2. TÜM KULLANICILARI LİSTELE: GET /api/User
-        // -------------------------------------------------------------------------------------
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -75,9 +55,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // 3. ID NUMARASINA GÖRE KULLANICI GETİR: GET /api/User/{id}
-        // -------------------------------------------------------------------------------------
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -88,9 +65,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // 4. YENİ KULLANICI OLUŞTUR: POST /api/User
-        // -------------------------------------------------------------------------------------
         [HttpPost]
         public IActionResult Create([FromBody] UserDto userDto)
         {
@@ -105,9 +79,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // 5. KULLANICIYI GÜNCELLE: PUT /api/User/{id}
-        // -------------------------------------------------------------------------------------
         [HttpPut("{id}")]
         public IActionResult Update(int id, [FromBody] UserDto userDto)
         {
@@ -126,9 +97,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // 6. KULLANICIYI SİL: DELETE /api/User/{id}
-        // -------------------------------------------------------------------------------------
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -145,9 +113,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // 7. FAVORİLERİMİ LİSTELE: GET /api/User/favorites
-        // -------------------------------------------------------------------------------------
         [HttpGet("favorites")]
         public IActionResult GetFavorites()
         {
@@ -165,9 +130,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // 8. FAVORİLERE EKLE VEYA NOT YAZ: POST /api/User/favorites
-        // -------------------------------------------------------------------------------------
         [HttpPost("favorites")]
         public IActionResult AddFavorite([FromBody] AddFavoriteDto dto)
         {
@@ -185,9 +147,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // 9. FAVORİLERDEN ÇIKAR: DELETE /api/User/favorites/{restaurantId}
-        // -------------------------------------------------------------------------------------
         [HttpDelete("favorites/{restaurantId}")]
         public IActionResult RemoveFavorite(int restaurantId)
         {
@@ -205,9 +164,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // 10. HARCAMA DÖKÜMÜMÜ GETİR: GET /api/User/expenditures
-        // -------------------------------------------------------------------------------------
         [HttpGet("expenditures")]
         public IActionResult GetExpenditures()
         {
@@ -225,9 +181,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // 11. YENİ HARCAMA KAYDI EKLE: POST /api/User/expenditures
-        // -------------------------------------------------------------------------------------
         [HttpPost("expenditures")]
         public IActionResult AddExpenditure([FromBody] CreateExpenditureDto dto)
         {
@@ -245,9 +198,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // 12. HARCAMA KAYDINI SİL: DELETE /api/User/expenditures/{id}
-        // -------------------------------------------------------------------------------------
         [HttpDelete("expenditures/{id}")]
         public IActionResult DeleteExpenditure(int id)
         {
@@ -265,9 +215,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // 13. PROFİL ADINI GÜNCELLE: PUT /api/User/profile
-        // -------------------------------------------------------------------------------------
         [HttpPut("profile")]
         public IActionResult UpdateProfile([FromBody] UpdateProfileDto dto)
         {
@@ -285,9 +232,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // 14. PROFİL İÇİNDEN ŞİFRE DEĞİŞTİRME KODU İSTE: POST /api/User/send-password-code
-        // -------------------------------------------------------------------------------------
         [HttpPost("send-password-code")]
         public async Task<IActionResult> SendPasswordCode()
         {
@@ -305,9 +249,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // 15. PROFİL İÇİNDEN KOD İLE ŞİFRE GÜNCELLE: POST /api/User/change-password-with-code
-        // -------------------------------------------------------------------------------------
         [HttpPost("change-password-with-code")]
         public IActionResult ChangePasswordWithCode([FromBody] ChangePasswordWithCodeDto dto)
         {
@@ -325,9 +266,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // 16. E-POSTA DEĞİŞTİRME KODU İSTE: POST /api/User/send-email-change-code
-        // -------------------------------------------------------------------------------------
         [HttpPost("send-email-change-code")]
         public async Task<IActionResult> SendEmailChangeCode([FromBody] SendEmailChangeCodeDto dto)
         {
@@ -345,9 +283,6 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // 17. E-POSTA DEĞİŞİKLİĞİNİ ONAYLA: POST /api/User/change-email-with-code
-        // -------------------------------------------------------------------------------------
         [HttpPost("change-email-with-code")]
         public IActionResult ChangeEmailWithCode([FromBody] ChangeEmailWithCodeDto dto)
         {
@@ -365,18 +300,12 @@ namespace RestaurantSuggestionApp.WebApi.Controllers
             return Ok(result);
         }
 
-        // -------------------------------------------------------------------------------------
-        // Yardımcı Metot: DTO nesnesini veritabanı User nesnesine çevirir
-        // -------------------------------------------------------------------------------------
         private User MapToUser(UserDto dto)
         {
             var password = dto.Password ?? throw new ArgumentException(_localizer["PasswordRequired"]);
             return new User(dto.Name, dto.Email, password);
         }
 
-        // -------------------------------------------------------------------------------------
-        // Yardımcı Metot: İstek atan kullanıcının Token içerisindeki ID'sini çözümler
-        // -------------------------------------------------------------------------------------
         private int? GetCurrentUserId()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier) ?? User.FindFirst("sub");

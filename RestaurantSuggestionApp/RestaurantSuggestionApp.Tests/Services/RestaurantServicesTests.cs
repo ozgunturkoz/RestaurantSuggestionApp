@@ -152,7 +152,6 @@ namespace RestaurantSuggestionApp.Tests.Services
 
         #region Delete Tests (Silme Testleri)
 
-
         [Test]
         public void Delete_ExistingRestaurant_ReturnsSuccessAndRemovesFromDb()
         {
@@ -177,7 +176,6 @@ namespace RestaurantSuggestionApp.Tests.Services
             Assert.That(response.IsSuccess, Is.False);
             Assert.That(response.ErrorMessage, Is.EqualTo("Silinecek restoran bulunamadı."));
         }
-
 
         #endregion
 
@@ -214,7 +212,7 @@ namespace RestaurantSuggestionApp.Tests.Services
             Assert.That(response.Data, Is.Not.Null);
             Assert.That(response.Data.Count, Is.EqualTo(1));
             Assert.That(response.Data[0].Name, Is.EqualTo("Yakın Restoran"));
-            Assert.That(response.Data[0].RecommendationScore, Is.GreaterThan(0)); 
+            Assert.That(response.Data[0].RecommendationScore, Is.GreaterThan(0));
         }
 
         [Test]

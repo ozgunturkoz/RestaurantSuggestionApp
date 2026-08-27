@@ -1,22 +1,13 @@
 <template>
-  <!-- =========================================================================================
-       GİRİŞ VE ŞİFREMİ UNUTTUM SAYFASI ŞABLONU (KODLAMA BİLMEYENLER İÇİN ANLATIM)
-       Bu sayfa kullanıcıların sisteme güvenli giriş yapmasını sağlar.
-       İçerisinde 4 farklı adım (Step) barındırır:
-       - Step 1: E-posta ve Şifre ile giriş formu (+ Şifremi Unuttum linki)
-       - Step 2: 2 Aşamalı Giriş Doğrulama Kodu (2FA) formu
-       - Step 3: Şifremi Unuttum - E-posta adresine sıfırlama kodu isteme formu
-       - Step 4: Şifremi Unuttum - E-postaya gelen kod ile yeni şifreyi belirleme formu
-       ========================================================================================= -->
+
   <div class="wrap">
-    <!-- Sağ Üst Köşe TR / EN Dil Değiştirme Butonları -->
+
     <div class="lang-switch-auth">
       <button :class="{ active: locale === 'tr' }" @click="setLocale('tr')">TR</button>
       <span>|</span>
       <button :class="{ active: locale === 'en' }" @click="setLocale('en')">EN</button>
     </div>
 
-    <!-- Sol Taraf Marka ve Görsel Tanıtım Alanı (Brand Pane) -->
     <div class="brand">
       <div class="bg stripe"></div>
       <div class="road1"></div>
@@ -33,11 +24,8 @@
       </div>
     </div>
 
-    <!-- Sağ Taraf Form Alanı (Form Pane) -->
     <div class="pane">
-      <!-- =====================================================================================
-           ADIM 1: NORMAL GİRİŞ FORMU
-           ===================================================================================== -->
+
       <form v-if="step === 1" class="card" @submit.prevent="handleLogin">
         <h1>{{ t('login.welcome') }}</h1>
         <p class="lead">{{ t('login.lead') }}</p>
@@ -63,21 +51,18 @@
         <p class="foot">{{ t('login.noAccount') }} <NuxtLink to="/register" class="link">{{ t('login.registerLink') }}</NuxtLink></p>
       </form>
 
-      <!-- =====================================================================================
-           ADIM 2: GİRİŞ 2FA DOĞRULAMA KODU FORMU
-           ===================================================================================== -->
       <form v-else-if="step === 2" class="card" @submit.prevent="handleVerify">
         <h1>{{ t('login.verifyTitle') }}</h1>
         <p class="lead">{{ t('login.verifyLead', { email: email }) }}</p>
 
         <label>{{ t('login.verifyCodeLabel') }}</label>
-        <input 
-          v-model="verificationCode" 
-          type="text" 
-          maxlength="6" 
-          placeholder="123456" 
-          style="letter-spacing: 6px; font-size: 20px; text-align: center; font-weight: bold;" 
-          required 
+        <input
+          v-model="verificationCode"
+          type="text"
+          maxlength="6"
+          placeholder="123456"
+          style="letter-spacing: 6px; font-size: 20px; text-align: center; font-weight: bold;"
+          required
         />
 
         <p v-if="errorMsg" class="error">{{ errorMsg }}</p>
@@ -87,18 +72,15 @@
           <span>{{ loading ? t('login.verifying') : t('login.verifyBtn') }}</span>
         </button>
 
-        <button 
-          type="button" 
-          class="back-step-btn" 
+        <button
+          type="button"
+          class="back-step-btn"
           @click="step = 1; errorMsg = ''"
         >
           {{ t('login.backToLogin') }}
         </button>
       </form>
 
-      <!-- =====================================================================================
-           ADIM 3: ŞİFREMİ UNUTTUM - SIFIRLAMA KODU İSTEME FORMU
-           ===================================================================================== -->
       <form v-else-if="step === 3" class="card" @submit.prevent="handleRequestForgotCode">
         <h1>{{ t('forgot.title') }}</h1>
         <p class="lead">{{ t('forgot.lead') }}</p>
@@ -113,46 +95,43 @@
           <span>{{ loading ? t('forgot.sending') : t('forgot.sendCode') }}</span>
         </button>
 
-        <button 
-          type="button" 
-          class="back-step-btn" 
+        <button
+          type="button"
+          class="back-step-btn"
           @click="step = 1; errorMsg = ''"
         >
           {{ t('forgot.backToLogin') }}
         </button>
       </form>
 
-      <!-- =====================================================================================
-           ADIM 4: ŞİFREMİ UNUTTUM - KOD VE YENİ ŞİFRE İLE SIFIRLAMA FORMU
-           ===================================================================================== -->
       <form v-else-if="step === 4" class="card" @submit.prevent="handleResetPassword">
         <h1>{{ t('forgot.resetTitle') }}</h1>
         <p class="lead">{{ t('forgot.resetLead', { email: forgotEmail }) }}</p>
 
         <label>{{ t('forgot.code') }}</label>
-        <input 
-          v-model="forgotCode" 
-          type="text" 
-          maxlength="6" 
-          :placeholder="t('forgot.codePlaceholder')" 
-          style="letter-spacing: 6px; font-size: 20px; text-align: center; font-weight: bold;" 
-          required 
+        <input
+          v-model="forgotCode"
+          type="text"
+          maxlength="6"
+          :placeholder="t('forgot.codePlaceholder')"
+          style="letter-spacing: 6px; font-size: 20px; text-align: center; font-weight: bold;"
+          required
         />
 
         <label>{{ t('forgot.newPassword') }}</label>
-        <input 
-          v-model="forgotNewPassword" 
-          type="password" 
-          :placeholder="t('forgot.newPasswordPlaceholder')" 
-          required 
+        <input
+          v-model="forgotNewPassword"
+          type="password"
+          :placeholder="t('forgot.newPasswordPlaceholder')"
+          required
         />
 
         <label>{{ t('forgot.confirmPassword') }}</label>
-        <input 
-          v-model="forgotConfirmPassword" 
-          type="password" 
-          :placeholder="t('forgot.confirmPasswordPlaceholder')" 
-          required 
+        <input
+          v-model="forgotConfirmPassword"
+          type="password"
+          :placeholder="t('forgot.confirmPasswordPlaceholder')"
+          required
         />
 
         <p v-if="errorMsg" class="error">{{ errorMsg }}</p>
@@ -162,9 +141,9 @@
           <span>{{ loading ? t('forgot.resetting') : t('forgot.resetBtn') }}</span>
         </button>
 
-        <button 
-          type="button" 
-          class="back-step-btn" 
+        <button
+          type="button"
+          class="back-step-btn"
           @click="step = 3; errorMsg = ''"
         >
           {{ t('forgot.backToEmailStep') }}
@@ -175,48 +154,35 @@
 </template>
 
 <script setup>
-// =========================================================================================
-// GİRİŞ SAYFASI KODLARI (JAVASCRIPT / VUE COMPOSITION API)
-// =========================================================================================
 import { ref } from 'vue'
 import { useRouter } from '#app'
 
-// Çoklu dil aracı
 const { locale, setLocale, t } = useI18n()
 
-// Form adımı (1: Giriş, 2: 2FA Doğrulama, 3: Şifremi Unuttum Kod İste, 4: Şifre Sıfırla)
 const step = ref(1)
 
-// Giriş Formu Değişkenleri
 const email = ref('')
 const password = ref('')
 const verificationCode = ref('')
 
-// Şifremi Unuttum Değişkenleri
 const forgotEmail = ref('')
 const forgotCode = ref('')
 const forgotNewPassword = ref('')
 const forgotConfirmPassword = ref('')
 
-// Durum Değişkenleri
 const errorMsg = ref('')
 const loading = ref(false)
 
-// Servis ve Bildirim Havuzları
 const authStore = useAuthStore()
 const authService = useAuthService()
 const toast = useToast()
 const router = useRouter()
 
-// E-posta regex doğrulaması
 const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
 
-// -----------------------------------------------------------------------------------------
-// 1. ADIM: Normal Giriş Yap Butonuna Basıldığında Çalışan Fonksiyon
-// -----------------------------------------------------------------------------------------
 const handleLogin = async () => {
   errorMsg.value = ''
-  
+
   if (!emailRegex.test(email.value.trim())) {
     errorMsg.value = t('register.invalidEmail')
     return
@@ -240,12 +206,9 @@ const handleLogin = async () => {
   }
 }
 
-// -----------------------------------------------------------------------------------------
-// 2. ADIM: 2FA Doğrulama Kodunu Onaylayan Fonksiyon
-// -----------------------------------------------------------------------------------------
 const handleVerify = async () => {
   errorMsg.value = ''
-  
+
   if (!verificationCode.value || verificationCode.value.trim().length !== 6) {
     errorMsg.value = t('login.enterSixDigitCode')
     return
@@ -264,21 +227,15 @@ const handleVerify = async () => {
   }
 }
 
-// -----------------------------------------------------------------------------------------
-// 3. ADIM: Şifremi Unuttum Akışını Başlatan Fonksiyon
-// -----------------------------------------------------------------------------------------
 const startForgotPassword = () => {
   errorMsg.value = ''
   forgotEmail.value = email.value.trim()
   step.value = 3
 }
 
-// -----------------------------------------------------------------------------------------
-// 4. ADIM: Şifre Sıfırlama Kodu İsteyen Fonksiyon
-// -----------------------------------------------------------------------------------------
 const handleRequestForgotCode = async () => {
   errorMsg.value = ''
-  
+
   if (!emailRegex.test(forgotEmail.value.trim())) {
     errorMsg.value = t('register.invalidEmail')
     return
@@ -300,9 +257,6 @@ const handleRequestForgotCode = async () => {
   }
 }
 
-// -----------------------------------------------------------------------------------------
-// 5. ADIM: Kod ve Yeni Şifre ile Sıfırlamayı Tamamlayan Fonksiyon
-// -----------------------------------------------------------------------------------------
 const handleResetPassword = async () => {
   errorMsg.value = ''
 
@@ -344,12 +298,10 @@ const handleResetPassword = async () => {
     loading.value = false
   }
 }
+
 </script>
 
 <style scoped>
-/* =========================================================================================
-   GİRİŞ VE AUTH SAYFASI ÖZEL STİLLERİ (SCOPED CSS)
-   ========================================================================================= */
 .wrap {
   min-height: 100vh;
   display: grid;

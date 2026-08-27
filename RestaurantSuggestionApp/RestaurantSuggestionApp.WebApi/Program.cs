@@ -17,24 +17,14 @@ using RestaurantSuggestionApp.DataAccess;
 using RestaurantSuggestionApp.WebApi.Localizer;
 using RestaurantSuggestionApp.WebApi.Middleware;
 
-// =========================================================================================
-// PROGRAM.CS NEDİR? (KODLAMA BİLMEYENLER İÇİN ANLATIM)
-// Bu dosya, tüm backend uygulamasının "Ana Çalıştırma Motoru ve Giriş Kapısıdır".
-// Bir bina inşa edilirken elektrik, su ve güvenlik tesisatının döşenmesi gibi,
-// uygulamanın veritabanı bağlantısı, şifreleme güvenliği, dil seçenekleri ve API ayarları burada yapılır.
-// =========================================================================================
-
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. ADIM: AYAR DOSYALARI (appsettings.json) YÜKLENİYOR
 builder.Configuration.Sources.Clear();
 var env = builder.Environment;
 builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
                      .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: false)
                      .AddEnvironmentVariables();
 
-// 2. ADIM: VERİTABANI VE BELLEK TABANLI ÇOKLU DİL (LOCALIZATION) SİSTEMİ
-// Uygulamanın hem Türkçe hem İngilizce konuşabilmesi için yerelleştirme servisimizi bağlıyoruz.
 builder.Services.AddSingleton<IStringLocalizerFactory, SqlStringLocalizerFactory>();
 builder.Services.AddSingleton<SqlStringLocalizer>();
 builder.Services.AddSingleton<IStringLocalizer>(sp => sp.GetRequiredService<SqlStringLocalizer>());
@@ -61,12 +51,10 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     };
 });
 
-// 3. ADIM: CONTROLLER'LAR, HTTP VE BELLEK ÖNBELLEĞİ (MEMORY CACHE) SERVİSLERİ
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
-builder.Services.AddMemoryCache(); 
+builder.Services.AddMemoryCache();
 
-// Forwarded Headers: Render / Bulut sunuculardaki proxy arkasında gerçek istemci IP adresini alır
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
@@ -74,8 +62,6 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.KnownProxies.Clear();
 });
 
-// 4. ADIM: GÜVENLİK VE SALDIRI KORUMASI (RATE LIMITING)
-// Kötü niyetli kişilerin giriş ekranına saniyede yüzlerce şifre denemesi yapmasını engeller (İstemci başına dakikada 15 deneme).
 builder.Services.AddRateLimiter(options =>
 {
     options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
@@ -91,14 +77,12 @@ builder.Services.AddRateLimiter(options =>
             factory: _ => new FixedWindowRateLimiterOptions
             {
                 AutoReplenishment = true,
-                PermitLimit = 15,                 
-                Window = TimeSpan.FromMinutes(1) 
+                PermitLimit = 15,
+                Window = TimeSpan.FromMinutes(1)
             });
     });
 });
 
-// 5. ADIM: KİMLİK DOĞRULAMA (JWT BEARER AUTHENTICATION)
-// Kullanıcının sisteme giriş yaptıktan sonra aldığı dijital imzanın (Token) doğruluğunu kontrol eder.
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -110,22 +94,20 @@ builder.Services.AddAuthentication(options =>
     {
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidateLifetime = true, 
-        ValidateIssuerSigningKey = true, 
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
     };
 });
 
-// 6. ADIM: İŞ SERVİSLERİNİN BAĞLANMASI (DEPENDENCY INJECTION)
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddHttpClient<IOsrmService, OsrmService>();
 
-// 7. ADIM: CORS AYARLARI (Ön yüzün Backend ile rahat iletişim kurabilmesi)
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -136,7 +118,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-// 8. ADIM: VERİTABANI BAĞLANTISI (SQL SERVER)
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
         sqlServerOptionsAction: sqlOptions =>
@@ -144,12 +125,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             sqlOptions.EnableRetryOnFailure();
         }));
 
-// 9. ADIM: SWAGGER API DOKÜMANTASYON EKRANI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestaurantSuggestionApp API", Version = "v1" });
-    
+
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -176,12 +156,8 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// =========================================================================================
-// UYGULAMA İNŞA EDİLİYOR VE ÇALIŞTIRILIYOR (APPLICATION PIPELINE)
-// =========================================================================================
 var app = builder.Build();
 
-// Otomatik Veritabanı Migrasyonu ve Tablo Kontrolü
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -204,7 +180,6 @@ using (var scope = app.Services.CreateScope())
             END;
         ");
 
-        // Otomatik Lokalizasyon Kaynaklarını Eşitleme (Eksik Çeviri Kayıtlarını Veritabanına Yükle)
         var existingKeys = dbContext.LocalizationResources
             .Select(r => r.Culture + "_" + r.ResourceKey)
             .ToHashSet();
@@ -220,7 +195,6 @@ using (var scope = app.Services.CreateScope())
             dbContext.SaveChanges();
         }
 
-        // Otomatik Restoranları Eşitleme (Eksik Restoran Kayıtlarını Veritabanına Yükle)
         var existingRestaurantNames = dbContext.Restaurants
             .Select(r => r.Name.ToLower())
             .ToHashSet();
@@ -238,14 +212,11 @@ using (var scope = app.Services.CreateScope())
     }
     catch
     {
-        // Migrasyon ve eşitleme hatası durumunda uygulama çökmeden güvenle devam eder
     }
 }
 
-// Bulut sunucu (Render vb.) proxy başlıklarını uygular
 app.UseForwardedHeaders();
 
-// Swagger Güvenlik ve Arayüzü
 app.UseMiddleware<SwaggerBasicAuthMiddleware>();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
@@ -253,7 +224,6 @@ app.UseSwaggerUI(c =>
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "RestaurantSuggestionApp API v1");
 });
 
-// Dil Seçeneğini İsteklere Uygula
 var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
 app.UseRequestLocalization(localizationOptions);
 
@@ -264,12 +234,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors();
 app.UseRateLimiter();
-app.UseAuthentication(); 
-app.UseAuthorization();  
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
-// Canlılık ve Sağlık Kontrolü Uç Noktaları (Render & UptimeRobot Health Check)
 app.MapMethods("/health", new[] { "GET", "HEAD" }, () => Results.Ok(new { status = "Healthy", timestamp = DateTime.UtcNow })).DisableRateLimiting();
 app.MapMethods("/healthz", new[] { "GET", "HEAD" }, () => Results.Ok(new { status = "Healthy", timestamp = DateTime.UtcNow })).DisableRateLimiting();
 app.MapMethods("/", new[] { "GET", "HEAD" }, () => Results.Ok(new { message = "RestaurantSuggestionApp API is running", status = "Healthy" })).DisableRateLimiting();

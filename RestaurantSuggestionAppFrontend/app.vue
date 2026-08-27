@@ -1,44 +1,28 @@
 <template>
-  <!-- =========================================================================================
-       ANA UYGULAMA KÖK ŞABLONU (APP.VUE) (KODLAMA BİLMEYENLER İÇİN ANLATIM)
-       Bu dosya, tüm web sitesinin ana çatısıdır.
-       Hangi sayfaya (Giriş, Kayıt, Keşfet, Profil) gidilirse gidilsin,
-       en tepedeki altın sarısı yüklenme çizgisi, aktif sayfa ve bildirim kutucukları (Toast)
-       bu çatı içinde görüntülenir.
-       ========================================================================================= -->
+
   <div class="app-root">
-    <!-- Sayfa geçişlerinde ekranın en üstünde beliren altın sarısı ilerleme çubuğu -->
+
     <NuxtLoadingIndicator color="#E0A458" :height="3" />
 
-    <!-- O an görüntülenen sayfanın (pages/index.vue, pages/profile.vue vb.) yerleştiği alan -->
     <NuxtPage />
 
-    <!-- Ekranın sağ üst köşesindeki renkli bildirim kutularının kapsayıcısı -->
     <ToastContainer />
   </div>
 </template>
 
 <script setup>
-// =========================================================================================
-// KÖK BAŞLATMA KODLARI (JAVASCRIPT)
-// =========================================================================================
 import { onMounted } from 'vue'
 import { useI18n } from '~/composables/useI18n'
 
-// Çoklu dil yöneticisini çağırıyoruz
 const { initLocale } = useI18n()
 
-// Web sitesi ilk yüklendiğinde kullanıcının son seçtiği dili (TR veya EN) otomatik yükler
 onMounted(() => {
   initLocale()
 })
+
 </script>
 
 <style>
-/* =========================================================================================
-   GENEL WEB SİTESİ STİLLERİ (GLOBAL CSS RESET)
-   Tüm sayfalarda beyaz kenarlığı, varsayılan tarayıcı boşluklarını ve sınırları sıfırlar.
-   ========================================================================================= */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -60,10 +44,6 @@ html, body, #__nuxt, #__layout, .app-root {
   overflow-x: hidden !important;
 }
 
-/* =========================================================================================
-   LEAFLET HARİTA KARELERİ (TILES) DÜZELTMESİ (KODLAMA BİLMEYENLER İÇİN ANLATIM)
-   Harita parçacıklarının (karelerin) birbiri üzerine binmesini veya yamulmasını engeller.
-   ========================================================================================= */
 .leaflet-container {
   height: 100% !important;
   width: 100% !important;
@@ -100,5 +80,33 @@ html, body, #__nuxt, #__layout, .app-root {
   max-height: none !important;
   width: 256px !important;
   height: 256px !important;
+}
+
+.map-tiles-dark {
+  filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7) !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba(23, 18, 15, 0.8) !important;
+  color: #8c827a !important;
+  font-size: 10px !important;
+  padding: 2px 6px !important;
+  border-radius: 4px 0 0 0 !important;
+}
+
+.leaflet-control-attribution a {
+  color: #E0A458 !important;
+  text-decoration: none !important;
+}
+
+.leaflet-bar a {
+  background-color: #241D17 !important;
+  color: #F3E9DE !important;
+  border-color: #3A2F25 !important;
+}
+
+.leaflet-bar a:hover {
+  background-color: #2F261E !important;
+  color: #E0A458 !important;
 }
 </style>

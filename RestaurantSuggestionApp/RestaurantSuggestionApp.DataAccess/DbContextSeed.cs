@@ -5,22 +5,10 @@ using System.Collections.Generic;
 
 namespace RestaurantSuggestionApp.DataAccess
 {
-    // =========================================================================================
-    // BU SINIF NE İŞE YARAR? (KODLAMA BİLMEYENLER İÇİN AÇIKLAMA)
-    // Bir binanın temeli atılırken ilk tuğlaların konulması gibi, veritabanı ilk kurulduğunda
-    // sistemin bomboş kalmaması için içine "varsayılan başlangıç verilerini" yükleyen sınıftır.
-    // Örneğin: Örnek kullanıcılar, İstanbul'daki gerçek restoranlar, örnek harcama hareketleri
-    // ve sistemin hem Türkçe hem İngilizce konuşabilmesi için gereken tüm çeviri kelimeleri burada tanımlanır.
-    // =========================================================================================
     public static class DbContextSeed
     {
-        // -------------------------------------------------------------------------------------
-        // SeedData Metodu: Veritabanı tabloları oluşurken içine başlangıç verilerini doldurur.
-        // -------------------------------------------------------------------------------------
         public static void SeedData(this ModelBuilder modelBuilder)
         {
-            // 1. ADIM: BAŞLANGIÇ KULLANICILARI OLUŞTURULUYOR
-            // Test yapabilmek ve sistemi hemen kullanabilmek için 3 adet örnek kullanıcı ekliyoruz.
             var users = new List<User>
             {
                 new User(1, "Ozgur",  "ozgur@email.com",  "hashed_password_1"),
@@ -32,8 +20,6 @@ namespace RestaurantSuggestionApp.DataAccess
             var restaurants = GetDefaultRestaurants();
             modelBuilder.Entity<Restaurant>().HasData(restaurants);
 
-            // 3. ADIM: ÖRNEK KULLANICI HARCAMALARI EKLENİYOR
-            // Kullanıcıların profilindeki harcama analiz grafikleri ve istatistiklerin dolu görünmesi için örnek kayıtlar.
             var expenditures = new List<UserExpenditure>
             {
                 new UserExpenditure(1, 1, 1, 350.00m, new DateTime(2026, 1, 15)),
@@ -58,15 +44,10 @@ namespace RestaurantSuggestionApp.DataAccess
             modelBuilder.Entity<LocalizationResource>().HasData(locResources);
         }
 
-        // -------------------------------------------------------------------------------------
-        // Varsayılan Restoranlar Listesi (İstanbul Geneli):
-        // Kadıköy, Beşiktaş, Şişli, Beyoğlu, Fatih, Bakırköy, Bahçelievler, Güngören, Merter, Zeytinburnu, Florya, Başakşehir
-        // -------------------------------------------------------------------------------------
         public static List<Restaurant> GetDefaultRestaurants()
         {
             var realRestaurantData = new (string Name, string Category, decimal Lat, decimal Lng, int AvgPrice)[]
             {
-                // Kadıköy Bölgesi
                 ("Çiya Sofrası", "Home Cooking", 40.9898m, 29.0286m, 350),
                 ("Yanyalı Fehmi Lokantası", "Home Cooking", 40.9906m, 29.0238m, 300),
                 ("Basta! Street Food", "World Cuisine", 40.9882m, 29.0270m, 280),
@@ -78,7 +59,6 @@ namespace RestaurantSuggestionApp.DataAccess
                 ("Koço Restoran (Moda)", "Seafood", 40.9785m, 29.0232m, 750),
                 ("Çiya Kebap", "Kebab & Grill", 40.9894m, 29.0282m, 380),
 
-                // Beşiktaş & Bebek & Ortaköy & Etiler Bölgesi
                 ("Tuğra Restaurant (Çırağan Palace)", "World Cuisine", 41.0441m, 29.0163m, 850),
                 ("Sunset Grill & Bar", "World Cuisine", 41.0664m, 29.0289m, 820),
                 ("Ulus 29", "World Cuisine", 41.0645m, 29.0272m, 800),
@@ -90,7 +70,6 @@ namespace RestaurantSuggestionApp.DataAccess
                 ("Mangerie Bebek", "Cafe & Dessert", 41.0772m, 29.0435m, 420),
                 ("Lucca Bebek", "Cafe & Dessert", 41.0765m, 29.0438m, 600),
 
-                // Şişli & Nişantaşı & Bomonti Bölgesi
                 ("Turk Fatih Tutak", "World Cuisine", 41.0573m, 28.9814m, 850),
                 ("Hünkar Restoran Nişantaşı", "Home Cooking", 41.0505m, 28.9932m, 450),
                 ("Nusr-Et Burger Nişantaşı", "World Cuisine", 41.0492m, 28.9941m, 400),
@@ -100,7 +79,6 @@ namespace RestaurantSuggestionApp.DataAccess
                 ("Konyalı Lokantası Kanyon", "Home Cooking", 41.0782m, 29.0112m, 380),
                 ("Saray Muhallebicisi Nişantaşı", "Cafe & Dessert", 41.0498m, 28.9920m, 220),
 
-                // Beyoğlu & Karaköy & Pera Bölgesi
                 ("Mikla Restaurant", "World Cuisine", 41.0315m, 28.9752m, 850),
                 ("Karaköy Lokantası", "Seafood", 41.0232m, 28.9754m, 650),
                 ("Zübeyir Ocakbaşı Beyoğlu", "Kebab & Grill", 41.0360m, 28.9828m, 450),
@@ -110,7 +88,6 @@ namespace RestaurantSuggestionApp.DataAccess
                 ("Meze By Lemon Tree", "Home Cooking", 41.0312m, 28.9748m, 420),
                 ("Karaköy Güllüoğlu", "Cafe & Dessert", 41.0240m, 28.9780m, 250),
 
-                // Fatih & Sultanahmet & Sirkeci Bölgesi
                 ("Tarihi Sultanahmet Köftecisi Selim Usta", "Kebab & Grill", 41.0071m, 28.9765m, 280),
                 ("Asitane Restaurant", "Home Cooking", 41.0300m, 28.9392m, 620),
                 ("Siirt Şeref Büryan Kebap Salonu", "Kebab & Grill", 41.0162m, 28.9555m, 350),
@@ -120,7 +97,6 @@ namespace RestaurantSuggestionApp.DataAccess
                 ("Roof Mezze 360", "World Cuisine", 41.0135m, 28.9770m, 640),
                 ("Bitlisli Restoran Sirkeci", "Kebab & Grill", 41.0128m, 28.9768m, 320),
 
-                // Üsküdar & Kuzguncuk & Çengelköy & Ataşehir Bölgesi
                 ("Kanaat Lokantası Üsküdar", "Home Cooking", 41.0256m, 29.0158m, 290),
                 ("İsmet Baba Balıkçısı Kuzguncuk", "Seafood", 41.0368m, 29.0298m, 680),
                 ("Tarihi Çınaraltı Çay Bahçesi Çengelköy", "Cafe & Dessert", 41.0515m, 29.0520m, 180),
@@ -128,7 +104,6 @@ namespace RestaurantSuggestionApp.DataAccess
                 ("Metet Döner Kuzguncuk", "Kebab & Grill", 41.0355m, 29.0285m, 310),
                 ("Tatar Salim Döner Ataşehir", "Kebab & Grill", 40.9930m, 29.1120m, 330),
 
-                // Bakırköy & Florya & Ataköy & Yeşilköy Bölgesi
                 ("Beyti Restoran Florya", "Kebab & Grill", 40.9752m, 28.7994m, 750),
                 ("Kaşıbeyaz Florya", "Kebab & Grill", 40.9701m, 28.8021m, 700),
                 ("Gelik Restoran Ataköy", "Kebab & Grill", 40.9765m, 28.8720m, 450),
@@ -137,7 +112,6 @@ namespace RestaurantSuggestionApp.DataAccess
                 ("Tarihi Dikilitaş Köftecisi Bakırköy", "Home Cooking", 40.9789m, 28.8715m, 220),
                 ("Sütiş Florya", "Cafe & Dessert", 40.9723m, 28.8012m, 280),
 
-                // Bahçelievler & Güngören & Merter & Zeytinburnu Bölgesi
                 ("Öz Kilis Kebap & Lahmacun Merter", "Kebab & Grill", 41.0135m, 28.8920m, 260),
                 ("Hacı Sayid Bahçelievler", "Cafe & Dessert", 41.0021m, 28.8614m, 220),
                 ("Nizam Pide Merter", "Home Cooking", 41.0122m, 28.8945m, 240),
@@ -148,7 +122,6 @@ namespace RestaurantSuggestionApp.DataAccess
                 ("Urfa Kebapçısı Bahçelievler", "Kebab & Grill", 40.9995m, 28.8628m, 290),
                 ("Mado Bahçelievler Yayla", "Cafe & Dessert", 40.9982m, 28.8645m, 240),
 
-                // Küçükçekmece & Avcılar & Başakşehir Bölgesi
                 ("Gülhane İskender Küçükçekmece", "Kebab & Grill", 40.9942m, 28.7756m, 320),
                 ("Hacıbozanoğulları Başakşehir", "Kebab & Grill", 41.0882m, 28.7994m, 400),
                 ("Saray Muhallebicisi Mall of Istanbul", "Cafe & Dessert", 41.0628m, 28.8078m, 230),
@@ -173,16 +146,10 @@ namespace RestaurantSuggestionApp.DataAccess
             return restaurants;
         }
 
-        // -------------------------------------------------------------------------------------
-        // Varsayılan Tüm Çeviri Kaynakları Listesi:
-        // Hem veritabanı başlangıç kurulumunda (Migration) hem de sunucu ayağa kalkarken
-        // eksik çevirilerin anında veritabanına aktarılması için ortak kaynak olarak kullanılır.
-        // -------------------------------------------------------------------------------------
         public static List<LocalizationResource> GetDefaultLocalizationResources()
         {
             return new List<LocalizationResource>
             {
-                // --- TÜRKÇE (TR) ÇEVİRİLER ---
                 new LocalizationResource(1, "tr", "UserNotFound", "Kullanıcı bulunamadı."),
                 new LocalizationResource(2, "tr", "InvalidPassword", "E-posta veya şifre hatalı!"),
                 new LocalizationResource(3, "tr", "InvalidInput", "E-posta ve şifre boş bırakılamaz."),
@@ -311,7 +278,6 @@ namespace RestaurantSuggestionApp.DataAccess
                 new LocalizationResource(126, "tr", "register.loginLink", "Giriş yap"),
                 new LocalizationResource(127, "tr", "register.errorMsg", "Kayıt işlemi başarısız. Lütfen bilgilerinizi kontrol edin."),
 
-                // --- İNGİLİZCE (EN) ÇEVİRİLER ---
                 new LocalizationResource(128, "en", "UserNotFound", "User not found."),
                 new LocalizationResource(129, "en", "InvalidPassword", "Invalid email or password!"),
                 new LocalizationResource(130, "en", "InvalidInput", "Email and password cannot be empty."),
@@ -440,7 +406,6 @@ namespace RestaurantSuggestionApp.DataAccess
                 new LocalizationResource(253, "en", "register.loginLink", "Sign in"),
                 new LocalizationResource(254, "en", "register.errorMsg", "Registration failed. Please check your information."),
 
-                // --- E-POSTA ŞABLONLARI VE HATA KONTROLLERİ ---
                 new LocalizationResource(255, "tr", "LoginVerificationEmailSubject", "Giriş Doğrulama Kodunuz - Sofra Restoran"),
                 new LocalizationResource(256, "tr", "LoginVerificationEmailBody", "<h3>Merhaba {0},</h3><p>Giriş yapabilmek için doğrulama kodunuz: <b style='font-size: 24px; color: #E0A458;'>{1}</b></p><p>Bu kod 10 dakika süreyle geçerlidir.</p>"),
                 new LocalizationResource(257, "tr", "WelcomeEmailSubject", "Sofra Restoran'a Hoş Geldiniz!"),
@@ -458,7 +423,6 @@ namespace RestaurantSuggestionApp.DataAccess
                 new LocalizationResource(269, "tr", "PasswordsDoNotMatch", "Girdiğiniz şifreler birbiriyle eşleşmiyor."),
                 new LocalizationResource(270, "en", "PasswordsDoNotMatch", "Passwords do not match."),
 
-                // --- ŞİFREMİ UNUTTUM & PROFİL YENİ ÇEVİRİLERİ (TR) ---
                 new LocalizationResource(271, "tr", "ForgotPasswordSuccess", "Şifre sıfırlama kodu e-posta adresinize gönderildi."),
                 new LocalizationResource(272, "tr", "PasswordResetSuccess", "Şifreniz başarıyla güncellendi. Yeni şifrenizle giriş yapabilirsiniz."),
                 new LocalizationResource(273, "tr", "ForgotPasswordEmailSubject", "Şifre Sıfırlama Kodunuz - Sofra Restoran"),
@@ -468,7 +432,6 @@ namespace RestaurantSuggestionApp.DataAccess
                 new LocalizationResource(277, "tr", "EmailChangeEmailSubject", "Sofra - E-Posta Değişikliği Doğrulama Kodu"),
                 new LocalizationResource(278, "tr", "EmailChangeEmailBody", "<h3>Merhaba {0},</h3><p>Hesabınızın e-posta adresini <strong>{1}</strong> olarak değiştirmek üzeresiniz.</p><p>Doğrulama Kodunuz: <b style='font-size: 24px; color: #E0A458;'>{2}</b></p><p>Bu kod 5 dakika boyunca geçerlidir.</p>"),
 
-                // --- ŞİFREMİ UNUTTUM & PROFİL YENİ ÇEVİRİLERİ (EN) ---
                 new LocalizationResource(279, "en", "ForgotPasswordSuccess", "Password reset code has been sent to your email address."),
                 new LocalizationResource(280, "en", "PasswordResetSuccess", "Your password has been reset successfully. You can now log in."),
                 new LocalizationResource(281, "en", "ForgotPasswordEmailSubject", "Your Password Reset Code - Sofra Restaurant"),

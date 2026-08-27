@@ -1,13 +1,9 @@
 <template>
-  <!-- =========================================================================================
-       BU BİLEŞEN NE İŞE YARAR? (KODLAMA BİLMEYENLER İÇİN ANLATIM)
-       Ekranın sağ üst köşesinde asılı duran ve `useToast` ile tetiklenen bildirim kutularını
-       (Başarılı, Hata, Uyarı) şık bir tasarım ve animasyonla ekranda çizen bileşendir.
-       ========================================================================================= -->
+
   <div class="toast-container">
     <TransitionGroup name="toast-fade">
-      <div 
-        v-for="toast in toasts" 
+      <div
+        v-for="toast in toasts"
         :key="toast.id"
         :class="['toast-card', `toast-${toast.type}`]"
       >
@@ -35,9 +31,9 @@
 import { useToast } from '~/composables/useToast'
 import { useI18n } from '~/composables/useI18n'
 
-// Bildirim listesini ve kapatma fonksiyonunu çağırıyoruz
 const { toasts, removeToast } = useToast()
 const { t } = useI18n()
+
 </script>
 
 <style scoped>

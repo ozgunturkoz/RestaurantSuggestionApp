@@ -1,20 +1,11 @@
 import { defineStore } from 'pinia'
 
-// =========================================================================================
-// BU STORE (HAFIZA YÖNETİCİSİ) NE İŞE YARAR? (KODLAMA BİLMEYENLER İÇİN ANLATIM)
-// Bu dosya, web sitesinin "Kısa Süreli Beynidir".
-// Kullanıcı sisteme giriş yaptığında oturum anahtarını (JWT Token), kullanıcının adını,
-// e-postasını ve giriş yapıp yapmadığını tüm sayfalarda ortaklaşa kullanmak üzere hafızasında tutar.
-// Kullanıcı sayfayı yenilese bile çerezler (Cookie) sayesinde oturumunu açık tutar.
-// =========================================================================================
-
-// Şifrelenmiş JWT Token içerisindeki kullanıcı bilgilerini çözen yardımcı fonksiyon
 function parseJwt(token: string) {
   try {
     const base64Url = token.split('.')[1]
     if (!base64Url) return null
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
-    
+
     let binaryStr: string
     if (typeof atob === 'function') {
       binaryStr = atob(base64)
@@ -36,21 +27,16 @@ function parseJwt(token: string) {
   }
 }
 
-// Çözülen token verisinden kullanıcı alanlarını çıkartan yardımcı fonksiyon
 function extractUserFromDecoded(decoded: any) {
   if (!decoded) return null
   return {
     id: decoded.nameid || decoded.sub || decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'],
     name: decoded.unique_name || decoded.name || decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name'],
-    email: decoded.email || decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'],
-    restaurantId: decoded.restaurantId ? parseInt(decoded.restaurantId) : null
+    email: decoded.email || decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress']
   }
 }
 
 export const useAuthStore = defineStore('auth', {
-  // -------------------------------------------------------------------------------------
-  // State: Hafızada tutulan değişkenler
-  // -------------------------------------------------------------------------------------
   state: () => {
     if (process.server) {
       return {
@@ -59,7 +45,6 @@ export const useAuthStore = defineStore('auth', {
       }
     }
 
-    // Tarayıcıdaki oturum çerezini (Cookie) kontrol ediyoruz
     const token = useCookie('auth_token', { path: '/' })
     const rawToken = token.value
 
@@ -80,22 +65,18 @@ export const useAuthStore = defineStore('auth', {
     }
   },
 
-  // -------------------------------------------------------------------------------------
-  // Actions: Giriş yapma, çıkış yapma gibi eylemleri gerçekleştiren fonksiyonlar
-  // -------------------------------------------------------------------------------------
   actions: {
-    // 1. Giriş Yapma Eylemi
     async login(email: string, password: string) {
       const authService = useAuthService()
 
       try {
         const response = await authService.login({ email, password }) as any
         const data = response?.data
-        
+
         if (response?.isSuccess && data?.requiresVerification) {
           return { success: true, requiresVerification: true, email: data.email }
         }
-        
+
         const token = data || response?.token || (typeof response === 'string' ? response : null)
         if (token && typeof token === 'string' && token.length > 20) {
           const tokenCookie = useCookie('auth_token', { path: '/', maxAge: 60 * 60 })
@@ -113,7 +94,6 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    // 2. Giriş Kodunu Doğrulama Eylemi
     async verifyLogin(email: string, code: string) {
       const authService = useAuthService()
       const tokenCookie = useCookie('auth_token', { path: '/', maxAge: 60 * 60 })
@@ -136,14 +116,13 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    // 3. Kayıt Olma Eylemi
     async register(name: string, email: string, password: string, confirmPassword: string) {
       const authService = useAuthService()
 
       try {
         const response = await authService.register({ name, email, password, confirmPassword }) as any
         const data = response?.data
-        
+
         if (response?.isSuccess && data?.requiresVerification) {
           return { success: true, requiresVerification: true, email: data.email }
         }
@@ -165,7 +144,6 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    // 4. Kayıt Doğrulama Eylemi
     async verifyRegister(email: string, code: string) {
       const authService = useAuthService()
       const tokenCookie = useCookie('auth_token', { path: '/', maxAge: 60 * 60 })
@@ -188,7 +166,6 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    // 5. Şifremi Unuttum Eylemi
     async forgotPassword(email: string) {
       const authService = useAuthService()
       try {
@@ -202,7 +179,6 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    // 6. Şifreyi Sıfırlama Eylemi
     async resetPassword(email: string, code: string, newPassword: string, confirmPassword: string) {
       const authService = useAuthService()
       try {
@@ -216,14 +192,13 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    // 7. Çıkış Yapma Eylemi
     logout() {
       const tokenCookie = useCookie('auth_token', { path: '/' })
       tokenCookie.value = undefined
       this.isLoggedIn = false
       this.user = null
       useRestaurantStore().resetState()
-      
+
       if (typeof window !== 'undefined') {
         window.location.href = '/login'
       } else {
@@ -231,7 +206,6 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    // 8. Kullanıcının Adını Güncelleme Eylemi
     updateUserName(newName: string) {
       if (this.user) {
         this.user.name = newName

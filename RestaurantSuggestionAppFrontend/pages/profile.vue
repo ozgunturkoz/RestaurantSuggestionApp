@@ -1,44 +1,34 @@
 <template>
-  <!-- =========================================================================================
-       PROFİL SAYFASI ŞABLONU (KODLAMA BİLMEYENLER İÇİN ANLATIM)
-       Bu sayfa kullanıcının kendi hesabını yönettiği "Kullanıcı Kontrol Paneli"dir.
-       İçerisinde 5 ana sekme bulunur:
-       1. Harcamalarım & Analiz (Grafikler, istatistikler ve harcama dökümü)
-       2. Profil Bilgileri (Ad Soyad güncelleme)
-       3. E-Posta Değiştirme (Yeni adrese doğrulama kodu göndererek güvenli geçiş)
-       4. Şifre Değiştirme (E-postaya gelen 6 haneli kod ile şifre yenileme)
-       5. Favorilerim (Kaydedilen mekanlar)
-       ========================================================================================= -->
+
   <div class="sofra-profile-page">
-    <!-- Üst Gezinme Çubuğu (Header) -->
+
     <header class="header">
       <div class="hbar">
         <div class="header-left">
           <NuxtLink to="/" class="logo">Sofra</NuxtLink>
           <nav>
-            <!-- Keşfet Harita Sayfasına Dönüş Linki -->
+
             <NuxtLink to="/" class="nav-link" :class="{ on: $route.path === '/' }">{{ t('nav.discover') }}</NuxtLink>
-            <!-- Profil Sayfası Aktif Sekme Linki -->
+
             <NuxtLink to="/profile" class="nav-link" :class="{ on: $route.path === '/profile' }">{{ t('profile.myProfile') }}</NuxtLink>
           </nav>
         </div>
 
         <div class="header-right">
-          <!-- Türkçe / İngilizce Dil Değiştirme Butonları -->
+
           <div class="lang-switch">
             <button :class="{ active: locale === 'tr' }" @click="setLocale('tr')">TR</button>
             <span>|</span>
             <button :class="{ active: locale === 'en' }" @click="setLocale('en')">EN</button>
           </div>
-          <!-- Güvenli Çıkış Yapma Butonu -->
+
           <button class="logout-btn" @click="handleLogout">{{ t('nav.logout') }}</button>
         </div>
       </div>
     </header>
 
-    <!-- Ana Profil İçerik Alanı -->
     <main class="profile-container">
-      <!-- Kullanıcı Karşılama ve Bilgi Kartı (Banner) -->
+
       <div class="profile-banner-card">
         <div class="user-avatar">
           {{ userInitials }}
@@ -52,7 +42,6 @@
         </div>
       </div>
 
-      <!-- Sekmeler Arası Geçiş Menüsü -->
       <div class="profile-tabs">
         <button
           class="tab-btn"
@@ -91,11 +80,8 @@
         </button>
       </div>
 
-      <!-- =====================================================================================
-           SEKME 1: HARCAMALARIM, GRAFİKLER VE DÖKÜM
-           ===================================================================================== -->
       <div v-if="activeTab === 'expenditures'" class="tab-content">
-        <!-- 4 Adet Özet İstatistik Kartı -->
+
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-info">
@@ -126,9 +112,8 @@
           </div>
         </div>
 
-        <!-- Görsel Harcama Grafikleri -->
         <div class="analytics-grid" v-if="expenditures.length > 0">
-          <!-- Aylık Çubuk Grafik -->
+
           <div class="chart-card">
             <div class="chart-header">
               <h3>{{ t('profile.monthlyDetail') }}</h3>
@@ -153,7 +138,6 @@
             </div>
           </div>
 
-          <!-- Kategori İlerleme Çubukları Grafiği -->
           <div class="chart-card">
             <div class="chart-header">
               <h3>{{ t('profile.categoryDistribution') }}</h3>
@@ -180,7 +164,6 @@
           </div>
         </div>
 
-        <!-- Harcama Geçmişi Satırları -->
         <div class="section-card">
           <div class="section-header">
             <div>
@@ -189,19 +172,16 @@
             </div>
           </div>
 
-          <!-- Yükleniyor Durumu -->
           <div v-if="isLoadingExpenditures" class="loading-state">
             <LoadingSpinner size="md" />
             <p>{{ t('profile.loadingExpenditures') }}</p>
           </div>
 
-          <!-- Hiç Harcama Yoksa Gösterilen Boş Durum -->
           <div v-else-if="expenditures.length === 0" class="empty-state">
             <h3>{{ t('profile.noExpenditures') }}</h3>
             <p>{{ t('profile.noExpendituresSub') }}</p>
           </div>
 
-          <!-- Harcama Satırları Listesi -->
           <div v-else class="expenditures-list">
             <div
               v-for="item in expenditures"
@@ -223,9 +203,6 @@
         </div>
       </div>
 
-      <!-- =====================================================================================
-           SEKME 2: PROFİL BİLGİLERİ (İSİM GÜNCELLEME)
-           ===================================================================================== -->
       <div v-if="activeTab === 'info'" class="tab-content">
         <div class="section-card max-w-xl">
           <h2>{{ t('profile.updateProfileTitle') }}</h2>
@@ -262,15 +239,11 @@
         </div>
       </div>
 
-      <!-- =====================================================================================
-           SEKME 3: GÜVENLİ E-POSTA DEĞİŞTİRME (KOD + ŞİFRE ONAYLI)
-           ===================================================================================== -->
       <div v-if="activeTab === 'email-change'" class="tab-content">
         <div class="section-card max-w-xl">
           <h2>{{ t('profile.emailChangeTitle') }}</h2>
           <p class="section-sub">{{ t('profile.emailChangeSub') }}</p>
 
-          <!-- 1. Adım: Yeni E-Posta Adresini Yaz ve Doğrulama Kodu İste -->
           <div v-if="!emailChangeStepCodeSent" class="security-step-box">
             <div class="form-group">
               <label for="new-email-input">{{ t('profile.newEmailLabel') }}</label>
@@ -293,7 +266,6 @@
             </button>
           </div>
 
-          <!-- 2. Adım: Gelen Doğrulama Kodunu ve Mevcut Şifreyi Yazıp Onayla -->
           <form v-else class="profile-form" @submit.prevent="handleChangeEmailSubmit">
             <div class="info-alert">
               <p>{{ t('profile.codeSentToNewEmail', { email: emailChangeForm.newEmail }) }}</p>
@@ -344,15 +316,11 @@
         </div>
       </div>
 
-      <!-- =====================================================================================
-           SEKME 4: ŞİFRE DEĞİŞTİRME (E-POSTA KOD DOĞRULAMALI)
-           ===================================================================================== -->
       <div v-if="activeTab === 'security'" class="tab-content">
         <div class="section-card max-w-xl">
           <h2>{{ t('profile.securityTitle') }}</h2>
           <p class="section-sub">{{ t('profile.securitySub') }}</p>
 
-          <!-- 1. Adım: Kayıtlı E-Postaya Kod İste -->
           <div v-if="!passwordStepCodeSent" class="security-step-box">
             <div class="info-alert">
               <p>{{ t('profile.registeredEmail', { email: authStore.user?.email }) }}</p>
@@ -366,7 +334,6 @@
             </button>
           </div>
 
-          <!-- 2. Adım: Kodu ve Yeni Şifreyi Yazıp Kaydet -->
           <form v-else class="profile-form" @submit.prevent="handleChangePassword">
             <div class="success-alert">
               <p>{{ t('profile.passwordCodeSentAlert', { email: authStore.user?.email }) }}</p>
@@ -429,27 +396,21 @@
         </div>
       </div>
 
-      <!-- =====================================================================================
-           SEKME 5: FAVORİ RESTORANLARIM
-           ===================================================================================== -->
       <div v-if="activeTab === 'favorites'" class="tab-content">
         <div class="section-card">
           <h2>{{ t('profile.favoritesTitle') }}</h2>
           <p class="section-sub">{{ t('profile.favoritesSub') }}</p>
 
-          <!-- Yükleniyor Durumu -->
           <div v-if="isLoadingFavorites" class="loading-state">
             <LoadingSpinner size="md" />
             <p>{{ t('profile.loadingFavorites') }}</p>
           </div>
 
-          <!-- Hiç Favori Yoksa Gösterilen Boş Durum -->
           <div v-else-if="favorites.length === 0" class="empty-state">
             <h3>{{ t('profile.noFavorites') }}</h3>
             <p>{{ t('profile.noFavoritesSub') }}</p>
           </div>
 
-          <!-- Favori Restoran Kartları Grid Yapısı -->
           <div v-else class="favorites-grid">
             <div
               v-for="fav in favorites"
@@ -488,49 +449,32 @@
 </template>
 
 <script setup lang="ts">
-// =========================================================================================
-// PROFİL SAYFASI KODLARI (JAVASCRIPT / TYPESCRIPT)
-// =========================================================================================
 import { ref, computed, onMounted } from 'vue'
 import { useUserService } from '~/composables/useUserService'
 import { useI18n } from '~/composables/useI18n'
 import { useToast } from '~/composables/useToast'
 import { navigateTo } from '#app'
 
-// Oturum bilgilerini tutan store
 const authStore = useAuthStore()
 
-// Profil ve harcama API isteklerini yapan servis
 const userService = useUserService()
 
-// Çoklu dil çeviri fonksiyonumuz
 const { t, locale, setLocale } = useI18n()
 
-// Renkli bildirim baloncukları göstermemizi sağlayan araç
 const toast = useToast()
 
-// Sayfada o an hangi sekmenin açık olduğunu belirleyen durum
 const activeTab = ref<'expenditures' | 'info' | 'email-change' | 'security' | 'favorites'>('expenditures')
 
-// -----------------------------------------------------------------------------------------
-// Harcamalar ve Favoriler Durum Değişkenleri
-// -----------------------------------------------------------------------------------------
 const expenditures = ref<any[]>([])
 const favorites = ref<any[]>([])
 const isLoadingExpenditures = ref(false)
 const isLoadingFavorites = ref(false)
 
-// -----------------------------------------------------------------------------------------
-// Profil Adını Güncelleme Form Durumu
-// -----------------------------------------------------------------------------------------
 const isUpdatingProfile = ref(false)
 const profileForm = ref({
   name: authStore.user?.name || ''
 })
 
-// -----------------------------------------------------------------------------------------
-// E-Posta Değiştirme Form Durumu
-// -----------------------------------------------------------------------------------------
 const isSendingEmailCode = ref(false)
 const isChangingEmail = ref(false)
 const emailChangeStepCodeSent = ref(false)
@@ -540,9 +484,6 @@ const emailChangeForm = ref({
   currentPassword: ''
 })
 
-// -----------------------------------------------------------------------------------------
-// Şifre Değiştirme Form Durumu
-// -----------------------------------------------------------------------------------------
 const isSendingPasswordCode = ref(false)
 const isChangingPassword = ref(false)
 const passwordStepCodeSent = ref(false)
@@ -552,9 +493,6 @@ const passwordForm = ref({
   confirmPassword: ''
 })
 
-// -----------------------------------------------------------------------------------------
-// Kullanıcının İsminin Baş Harflerini (Örn: "Özgür Türköz" -> "ÖT") Üreten Hesaplama
-// -----------------------------------------------------------------------------------------
 const userInitials = computed(() => {
   const name = authStore.user?.name || 'U'
   return name
@@ -566,16 +504,10 @@ const userInitials = computed(() => {
     .substring(0, 2) || 'U'
 })
 
-// -----------------------------------------------------------------------------------------
-// Toplam Harcanan Para Tutarını Hesaplayan Fonksiyon
-// -----------------------------------------------------------------------------------------
 const totalSpent = computed(() => {
   return expenditures.value.reduce((sum, item) => sum + (item.amount || 0), 0)
 })
 
-// -----------------------------------------------------------------------------------------
-// Son 30 Günde Yapılan Harcamaları Toplayan Hesaplama
-// -----------------------------------------------------------------------------------------
 const last30DaysSpent = computed(() => {
   const thirtyDaysAgo = new Date()
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
@@ -585,17 +517,11 @@ const last30DaysSpent = computed(() => {
     .reduce((sum, item) => sum + (item.amount || 0), 0)
 })
 
-// -----------------------------------------------------------------------------------------
-// Ortalama Öğün Başı Harcamayı Bulan Hesaplama
-// -----------------------------------------------------------------------------------------
 const avgSpent = computed(() => {
   if (expenditures.value.length === 0) return 0
   return totalSpent.value / expenditures.value.length
 })
 
-// -----------------------------------------------------------------------------------------
-// En Çok Tercih Edilen Restoran Kategorisini Bulan Hesaplama
-// -----------------------------------------------------------------------------------------
 const topCategory = computed(() => {
   if (expenditures.value.length === 0) return '-'
   const counts: Record<string, number> = {}
@@ -615,9 +541,6 @@ const topCategory = computed(() => {
   return bestCat
 })
 
-// -----------------------------------------------------------------------------------------
-// Aylık Harcama Grafiği Verilerini Hazırlayan Hesaplama (Dile göre ay isimleri TR/EN değişir)
-// -----------------------------------------------------------------------------------------
 const monthlyChartData = computed(() => {
   if (expenditures.value.length === 0) return []
 
@@ -642,9 +565,6 @@ const monthlyChartData = computed(() => {
   }))
 })
 
-// -----------------------------------------------------------------------------------------
-// Kategori Bazlı Harcama Dağılımını Yüzde Olarak Hesaplayan Fonksiyon
-// -----------------------------------------------------------------------------------------
 const categoryChartData = computed(() => {
   if (expenditures.value.length === 0 || totalSpent.value === 0) return []
 
@@ -663,17 +583,11 @@ const categoryChartData = computed(() => {
     .sort((a, b) => b.total - a.total)
 })
 
-// -----------------------------------------------------------------------------------------
-// Sayfa Açıldığında (Lifecycle) Otomatik Olarak Harcamaları ve Favorileri Çek
-// -----------------------------------------------------------------------------------------
 onMounted(() => {
   fetchExpenditures()
   fetchFavorites()
 })
 
-// -----------------------------------------------------------------------------------------
-// Backend'den Harcamaları Çeken Fonksiyon
-// -----------------------------------------------------------------------------------------
 async function fetchExpenditures() {
   isLoadingExpenditures.value = true
   try {
@@ -682,15 +596,11 @@ async function fetchExpenditures() {
       expenditures.value = res.data || []
     }
   } catch {
-    // Hata durumunda sessizce güvenle devam edilir
   } finally {
     isLoadingExpenditures.value = false
   }
 }
 
-// -----------------------------------------------------------------------------------------
-// Backend'den Favori Restoranları Çeken Fonksiyon
-// -----------------------------------------------------------------------------------------
 async function fetchFavorites() {
   isLoadingFavorites.value = true
   try {
@@ -699,22 +609,15 @@ async function fetchFavorites() {
       favorites.value = res.data || []
     }
   } catch {
-    // Hata durumunda güvenle devam edilir
   } finally {
     isLoadingFavorites.value = false
   }
 }
 
-// -----------------------------------------------------------------------------------------
-// Favori Restorana Tıklandığında Haritada O Restoranı Açan Fonksiyon
-// -----------------------------------------------------------------------------------------
 function goToDiscoverWithRestaurant(restaurantId: number) {
   navigateTo(`/?restaurantId=${restaurantId}`)
 }
 
-// -----------------------------------------------------------------------------------------
-// Profil İsmini Güncelleyen Fonksiyon
-// -----------------------------------------------------------------------------------------
 async function handleUpdateProfile() {
   if (!profileForm.value.name || profileForm.value.name.trim().length < 3) {
     toast.showWarning(t('profile.nameMinLength'))
@@ -737,9 +640,6 @@ async function handleUpdateProfile() {
   }
 }
 
-// -----------------------------------------------------------------------------------------
-// Yeni E-Posta Adresine Doğrulama Kodu İsteyen Fonksiyon
-// -----------------------------------------------------------------------------------------
 async function handleSendEmailChangeCode() {
   if (!emailChangeForm.value.newEmail || !emailChangeForm.value.newEmail.includes('@')) {
     toast.showWarning(t('profile.enterValidNewEmail'))
@@ -762,9 +662,6 @@ async function handleSendEmailChangeCode() {
   }
 }
 
-// -----------------------------------------------------------------------------------------
-// E-Posta Değişikliğini Kod ve Şifre ile Onaylayan Fonksiyon
-// -----------------------------------------------------------------------------------------
 async function handleChangeEmailSubmit() {
   if (!emailChangeForm.value.code || emailChangeForm.value.code.length < 6) {
     toast.showWarning(t('profile.enter6DigitCode'))
@@ -797,9 +694,6 @@ async function handleChangeEmailSubmit() {
   }
 }
 
-// -----------------------------------------------------------------------------------------
-// Şifre Değiştirmek İçin E-Postaya Doğrulama Kodu İsteyen Fonksiyon
-// -----------------------------------------------------------------------------------------
 async function handleSendPasswordCode() {
   isSendingPasswordCode.value = true
   try {
@@ -817,9 +711,6 @@ async function handleSendPasswordCode() {
   }
 }
 
-// -----------------------------------------------------------------------------------------
-// Kod ve Yeni Şifre ile Şifreyi Sıfırlayan Fonksiyon
-// -----------------------------------------------------------------------------------------
 async function handleChangePassword() {
   if (passwordForm.value.newPassword.length < 6) {
     toast.showWarning(t('register.passwordTooShort'))
@@ -852,9 +743,6 @@ async function handleChangePassword() {
   }
 }
 
-// -----------------------------------------------------------------------------------------
-// Restoranı Favorilerden Çıkaran Fonksiyon
-// -----------------------------------------------------------------------------------------
 async function handleRemoveFavorite(restaurantId: number) {
   try {
     const res: any = await userService.removeFavorite(restaurantId)
@@ -869,9 +757,6 @@ async function handleRemoveFavorite(restaurantId: number) {
   }
 }
 
-// -----------------------------------------------------------------------------------------
-// Tarihleri Kullanıcının Seçtiği Dile (TR / EN) Göre Biçimlendiren Fonksiyon
-// -----------------------------------------------------------------------------------------
 function formatDate(dateStr: string) {
   if (!dateStr) return '-'
   const date = new Date(dateStr)
@@ -883,18 +768,13 @@ function formatDate(dateStr: string) {
   })
 }
 
-// -----------------------------------------------------------------------------------------
-// Çıkış Yapma Fonksiyonu
-// -----------------------------------------------------------------------------------------
 function handleLogout() {
   authStore.logout()
 }
+
 </script>
 
 <style scoped>
-/* =========================================================================================
-   SAYFA VE BİLEŞEN STİLLERİ (CSS)
-   ========================================================================================= */
 .sofra-profile-page {
   min-height: 100vh;
   background-color: #201a16;
@@ -902,7 +782,6 @@ function handleLogout() {
   font-family: 'Manrope', system-ui, -apple-system, sans-serif;
 }
 
-/* Header */
 .header {
   background: rgba(23, 18, 15, 0.85);
   backdrop-filter: blur(12px);
@@ -1001,14 +880,12 @@ nav {
   background: #5a4526;
 }
 
-/* Main Container */
 .profile-container {
   max-width: 1080px;
   margin: 0 auto;
   padding: 28px 24px 60px;
 }
 
-/* Banner Card */
 .profile-banner-card {
   background: #2b231d;
   border: 1px solid #40342a;
@@ -1071,7 +948,6 @@ nav {
   margin: 0;
 }
 
-/* Tabs */
 .profile-tabs {
   display: flex;
   gap: 8px;
@@ -1104,7 +980,6 @@ nav {
   background: rgba(224, 164, 88, 0.08);
 }
 
-/* Stats */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -1143,7 +1018,6 @@ nav {
   color: #8fbf7e;
 }
 
-/* Visual Spending Analytics Charts */
 .analytics-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -1173,7 +1047,6 @@ nav {
   color: #8a745e;
 }
 
-/* Bar Chart */
 .bar-chart-container {
   display: flex;
   align-items: flex-end;
@@ -1225,7 +1098,6 @@ nav {
   font-weight: 600;
 }
 
-/* Category Progress Bars */
 .category-distribution-list {
   display: flex;
   flex-direction: column;
@@ -1269,7 +1141,6 @@ nav {
   transition: width 0.4s ease;
 }
 
-/* Section Card */
 .section-card {
   background: #2b231d;
   border: 1px solid #40342a;
@@ -1303,7 +1174,6 @@ nav {
   margin: 0;
 }
 
-/* Expenditures List */
 .expenditures-list {
   display: flex;
   flex-direction: column;
@@ -1365,7 +1235,6 @@ nav {
   color: #8fbf7e;
 }
 
-/* Empty & Loading states */
 .loading-state,
 .empty-state {
   padding: 40px 20px;
@@ -1386,7 +1255,6 @@ nav {
   font-size: 13px;
 }
 
-/* Form Styles */
 .profile-form {
   display: flex;
   flex-direction: column;
@@ -1441,7 +1309,6 @@ nav {
   color: #e0a458;
 }
 
-/* Buttons */
 .primary-btn {
   background: #e0a458;
   color: #17120f;
@@ -1492,7 +1359,6 @@ nav {
   justify-content: flex-end;
 }
 
-/* Alerts */
 .info-alert,
 .success-alert {
   padding: 12px 14px;
@@ -1513,7 +1379,6 @@ nav {
   color: #4ade80;
 }
 
-/* Favorites Grid */
 .favorites-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));

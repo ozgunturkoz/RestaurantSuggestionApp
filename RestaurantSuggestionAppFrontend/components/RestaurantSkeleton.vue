@@ -1,9 +1,5 @@
 <template>
-  <!-- =========================================================================================
-       RESTORAN İSKELET YÜKLEYİCİSİ (SKELETON LOADER) (KODLAMA BİLMEYENLER İÇİN ANLATIM)
-       Restoranlar internetten indirilirken boş beyaz ekran göstermek yerine
-       ışık parlamalı (shimmer) gri hayalet kartlar göstererek kullanıcının beklemesini keyifli kılar.
-       ========================================================================================= -->
+
   <div class="skeleton-list">
     <div v-for="n in count" :key="n" class="skeleton-item">
       <div class="skeleton-thumb shimmer"></div>
@@ -21,15 +17,13 @@
 </template>
 
 <script setup>
-// =========================================================================================
-// İSKELET PARAMETRELERİ (PROPS)
-// =========================================================================================
 defineProps({
   count: {
     type: Number,
-    default: 4 // Varsayılan olarak 4 adet iskelet kart çizer
+    default: 4
   }
 })
+
 </script>
 
 <style scoped>

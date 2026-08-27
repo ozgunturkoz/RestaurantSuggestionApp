@@ -1,20 +1,13 @@
 <template>
-  <!-- =========================================================================================
-       YENİ ÜYE KAYIT SAYFASI ŞABLONU (KODLAMA BİLMEYENLER İÇİN ANLATIM)
-       Bu sayfa yeni bir kullanıcının sisteme ad, e-posta ve şifre girerek kaydolmasını sağlar.
-       İçerisinde 2 adım bulunur:
-       - Step 1: Kayıt formu (Ad Soyad, E-posta, Şifre, Şifre Tekrarı)
-       - Step 2: E-postaya gelen 6 haneli aktivasyon kodunu onaylama formu
-       ========================================================================================= -->
+
   <div class="wrap">
-    <!-- TR / EN Dil Değiştirme Butonları -->
+
     <div class="lang-switch-auth">
       <button :class="{ active: locale === 'tr' }" @click="setLocale('tr')">TR</button>
       <span>|</span>
       <button :class="{ active: locale === 'en' }" @click="setLocale('en')">EN</button>
     </div>
 
-    <!-- Sol Taraf Marka Tanıtım Paneli -->
     <div class="brand">
       <div class="bg stripe"></div>
       <div class="road1" style="top:56%;transform:rotate(4deg);"></div>
@@ -30,9 +23,8 @@
       </div>
     </div>
 
-    <!-- Sağ Taraf Kayıt Formu Paneli -->
     <div class="pane">
-      <!-- 1. ADIM: KAYIT FORMU -->
+
       <form v-if="step === 1" class="card" @submit.prevent="handleRegister">
         <h1>{{ t('register.title') }}</h1>
         <p class="lead">{{ t('register.lead') }}</p>
@@ -60,19 +52,18 @@
         <p class="foot">{{ t('register.hasAccount') }} <NuxtLink to="/login" class="link">{{ t('register.loginLink') }}</NuxtLink></p>
       </form>
 
-      <!-- 2. ADIM: E-POSTA DOĞRULAMA KODU FORMU -->
       <form v-else-if="step === 2" class="card" @submit.prevent="handleVerify">
         <h1>{{ t('register.verifyTitle') }}</h1>
         <p class="lead">{{ t('register.verifyLead', { email: email }) }}</p>
 
         <label>{{ t('login.verifyCodeLabel') }}</label>
-        <input 
-          v-model="verificationCode" 
-          type="text" 
-          maxlength="6" 
-          placeholder="123456" 
-          style="letter-spacing: 6px; font-size: 20px; text-align: center; font-weight: bold;" 
-          required 
+        <input
+          v-model="verificationCode"
+          type="text"
+          maxlength="6"
+          placeholder="123456"
+          style="letter-spacing: 6px; font-size: 20px; text-align: center; font-weight: bold;"
+          required
         />
 
         <p v-if="errorMsg" class="error">{{ errorMsg }}</p>
@@ -82,9 +73,9 @@
           <span>{{ loading ? t('login.verifying') : t('register.verifyBtn') }}</span>
         </button>
 
-        <button 
-          type="button" 
-          class="back-step-btn" 
+        <button
+          type="button"
+          class="back-step-btn"
           @click="step = 1; errorMsg = ''"
         >
           {{ t('register.backToRegister') }}
@@ -95,39 +86,27 @@
 </template>
 
 <script setup>
-// =========================================================================================
-// KAYIT OLMA SAYFASI KODLARI (JAVASCRIPT / COMPOSITION API)
-// =========================================================================================
 import { ref } from 'vue'
 import { useRouter } from '#app'
 
-// Çoklu dil aracı
 const { locale, setLocale, t } = useI18n()
 
-// Form adımı (1: Kayıt Formu, 2: Doğrulama Kodu)
 const step = ref(1)
 
-// Form alanları değişkenleri
 const name = ref('')
 const email = ref('')
 const password = ref('')
 const confirmPassword = ref('')
 const verificationCode = ref('')
 
-// Hata mesajı ve yükleniyor animasyonu
 const errorMsg = ref('')
 const loading = ref(false)
 
-// Pinia auth deposu ve sayfa yönlendirici
 const authStore = useAuthStore()
 const router = useRouter()
 
-// E-posta regex kalıbı
 const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
 
-// -----------------------------------------------------------------------------------------
-// 1. ADIM: Kayıt Ol Butonuna Basıldığında Çalışan Fonksiyon
-// -----------------------------------------------------------------------------------------
 const handleRegister = async () => {
   errorMsg.value = ''
 
@@ -163,9 +142,6 @@ const handleRegister = async () => {
   }
 }
 
-// -----------------------------------------------------------------------------------------
-// 2. ADIM: Kayıt Doğrulama Kodunu Onaylayan Fonksiyon
-// -----------------------------------------------------------------------------------------
 const handleVerify = async () => {
   errorMsg.value = ''
   loading.value = true
@@ -181,12 +157,10 @@ const handleVerify = async () => {
     loading.value = false
   }
 }
+
 </script>
 
 <style scoped>
-/* =========================================================================================
-   KAYIT SAYFASI ÖZEL STİLLERİ (SCOPED CSS)
-   ========================================================================================= */
 .wrap {
   min-height: 100vh;
   display: grid;

@@ -9,7 +9,6 @@ namespace RestaurantSuggestionApp.DataAccess
         {
         }
 
-        
         public DbSet<User> Users { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<UserExpenditure> UserExpenditures { get; set; }
@@ -36,29 +35,13 @@ namespace RestaurantSuggestionApp.DataAccess
                 .Property(r => r.Longitude)
                 .HasPrecision(9, 6);
 
-            
             modelBuilder.Entity<Restaurant>()
                 .Property(r => r.AveragePrice)
                 .HasPrecision(18, 2);
 
-            
             modelBuilder.Entity<UserExpenditure>()
                 .Property(u => u.Amount)
                 .HasPrecision(18, 2);
-
-
-
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.Restaurant)
-                .WithMany()
-                .HasForeignKey(u => u.RestaurantId)
-                .OnDelete(DeleteBehavior.SetNull);
-
-            modelBuilder.Entity<Restaurant>()
-                .HasOne(r => r.Owner)
-                .WithMany()
-                .HasForeignKey(r => r.OwnerId)
-                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.SeedData();
             base.OnModelCreating(modelBuilder);

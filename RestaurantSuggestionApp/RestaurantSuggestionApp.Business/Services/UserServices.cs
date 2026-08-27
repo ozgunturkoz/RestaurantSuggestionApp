@@ -11,81 +11,49 @@ using System.Threading.Tasks;
 
 namespace RestaurantSuggestionApp.Business.Services
 {
-    // =========================================================================================
-    // BU ARAYÜZ (INTERFACE) NE İŞE YARAR?
-    // Kullanıcı yönetimi (profil güncelleme, harcamalar, favoriler, şifre ve e-posta değiştirme)
-    // işlemlerinin listesini ve imzasını barındıran sözleşmedir.
-    // =========================================================================================
     public interface IUserService
     {
-        // Tüm kullanıcıları listeler (Admin/Yönetim)
         BaseResponse<List<User>> GetAll();
 
-        // Tek bir kullanıcıyı ID numarasına göre getirir
         BaseResponse<User> GetById(int id);
 
-        // Yeni bir kullanıcı kaydeder
         BaseResponse<User> Add(User newUser);
 
-        // Var olan kullanıcı bilgilerini günceller
         BaseResponse<User> Update(int id, User updatedUser);
 
-        // Kullanıcıyı sistemden siler
         BaseResponse<bool> Delete(int id);
 
-        // Kullanıcının favoriye eklediği restoranları listeler
         BaseResponse<List<UserFavorite>> GetFavorites(int userId);
 
-        // Kullanıcının bir restoranı favorilerine eklemesini veya not yazmasını sağlar
         BaseResponse<UserFavorite> AddFavorite(int userId, int restaurantId, string? customNote);
 
-        // Bir restoranı kullanıcının favorilerinden çıkarır
         BaseResponse<bool> RemoveFavorite(int userId, int restaurantId);
 
-        // Kullanıcının geçmiş restoran harcamalarını listeler
         BaseResponse<List<UserExpenditureResponseDto>> GetExpenditures(int userId);
 
-        // Kullanıcıya yeni bir harcama kaydı ekler
         BaseResponse<UserExpenditureResponseDto> AddExpenditure(int userId, CreateExpenditureDto dto);
 
-        // Kullanıcının yanlış girdiği bir harcamayı siler
         BaseResponse<bool> DeleteExpenditure(int userId, int expenditureId);
 
-        // Kullanıcının profilindeki adını günceller
         BaseResponse<User> UpdateProfileName(int userId, string name);
 
-        // Giriş yapmış kullanıcının şifresini değiştirebilmesi için e-postasına onay kodu yollar
         Task<BaseResponse<bool>> SendPasswordResetCodeAsync(int userId);
 
-        // E-postaya gelen kod ile kullanıcının şifresini günceller
         BaseResponse<bool> ChangePasswordWithCode(int userId, string code, string newPassword);
 
-        // Kullanıcının yeni bir e-posta adresine geçebilmesi için yeni adrese onay kodu yollar
         Task<BaseResponse<bool>> SendEmailChangeCodeAsync(int userId, string newEmail);
 
-        // Yeni e-postaya gelen kod ve mevcut şifre ile e-posta adresini günceller
         BaseResponse<bool> ChangeEmailWithCode(int userId, string newEmail, string code, string currentPassword);
     }
 
-    // =========================================================================================
-    // BU SINIF (CLASS) NE İŞE YARAR?
-    // Kullanıcı işlemlerinin tüm iş kurallarını, veritabanı kayıtlarını ve güvenlik adımlarını yürütür.
-    // =========================================================================================
     public class UserService : IUserService
     {
-        // Veritabanı tablolarına erişim sağlayan DbContext nesnesi
         private readonly AppDbContext _context;
 
-        // Doğrulama e-postalarını kullanıcılara ileten e-posta servisi
         private readonly IEmailService _emailService;
 
-        // Mesajları kullanıcının dil tercihine göre (TR / EN) çeviren yerelleştirme nesnesi
         private readonly IStringLocalizer _localizer;
 
-        // -------------------------------------------------------------------------------------
-        // Kurucu Metot (Constructor):
-        // UserService nesnesi üretildiği anda gerekli veritabanı ve servis bağımlılıklarını bağlar.
-        // -------------------------------------------------------------------------------------
         public UserService(AppDbContext context, IEmailService emailService, IStringLocalizer localizer)
         {
             _context = context;
@@ -93,9 +61,6 @@ namespace RestaurantSuggestionApp.Business.Services
             _localizer = localizer;
         }
 
-        // -------------------------------------------------------------------------------------
-        // Tüm Kullanıcıları Getir
-        // -------------------------------------------------------------------------------------
         public BaseResponse<List<User>> GetAll()
         {
             try
@@ -109,9 +74,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // ID Numarasına Göre Tek Bir Kullanıcıyı Getir
-        // -------------------------------------------------------------------------------------
         public BaseResponse<User> GetById(int id)
         {
             try
@@ -129,9 +91,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // Yeni Kullanıcı Ekle
-        // -------------------------------------------------------------------------------------
         public BaseResponse<User> Add(User newUser)
         {
             try
@@ -146,9 +105,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // Kullanıcı Bilgilerini Güncelle
-        // -------------------------------------------------------------------------------------
         public BaseResponse<User> Update(int id, User updatedUser)
         {
             try
@@ -175,9 +131,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // Kullanıcıyı Sil
-        // -------------------------------------------------------------------------------------
         public BaseResponse<bool> Delete(int id)
         {
             try
@@ -198,9 +151,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // Kullanıcının Favori Restoranlarını Listele
-        // -------------------------------------------------------------------------------------
         public BaseResponse<List<UserFavorite>> GetFavorites(int userId)
         {
             try
@@ -219,9 +169,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // Restoranı Favorilere Ekle veya Favori Notunu Güncelle
-        // -------------------------------------------------------------------------------------
         public BaseResponse<UserFavorite> AddFavorite(int userId, int restaurantId, string? customNote)
         {
             try
@@ -254,9 +201,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // Restoranı Favorilerden Çıkar
-        // -------------------------------------------------------------------------------------
         public BaseResponse<bool> RemoveFavorite(int userId, int restaurantId)
         {
             try
@@ -280,9 +224,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // Kullanıcının Harcama Geçmişini Listele
-        // -------------------------------------------------------------------------------------
         public BaseResponse<List<UserExpenditureResponseDto>> GetExpenditures(int userId)
         {
             try
@@ -311,9 +252,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // Yeni Bir Harcama Kaydı Ekle
-        // -------------------------------------------------------------------------------------
         public BaseResponse<UserExpenditureResponseDto> AddExpenditure(int userId, CreateExpenditureDto dto)
         {
             try
@@ -361,9 +299,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // Harcama Kaydını Sil
-        // -------------------------------------------------------------------------------------
         public BaseResponse<bool> DeleteExpenditure(int userId, int expenditureId)
         {
             try
@@ -387,9 +322,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // Profil Adını Güncelle
-        // -------------------------------------------------------------------------------------
         public BaseResponse<User> UpdateProfileName(int userId, string name)
         {
             try
@@ -411,9 +343,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // Profil İçinden Şifre Değiştirmek İçin E-Postaya Doğrulama Kodu Gönder
-        // -------------------------------------------------------------------------------------
         public async Task<BaseResponse<bool>> SendPasswordResetCodeAsync(int userId)
         {
             try
@@ -441,9 +370,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // Kod İle Şifre Değiştir
-        // -------------------------------------------------------------------------------------
         public BaseResponse<bool> ChangePasswordWithCode(int userId, string code, string newPassword)
         {
             try
@@ -487,9 +413,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // Yeni E-Posta Adresine Doğrulama Kodu Gönder
-        // -------------------------------------------------------------------------------------
         public async Task<BaseResponse<bool>> SendEmailChangeCodeAsync(int userId, string newEmail)
         {
             try
@@ -532,9 +455,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // Kod ve Mevcut Şifre İle E-Posta Değişikliğini Onayla
-        // -------------------------------------------------------------------------------------
         public BaseResponse<bool> ChangeEmailWithCode(int userId, string newEmail, string code, string currentPassword)
         {
             try
@@ -585,9 +505,6 @@ namespace RestaurantSuggestionApp.Business.Services
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // Yardımcı Metot: Kullanıcıyı ID ile bulur, yoksa hata fırlatır
-        // -------------------------------------------------------------------------------------
         private User GetUserOrThrow(int id, string errorMessage)
         {
             var user = _context.Users.Find(id);

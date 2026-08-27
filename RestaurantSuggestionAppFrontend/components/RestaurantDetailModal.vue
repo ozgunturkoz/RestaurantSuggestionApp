@@ -1,15 +1,10 @@
 <template>
-  <!-- =========================================================================================
-       RESTORAN DETAY AÇILIR PENCERESİ (MODAL) (KODLAMA BİLMEYENLER İÇİN ANLATIM)
-       Kullanıcı listeden veya haritadan bir restorana tıkladığında ekranın ortasında beliren
-       detay penceresidir. Restoranın ortalama fiyatını, yürüme mesafesini/süresini, akıllı öneri
-       uyum puanını, mekanın mini haritasını ve kullanıcının özel notlarını barındırır.
-       ========================================================================================= -->
+
   <Teleport to="body">
     <Transition name="modal">
       <div v-if="restaurant" class="modal-overlay" @click.self="$emit('close')">
         <div class="modal-card">
-          <!-- Başlık Alanı -->
+
           <div class="modal-header">
             <div class="modal-header-info">
               <span class="modal-category-chip">{{ restaurant.category }}</span>
@@ -18,9 +13,8 @@
             <button class="modal-close" @click="$emit('close')" :title="t('detail.close')">✕</button>
           </div>
 
-          <!-- Gövde Alanı -->
           <div class="modal-body">
-            <!-- 4'lü İstatistik Kartları Grid Yapısı -->
+
             <div class="stats-grid">
               <div class="stat-card">
                 <div class="stat-info">
@@ -51,7 +45,6 @@
               </div>
             </div>
 
-            <!-- Konum ve Bütçe Skor Ayrıştırma Çubukları -->
             <div v-if="restaurant.locationScore != null || restaurant.budgetScore != null" class="score-breakdown">
               <div class="score-row" v-if="restaurant.locationScore != null">
                 <span class="score-label">{{ t('detail.locationScore') }}</span>
@@ -69,19 +62,17 @@
               </div>
             </div>
 
-            <!-- Mini Harita Önizleme Alanı -->
             <div v-if="restaurant.latitude && restaurant.longitude" class="mini-map-section">
               <ClientOnly>
                 <div ref="miniMapEl" class="mini-map"></div>
               </ClientOnly>
             </div>
 
-            <!-- Favoriye Ekleme ve Kişisel Hatırlatıcı Not Alanı -->
             <div class="favorite-section">
               <div class="fav-toggle-row">
-                <button 
-                  class="fav-action-btn" 
-                  :class="{ active: isFavorite }" 
+                <button
+                  class="fav-action-btn"
+                  :class="{ active: isFavorite }"
                   @click="handleFavoriteToggle"
                 >
                   <span class="fav-star">★</span>
@@ -113,31 +104,23 @@
 </template>
 
 <script setup>
-// =========================================================================================
-// RESTORAN DETAY PENCERESİ KODLARI (JAVASCRIPT / VUE COMPOSITION API)
-// =========================================================================================
 import { ref, watch, nextTick, onBeforeUnmount } from 'vue'
 
-// Dışarıdan gelen parametreler (Props)
 const props = defineProps({
   restaurant: { type: Object, default: null },
   isFavorite: { type: Boolean, default: false },
   favoriteNote: { type: String, default: '' }
 })
 
-// Üst bileşene haber veren olaylar (Emits)
 const emit = defineEmits(['close', 'toggle-favorite', 'save-note'])
 
-// Çoklu dil aracı
 const { t, locale } = useI18n()
 
-// Not kutusu ve harita değişkenleri
 const noteText = ref('')
 const savingNote = ref(false)
 const miniMapEl = ref(null)
 let miniMapInstance = null
 
-// Mini harita nesnesini temizleyen yardımcı fonksiyon
 const destroyMiniMap = () => {
   if (miniMapInstance) {
     miniMapInstance.remove()
@@ -145,7 +128,6 @@ const destroyMiniMap = () => {
   }
 }
 
-// Mini haritayı oluşturan fonksiyon
 const initMiniMap = async () => {
   await nextTick()
   if (!miniMapEl.value || !props.restaurant) return
@@ -166,9 +148,9 @@ const initMiniMap = async () => {
       attributionControl: false
     })
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
-      subdomains: 'abcd'
+      className: 'map-tiles-dark'
     }).addTo(miniMapInstance)
 
     const icon = L.divIcon({
@@ -191,11 +173,9 @@ const initMiniMap = async () => {
       if (miniMapInstance) miniMapInstance.invalidateSize()
     }, 200)
   } catch {
-    // Harita yükleme hatasında sessizce devam edilir
   }
 }
 
-// Seçilen restoran değiştiğinde haritayı ve notu tazeleyen izleyici
 watch(() => props.restaurant, (newVal) => {
   if (newVal) {
     noteText.value = props.favoriteNote || ''
@@ -217,26 +197,22 @@ watch(() => props.favoriteNote, (newNote) => {
   noteText.value = newNote || ''
 })
 
-// Favori durumunu değiştiren fonksiyon
 const handleFavoriteToggle = () => {
   emit('toggle-favorite', props.restaurant.id)
 }
 
-// Favori notunu kaydeden fonksiyon
 const handleSaveNote = async () => {
   savingNote.value = true
   emit('save-note', { restaurantId: props.restaurant.id, note: noteText.value })
   setTimeout(() => { savingNote.value = false }, 600)
 }
 
-// Mesafeyi biçimlendiren fonksiyon
 const formatDistance = (meters) => {
   if (meters == null) return ''
   if (meters < 1000) return `${Math.round(meters)} m`
   return `${(meters / 1000).toFixed(1)} km`
 }
 
-// Süreyi seçili dile göre dakika olarak biçimlendiren fonksiyon
 const formatDuration = (seconds) => {
   if (seconds == null) return ''
   const unit = locale.value === 'en' ? 'min' : 'dk'
@@ -249,12 +225,10 @@ onBeforeUnmount(() => {
     document.body.style.overflow = ''
   }
 })
+
 </script>
 
 <style scoped>
-/* =========================================================================================
-   AÇILIR PENCERE (MODAL) STİLLERİ
-   ========================================================================================= */
 .modal-enter-active { transition: opacity .25s ease; }
 .modal-enter-active .modal-card { transition: transform .3s cubic-bezier(.34,1.56,.64,1), opacity .25s ease; }
 .modal-leave-active { transition: opacity .2s ease; }

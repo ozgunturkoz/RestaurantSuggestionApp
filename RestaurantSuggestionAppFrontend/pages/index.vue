@@ -1,12 +1,7 @@
 <template>
-  <!-- =========================================================================================
-       KEŞFET VE HARİTA ANA SAYFASI ŞABLONU (KODLAMA BİLMEYENLER İÇİN ANLATIM)
-       Bu sayfa uygulamanın "Kalbidir".
-       Kullanıcının haritadaki konumuna göre etraftaki restoranları çeker, bütçe ve yürüme
-       mesafesine göre en uygun mekanları puanlayarak haritada ve yan listede gösterir.
-       ========================================================================================= -->
+
   <div class="sofra">
-    <!-- Üst Başlık ve Gezinme Çubuğu -->
+
     <header>
       <div class="hbar">
         <div style="display:flex;align-items:center;gap:20px;">
@@ -19,7 +14,7 @@
 
         <div class="header-right">
           <div class="user-info-box">
-            <!-- TR / EN Dil Değiştirme Butonları -->
+
             <div class="lang-switch">
               <button :class="{ active: locale === 'tr' }" @click="setLocale('tr')">TR</button>
               <span>|</span>
@@ -32,7 +27,6 @@
         </div>
       </div>
 
-      <!-- Mobil Ekranlar İçin Liste / Harita Sekmeleri -->
       <div class="mobile-tabs">
         <button :class="{ active: mobileTab === 'list' }" @click="mobileTab = 'list'">
           {{ t('sidebar.restaurantList', { count: filteredRestaurants.length }) }}
@@ -43,14 +37,12 @@
       </div>
     </header>
 
-    <!-- Ana İçerik Alanı (Sol Panel Liste + Sağ Panel Harita) -->
     <div class="content">
       <aside class="side-box" :class="{ 'mobile-hidden': mobileTab === 'map' }">
         <div class="kick">{{ t('sidebar.radiusPrefix') }} · {{ store.radius }} KM</div>
         <h1>{{ t('sidebar.title') }}</h1>
         <p class="note">{{ t('sidebar.subtitle') }}</p>
 
-        <!-- Yarıçap Seçim Kutusu (1 KM, 2 KM, 5 KM, 10 KM) -->
         <div class="radius-box">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
             <label for="radius-select" style="margin:0;">{{ t('sidebar.radiusLabel') }}</label>
@@ -64,7 +56,6 @@
           </select>
         </div>
 
-        <!-- İsimle Restoran Arama Kutusu -->
         <div class="filter-box search-box">
           <div class="search-input-wrap">
             <span class="search-icon">🔍</span>
@@ -78,7 +69,6 @@
           </div>
         </div>
 
-        <!-- Kategori Filtre Butonları (Kebap, Ev Yemekleri vb.) -->
         <div v-if="availableCategories.length > 1" class="filter-box">
           <label class="filter-label">{{ t('filter.category') }}</label>
           <div class="chip-scroll">
@@ -101,7 +91,6 @@
           </div>
         </div>
 
-        <!-- Fiyat Aralığı Filtre Butonları -->
         <div class="filter-box">
           <label class="filter-label">{{ t('filter.price') }}</label>
           <div class="chip-scroll">
@@ -124,27 +113,22 @@
           </div>
         </div>
 
-        <!-- Aktif Filtre Sayısı ve Temizleme Butonu -->
         <div v-if="activeFilterCount > 0" class="filter-status">
           <span>{{ t('filter.resultCount', { count: filteredRestaurants.length }) }}</span>
           <button class="clear-filters-btn" @click="clearAllFilters">{{ t('filter.clearFilters') }}</button>
         </div>
 
-        <!-- Yükleniyor İskeleti (Skeleton) -->
         <RestaurantSkeleton v-if="store.isLoading" :count="4" />
 
-        <!-- Hiç Restoran Bulunamadı Durumu -->
         <div v-else-if="store.restaurants.length === 0" class="empty-state">
           <p>{{ t('sidebar.noRestaurants') }}</p>
         </div>
 
-        <!-- Filtre Sonucu Boş Durumu -->
         <div v-else-if="filteredRestaurants.length === 0" class="empty-state">
           <p>{{ t('filter.noResults') }}</p>
           <button class="clear-filters-link" @click="clearAllFilters">{{ t('filter.clearFilters') }}</button>
         </div>
 
-        <!-- Restoran Kartları Listesi -->
         <div v-else class="list">
           <div
             v-for="r in filteredRestaurants"
@@ -159,7 +143,7 @@
               <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:3px;">
                 <span class="iname">{{ r.name }}</span>
                 <div style="display:flex;align-items:center;gap:6px;">
-                  <!-- Favoriye Ekleme / Çıkarma Yıldızı -->
+
                   <button
                     class="fav-btn"
                     :class="{ isFav: favoriteIds.has(r.id) }"
@@ -177,7 +161,7 @@
               <div v-if="r.walkingDistanceInMeters !== null" class="dist-meta">
                 {{ t('sidebar.distance') }}: {{ formatDistance(r.walkingDistanceInMeters) }}
               </div>
-              <!-- Yapay Zeka Uyum Skoru Rozeti -->
+
               <div
                 v-if="r.recommendationScore !== null"
                 class="score-badge"
@@ -190,7 +174,6 @@
         </div>
       </aside>
 
-      <!-- Sağ Taraf İnteraktif Harita Kutusu -->
       <div class="mapwrap" :class="{ 'mobile-hidden': mobileTab === 'list' }">
         <ClientOnly>
           <template #fallback>
@@ -208,7 +191,6 @@
       </div>
     </div>
 
-    <!-- Restoran Detay Açılır Penceresi (Modal) -->
     <RestaurantDetailModal
       :restaurant="detailRestaurant"
       :is-favorite="detailRestaurant ? favoriteIds.has(detailRestaurant.id) : false"
@@ -221,36 +203,28 @@
 </template>
 
 <script setup>
-// =========================================================================================
-// KEŞFET SAYFASI KODLARI (JAVASCRIPT / VUE)
-// =========================================================================================
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter, useRoute } from '#app'
 
-// Çoklu dil aracı
 const { locale, setLocale, t } = useI18n()
 
-// Restoran ve Oturum Store havuzları
 const store = useRestaurantStore()
 const authStore = useAuthStore()
 const router = useRouter()
 const route = useRoute()
 const api = useApi()
 
-// Seçili restoran ve ekran durumları
 const selectedRestaurantId = ref(null)
 const mobileTab = ref('list')
 const favoriteIds = ref(new Set())
 const favoriteNotes = ref(new Map())
 const detailRestaurant = ref(null)
 
-// Filtreleme Durumları
 const searchQuery = ref('')
 const selectedCategories = ref(new Set())
 const selectedPriceRange = ref(null)
 const reactivityTrigger = ref(0)
 
-// Fiyat Aralığı Aralıkları
 const priceRanges = [
   { label: '₺0 – 100', min: 0, max: 100 },
   { label: '₺100 – 250', min: 100, max: 250 },
@@ -258,34 +232,25 @@ const priceRanges = [
   { label: '₺500+', min: 500, max: Infinity }
 ]
 
-// -----------------------------------------------------------------------------------------
-// Mevcut Restoranlar İçerisindeki Benzersiz Kategorileri Listeleyen Hesaplama
-// -----------------------------------------------------------------------------------------
 const availableCategories = computed(() => {
   const cats = new Set()
   store.restaurants.forEach(r => { if (r.category) cats.add(r.category) })
   return Array.from(cats).sort()
 })
 
-// -----------------------------------------------------------------------------------------
-// Arama, Kategori ve Fiyat Filtrelerini Restoran Listesine Uygulayan Hesaplama
-// -----------------------------------------------------------------------------------------
 const filteredRestaurants = computed(() => {
   void reactivityTrigger.value
   let list = store.restaurants
 
-  // İsimle Arama Filtresi
   if (searchQuery.value.trim()) {
     const q = searchQuery.value.trim().toLowerCase()
     list = list.filter(r => r.name.toLowerCase().includes(q))
   }
 
-  // Kategori Filtresi
   if (selectedCategories.value.size > 0) {
     list = list.filter(r => selectedCategories.value.has(r.category))
   }
 
-  // Fiyat Aralığı Filtresi
   if (selectedPriceRange.value) {
     const { min, max } = selectedPriceRange.value
     list = list.filter(r => r.averagePrice >= min && r.averagePrice < max)
@@ -294,9 +259,6 @@ const filteredRestaurants = computed(() => {
   return list
 })
 
-// -----------------------------------------------------------------------------------------
-// Aktif Filtre Sayısını Bulan Hesaplama
-// -----------------------------------------------------------------------------------------
 const activeFilterCount = computed(() => {
   void reactivityTrigger.value
   let count = 0
@@ -308,7 +270,6 @@ const activeFilterCount = computed(() => {
 
 const triggerReactivity = () => { reactivityTrigger.value++ }
 
-// Kategori Seçimini Açıp Kapatan Fonksiyon
 const toggleCategory = (cat) => {
   if (selectedCategories.value.has(cat)) {
     selectedCategories.value.delete(cat)
@@ -318,7 +279,6 @@ const toggleCategory = (cat) => {
   triggerReactivity()
 }
 
-// Tüm Filtreleri Temizleyen Fonksiyon
 const clearAllFilters = () => {
   searchQuery.value = ''
   selectedCategories.value.clear()
@@ -326,7 +286,6 @@ const clearAllFilters = () => {
   triggerReactivity()
 }
 
-// Mobilde harita sekmesine geçildiğinde harita boyutunu otomatik yenileyen izleyici
 watch(mobileTab, (newTab) => {
   if (newTab === 'map') {
     setTimeout(() => {
@@ -335,9 +294,6 @@ watch(mobileTab, (newTab) => {
   }
 })
 
-// -----------------------------------------------------------------------------------------
-// Kullanıcının Favori Restoranlarını Sunucudan Çeken Fonksiyon
-// -----------------------------------------------------------------------------------------
 const fetchFavorites = async () => {
   try {
     const res = await api.get('/api/User/favorites')
@@ -350,13 +306,9 @@ const fetchFavorites = async () => {
       favoriteNotes.value = notesMap
     }
   } catch {
-    // Hata sessizce yönetilir
   }
 }
 
-// -----------------------------------------------------------------------------------------
-// Restoranı Favorilere Ekleyen veya Çıkaran Fonksiyon
-// -----------------------------------------------------------------------------------------
 const toggleFavorite = async (restaurantId) => {
   try {
     if (favoriteIds.value.has(restaurantId)) {
@@ -368,7 +320,6 @@ const toggleFavorite = async (restaurantId) => {
       favoriteIds.value.add(restaurantId)
     }
   } catch {
-    // Hata yönetimi
   }
 }
 
@@ -376,9 +327,6 @@ const handleModalFavoriteToggle = async (restaurantId) => {
   await toggleFavorite(restaurantId)
 }
 
-// -----------------------------------------------------------------------------------------
-// Favori Notunu Kaydeden Fonksiyon
-// -----------------------------------------------------------------------------------------
 const handleSaveNote = async ({ restaurantId, note }) => {
   try {
     await api.post('/api/User/favorites', { restaurantId, customNote: note })
@@ -388,21 +336,14 @@ const handleSaveNote = async ({ restaurantId, note }) => {
     }
     useToast().showSuccess(t('detail.noteSaved'))
   } catch {
-    // Hata yönetimi
   }
 }
 
-// -----------------------------------------------------------------------------------------
-// Restoran Detay Penceresini Açan Fonksiyon
-// -----------------------------------------------------------------------------------------
 const openDetail = (restaurant) => {
   selectedRestaurantId.value = restaurant.id
   detailRestaurant.value = restaurant
 }
 
-// -----------------------------------------------------------------------------------------
-// Haritadaki Bir İğneye (Marker) Tıklandığında Yan Listeyi O Restorana Kaydıran Fonksiyon
-// -----------------------------------------------------------------------------------------
 const onSelectRestaurantFromMap = (id) => {
   selectedRestaurantId.value = id
   const el = document.getElementById('rest-card-' + id)
@@ -411,9 +352,6 @@ const onSelectRestaurantFromMap = (id) => {
   }
 }
 
-// -----------------------------------------------------------------------------------------
-// Yarıçap Değiştiğinde Yeni Restoranları İndiren Fonksiyon
-// -----------------------------------------------------------------------------------------
 const onRadiusChange = () => {
   const savedLat = typeof window !== 'undefined' ? parseFloat(localStorage.getItem('saved_user_lat') || '41.0082') : 41.0082
   const savedLng = typeof window !== 'undefined' ? parseFloat(localStorage.getItem('saved_user_lng') || '28.9784') : 28.9784
@@ -422,26 +360,22 @@ const onRadiusChange = () => {
   store.fetchNearbyRestaurants(lat, lng, store.radius)
 }
 
-// Metreyi şık formata çeviren yardımcı fonksiyon
 const formatDistance = (meters) => {
   if (meters === null || meters === undefined) return '';
   if (meters < 1000) return `${Math.round(meters)} m`;
   return `${(meters / 1000).toFixed(1)} km`;
 }
 
-// Saniyeyi dakikaya çeviren yardımcı fonksiyon
 const formatDuration = (seconds) => {
   if (seconds === null || seconds === undefined) return '';
   const minutes = Math.round(seconds / 60);
   return `${minutes} dk`;
 }
 
-// Çıkış Yapma Fonksiyonu
 const handleLogout = () => {
   authStore.logout()
 }
 
-// Skor Değerine Göre Renk Paleti Belirleyen Fonksiyon
 const getScoreStyle = (score) => {
   if (score >= 80) {
     return 'background: rgba(40, 167, 69, 0.15); color: #8FBF7E; border: 1px solid rgba(40, 167, 69, 0.3);'
@@ -452,9 +386,6 @@ const getScoreStyle = (score) => {
   return 'background: rgba(220, 53, 69, 0.15); color: #E08E58; border: 1px solid rgba(220, 53, 69, 0.3);'
 }
 
-// -----------------------------------------------------------------------------------------
-// Sayfa Yüklendiğinde URL'de Restoran ID Varsa Otomatik Detay Açan Lifecycle
-// -----------------------------------------------------------------------------------------
 onMounted(() => {
   fetchFavorites()
 
@@ -469,12 +400,10 @@ onMounted(() => {
     }, { immediate: true })
   }
 })
+
 </script>
 
 <style scoped>
-/* =========================================================================================
-   SAYFA STİLLERİ (CSS)
-   ========================================================================================= */
 .sofra { height: 100vh; display: flex; flex-direction: column; background: #201A16; font-family: 'Manrope', sans-serif; color: #F3E9DE; overflow: hidden; }
 .sofra a { color: inherit; text-decoration: none; }
 
@@ -511,11 +440,9 @@ nav a.on, nav span.on, nav a:hover, nav span:hover { color: #E0A458; }
 .radius-box label { font-weight: 600; color: #C9B9A8; font-size: 12px; display: block; margin-bottom: 4px; }
 .radius-box select { width: 100%; padding: 6px; border-radius: 8px; border: 1px solid #40342A; background-color: #201A16; font-size: 13px; color: #F3E9DE; cursor: pointer; outline: none; }
 
-/* Filtre Kutuları */
 .filter-box { margin-bottom: 10px; background: #201A16; border: 1px solid #40342A; padding: 10px; border-radius: 12px; }
 .filter-label { font-weight: 600; color: #C9B9A8; font-size: 11px; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
 
-/* Arama */
 .search-box { padding: 6px 10px; }
 .search-input-wrap { display: flex; align-items: center; gap: 8px; }
 .search-icon { font-size: 14px; flex-shrink: 0; opacity: 0.6; }
@@ -542,7 +469,6 @@ nav a.on, nav span.on, nav a:hover, nav span:hover { color: #E0A458; }
 }
 .search-clear:hover { color: #E0A458; }
 
-/* Chip Scroll */
 .chip-scroll { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; -ms-overflow-style: none; scrollbar-width: none; }
 .chip-scroll::-webkit-scrollbar { display: none; }
 
@@ -563,7 +489,6 @@ nav a.on, nav span.on, nav a:hover, nav span:hover { color: #E0A458; }
 .chip:hover { border-color: #E0A458; color: #E0A458; }
 .chip.active { background: rgba(224, 164, 88, 0.15); border-color: #E0A458; color: #E0A458; }
 
-/* Filtre durumu */
 .filter-status {
   display: flex;
   justify-content: space-between;
@@ -598,7 +523,6 @@ nav a.on, nav span.on, nav a:hover, nav span:hover { color: #E0A458; }
 }
 .clear-filters-link:hover { background: rgba(224, 164, 88, 0.1); }
 
-/* Liste */
 .list { display: flex; flex-direction: column; gap: 12px; }
 .item { background: #3A2E24; border: 1px solid #5A4526; border-radius: 15px; overflow: hidden; display: flex; align-items: stretch; min-height: 74px; cursor: pointer; box-shadow: 0 6px 16px -8px rgba(0,0,0,.6); transition: transform .15s, border-color .15s, box-shadow .15s; }
 .item.selected { border-color: #8FBF7E; background: #42352A; box-shadow: 0 0 14px rgba(143,191,126,0.3); }

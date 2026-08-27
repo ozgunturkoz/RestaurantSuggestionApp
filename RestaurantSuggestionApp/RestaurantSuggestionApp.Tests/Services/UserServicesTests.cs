@@ -58,7 +58,6 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void GetAll_NoUsers_ReturnsSuccessAndEmptyList()
         {
-
             var response = _userService.GetAll();
 
             Assert.That(response, Is.Not.Null);
@@ -88,7 +87,6 @@ namespace RestaurantSuggestionApp.Tests.Services
         [Test]
         public void GetById_NonExistingUser_ReturnsFailWithErrorMessage()
         {
-
             var response = _userService.GetById(999);
 
             Assert.That(response, Is.Not.Null);
@@ -293,4 +291,4 @@ namespace RestaurantSuggestionApp.Tests.Services
 
         #endregion
     }
-}
+}

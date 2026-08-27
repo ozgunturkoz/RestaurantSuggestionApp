@@ -35,6 +35,8 @@ namespace RestaurantSuggestionApp.Tests.Services
             _mockConfiguration.Setup(c => c["Jwt:Issuer"]).Returns("RestaurantApp");
             _mockConfiguration.Setup(c => c["Jwt:Audience"]).Returns("RestaurantAppUsers");
 
+            _mockEmailService = new Mock<IEmailService>();
+
             var mockServiceProvider = new Mock<IServiceProvider>();
             mockServiceProvider.Setup(s => s.GetService(typeof(IEmailService))).Returns(_mockEmailService.Object);
 
@@ -80,7 +82,7 @@ namespace RestaurantSuggestionApp.Tests.Services
 
             Assert.That(response, Is.Not.Null);
             Assert.That(response.IsSuccess, Is.False);
-            Assert.That(response.ErrorMessage, Is.EqualTo("Bu e-posta adresi zaten kullanımda."));
+            Assert.That(response.ErrorMessage, Is.EqualTo("Bu e-posta adresi zaten kullanılmaktadır!"));
         }
 
         [Test]

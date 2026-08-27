@@ -1,8 +1,5 @@
 <template>
-  <!-- =========================================================================================
-       YÜKLENİYOR ÇARKI BİLEŞENİ (SPINNER) (KODLAMA BİLMEYENLER İÇİN ANLATIM)
-       Butonların içinde veya sayfa açılırken dönen küçük altın sarısı yükleniyor çarkıdır.
-       ========================================================================================= -->
+
   <div class="spinner-container" :class="[sizeClass, { 'inline': inline }]">
     <svg class="spinner-svg" viewBox="0 0 50 50">
       <circle
@@ -27,15 +24,12 @@
 </template>
 
 <script setup>
-// =========================================================================================
-// YÜKLEYİCİ PARAMETRELERİ (PROPS)
-// =========================================================================================
 import { computed } from 'vue'
 
 const props = defineProps({
   size: {
     type: String,
-    default: 'md' // 'sm', 'md', 'lg'
+    default: 'md'
   },
   inline: {
     type: Boolean,
@@ -48,6 +42,7 @@ const props = defineProps({
 })
 
 const sizeClass = computed(() => `size-${props.size}`)
+
 </script>
 
 <style scoped>
