@@ -411,7 +411,7 @@ const getScoreStyle = (score) => {
 onMounted(() => {
   fetchFavorites()
 
-  const targetId = route.query.restaurantId ? parseInt(route.query.restaurantId as string) : null
+  const targetId = route.query.restaurantId ? parseInt(String(route.query.restaurantId)) : null
   if (targetId) {
     selectedRestaurantId.value = targetId
     watch(() => store.restaurants, (list) => {
@@ -431,7 +431,7 @@ onMounted(() => {
 
 watch(() => route.query.restaurantId, (newVal) => {
   if (newVal) {
-    const id = parseInt(newVal as string)
+    const id = parseInt(String(newVal))
     selectedRestaurantId.value = id
     const found = store.restaurants.find(r => r.id === id)
     if (found) {
