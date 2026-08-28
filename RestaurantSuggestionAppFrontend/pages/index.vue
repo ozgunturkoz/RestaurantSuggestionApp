@@ -200,6 +200,7 @@
           <RestaurantMap
             :selected-restaurant-id="selectedRestaurantId"
             :favorite-ids="favoriteIds"
+            :only-favorites="onlyFavorites"
             @select-restaurant="onSelectRestaurantFromMap"
           />
         </ClientOnly>
@@ -210,7 +211,7 @@
       :restaurant="detailRestaurant"
       :is-favorite="detailRestaurant ? favoriteIds.has(detailRestaurant.id) : false"
       :favorite-note="detailRestaurant ? (favoriteNotes.get(detailRestaurant.id) || '') : ''"
-      @close="detailRestaurant = null"
+      @close="closeDetail"
       @toggle-favorite="handleModalFavoriteToggle"
       @save-note="handleSaveNote"
     />
@@ -258,7 +259,9 @@ const filteredRestaurants = computed(() => {
   void reactivityTrigger.value
   let list = store.restaurants
 
-  if (onlyFavorites.value) {
+  if (!onlyFavorites.value) {
+    list = list.filter(r => !r.isOutsideRadius || r.id === selectedRestaurantId.value)
+  } else {
     list = list.filter(r => favoriteIds.value.has(r.id))
   }
 
@@ -366,6 +369,13 @@ const openDetail = (restaurant) => {
   detailRestaurant.value = restaurant
 }
 
+const closeDetail = () => {
+  detailRestaurant.value = null
+  if (route.query.restaurantId) {
+    router.replace({ path: route.path, query: {} })
+  }
+}
+
 const onSelectRestaurantFromMap = (id) => {
   selectedRestaurantId.value = id
   const el = document.getElementById('rest-card-' + id)
@@ -408,22 +418,28 @@ const getScoreStyle = (score) => {
   return 'background: rgba(220, 53, 69, 0.15); color: #E08E58; border: 1px solid rgba(220, 53, 69, 0.3);'
 }
 
+let hasHandledInitialTarget = false
+
 onMounted(() => {
   fetchFavorites()
 
   const targetId = route.query.restaurantId ? parseInt(String(route.query.restaurantId)) : null
   if (targetId) {
     selectedRestaurantId.value = targetId
-    watch(() => store.restaurants, (list) => {
-      const found = list.find(r => r.id === targetId)
-      if (found) {
-        openDetail(found)
-        nextTick(() => {
-          const cardEl = document.getElementById('rest-card-' + targetId)
-          if (cardEl) {
-            cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
-          }
-        })
+    const unwatch = watch(() => store.restaurants, (list) => {
+      if (!hasHandledInitialTarget && list && list.length > 0) {
+        const found = list.find(r => r.id === targetId)
+        if (found) {
+          hasHandledInitialTarget = true
+          openDetail(found)
+          nextTick(() => {
+            const cardEl = document.getElementById('rest-card-' + targetId)
+            if (cardEl) {
+              cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            }
+          })
+          unwatch()
+        }
       }
     }, { immediate: true })
   }

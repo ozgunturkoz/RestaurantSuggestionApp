@@ -46,8 +46,9 @@ export const useApi = () => {
       }
 
       const backendMsg = err?.data?.message || err?.data?.errorMessage
-      const errorMsg = backendMsg || (status >= 500 ? t('common.serverError') : t('common.connectionError'))
-      const errorTitle = t('common.connectionErrorTitle')
+      const isServerError = status && status >= 500
+      const errorMsg = backendMsg || (isServerError ? t('common.serverError') : t('common.connectionError'))
+      const errorTitle = backendMsg ? undefined : (isServerError ? t('common.serverError') : t('common.connectionErrorTitle'))
 
       toast.showError(errorMsg, errorTitle)
       const customErr = new Error(errorMsg) as any

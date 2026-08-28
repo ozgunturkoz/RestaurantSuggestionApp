@@ -1,5 +1,4 @@
 <template>
-
   <div ref="mapContainer" style="height: 100%; width: 100%; z-index: 0;"></div>
 </template>
 
@@ -16,6 +15,10 @@ const props = defineProps({
   favoriteIds: {
     type: Object,
     default: () => new Set()
+  },
+  onlyFavorites: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -132,7 +135,14 @@ onMounted(async () => {
 
     store.restaurants.forEach(rest => {
       if (rest.latitude && rest.longitude) {
+        const isSelected = props.selectedRestaurantId === rest.id;
         const isFav = Boolean(rest.isFavorite || (props.favoriteIds && props.favoriteIds.has(rest.id)));
+
+        // If outside radius, only show on map if onlyFavorites is active, or if it is currently selected/focused
+        if (rest.isOutsideRadius && !props.onlyFavorites && !isSelected) {
+          return;
+        }
+
         const pinColor = isSelected ? '#8FBF7E' : '#E0A458';
 
         let favBadge = '';
@@ -311,6 +321,10 @@ onMounted(async () => {
   watch(() => props.favoriteIds, () => {
     renderMarkers();
   }, { deep: true });
+
+  watch(() => props.onlyFavorites, () => {
+    renderMarkers();
+  });
 
   handleResize = () => {
     if (mapInstance) {
